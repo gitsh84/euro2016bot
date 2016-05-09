@@ -99,6 +99,6 @@ controller.on('facebook_postback', function(bot, message) {
 });
 
 controller.on('message_received', function(bot, message) {
-    bot.reply(message, 'How did we get here ?');
+    bot.reply(message, 'Oopsy oops...not sure what you mean by that :('));
     return false;
 });
