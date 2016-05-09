@@ -46,7 +46,7 @@ var welcoming_messages_from_user = [
 ];
 
 controller.hears(welcoming_messages_from_user, 'message_received', function(bot, message) {
-  bot.reply(message, 'Hey there !');
+  bot.reply(message, 'Hey, good to see ya !');
 });
 
 controller.hears(['cookies'], 'message_received', function(bot, message) {
