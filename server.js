@@ -1,5 +1,7 @@
 var Botkit = require('botkit');
 var Test = require('./test');
+var Sentences = require('./sentences');
+var Api = require('./mockApi');
 
 Test.foo();
 
@@ -25,28 +27,37 @@ controller.on('facebook_optin', function(bot, message) {
 });
 
 // user said hello
-var welcoming_messages_from_user = [
-  "^Hello",
-  "^Hi",
-  "^Hey",
-  "^Good morning",
-  "^Morning",
-  "^Good afternoon",
-  "^Good evening",
-  "^What's up",
-  "^Sup",
-  "^How's it going",
-  "^Howdy",
-  "^Well hello",
-  "^Why hello there.",
-  "^Yo",
-  "^Greetings",
-  "^Look who it is",
-  "^Look what the cat dragged in"
-];
-
-controller.hears(welcoming_messages_from_user, 'message_received', function(bot, message) {
+controller.hears(Sentences.welcoming_messages, 'message_received', function(bot, message) {
   bot.reply(message, 'Hey, good to see ya !');
+});
+
+function buildGroupsText(groups) {
+  var text = "";
+  if (groups instanceof Array) {
+    for (var iGroup = 0; iGroup < groups.length; iGroup++) {
+      var curGroup = groups[iGroup];
+      if (curGroup.teams instanceof Array) {
+        text += "Group " + curGroup.name + "\n";
+        for (var iTeam = 0; iTeam < curGroups.teams.length; iTeam++) {
+          var curTeam = curGroups.teams[iTeam];
+          text += curTeam.name + "\n";
+        }
+        text += "------------------\n";
+      }
+    }
+  }
+  return text;
+}
+
+controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
+  Api.getGroups(function(groups){
+    var text = buildGroupsText(groups);
+    if(typeof text === "string" && text.length > 0) {
+      bot.reply(message, text);
+    } else {
+      bot.reply(message, 'Not sure about the groups now...sorry :(');
+    }
+  });
 });
 
 controller.hears(['cookies'], 'message_received', function(bot, message) {
