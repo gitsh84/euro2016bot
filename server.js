@@ -20,11 +20,6 @@ controller.on('facebook_optin', function(bot, message) {
   bot.reply(message, 'Welcome to my app!');
 });
 
-// reply to any incoming message
-controller.on('message_received', function(bot, message) {
-  bot.reply(message, 'I heard... something!');
-});
-
 // user said hello
 var welcoming_messages_from_user = [
   "^Hello",
@@ -67,7 +62,7 @@ controller.hears('test', 'message_received', function(bot, message) {
       'template_type': 'generic',
       'elements': [{
         'title': 'Chocolate Cookie',
-        'image_url': 'http://cookies.com/cookie.png',
+        'image_url': 'https://www.hamptoncreek.com/img/p-just-cookies/panel-cookie-choc-cookie.png',
         'subtitle': 'A delicious chocolate cookie',
         'buttons': [{
           'type': 'postback',
@@ -86,4 +81,9 @@ controller.on('facebook_postback', function(bot, message) {
   if (message.payload == 'chocolate') {
     bot.reply(message, 'You ate the chocolate cookie!')
   }
+});
+
+controller.on('message_received', function(bot, message) {
+    bot.reply(message, 'How did we get here ?');
+    return false;
 });
