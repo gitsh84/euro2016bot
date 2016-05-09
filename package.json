@@ -1,0 +1,22 @@
+{
+  "name": "beepboopfirstbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shaishiff/beepboopfirstbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shaishiff/beepboopfirstbot/issues"
+  },
+  "homepage": "https://github.com/Shaishiff/beepboopfirstbot#readme",
+  "description": "",
+  "dependencies": {
+    "botkit": "^0.1.1"
+  }
+}
