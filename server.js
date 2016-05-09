@@ -20,6 +20,11 @@ controller.on('facebook_optin', function(bot, message) {
   bot.reply(message, 'Welcome to my app!');
 });
 
+// reply to any incoming message
+controller.on('message_received', function(bot, message) {
+  bot.reply(message, 'I heard... something!');
+});
+
 // user said hello
 var welcoming_messages_from_user = [
   "Hello",
