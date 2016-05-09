@@ -49,7 +49,7 @@ function buildGroupsText(groups) {
   return text;
 }
 
-controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
+function showGroupsToUser(message) {
   Api.getGroups(function(groups){
     var text = buildGroupsText(groups);
     if(typeof text === "string" && text.length > 0) {
@@ -58,6 +58,10 @@ controller.hears(Sentences.show_groups, 'message_received', function(bot, messag
       bot.reply(message, 'Not sure about the groups now...sorry :(');
     }
   });
+}
+
+controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
+  showGroupsToUser(message);
 });
 
 controller.hears(['cookies'], 'message_received', function(bot, message) {
@@ -99,6 +103,6 @@ controller.on('facebook_postback', function(bot, message) {
 });
 
 controller.on('message_received', function(bot, message) {
-    bot.reply(message, 'Oopsy oops...not sure what you mean by that :('));
+    bot.reply(message, 'Oopsy oops...not sure what you mean by that :(');
     return false;
 });
