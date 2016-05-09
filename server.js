@@ -27,23 +27,23 @@ controller.on('message_received', function(bot, message) {
 
 // user said hello
 var welcoming_messages_from_user = [
-  "Hello",
-  "Hi",
-  "Hey",
-  "Good morning",
-  "Morning",
-  "Good afternoon",
-  "Good evening",
-  "What's up",
-  "Sup",
-  "How's it going",
-  "Howdy",
-  "Well hello",
-  "Why hello there.",
-  "Yo",
-  "Greetings",
-  "Look who it is",
-  "Look what the cat dragged in"
+  "^Hello",
+  "^Hi",
+  "^Hey",
+  "^Good morning",
+  "^Morning",
+  "^Good afternoon",
+  "^Good evening",
+  "^What's up",
+  "^Sup",
+  "^How's it going",
+  "^Howdy",
+  "^Well hello",
+  "^Why hello there.",
+  "^Yo",
+  "^Greetings",
+  "^Look who it is",
+  "^Look what the cat dragged in"
 ];
 
 controller.hears(welcoming_messages_from_user, 'message_received', function(bot, message) {
