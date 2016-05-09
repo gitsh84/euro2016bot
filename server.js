@@ -38,8 +38,8 @@ function buildGroupsText(groups) {
       var curGroup = groups[iGroup];
       if (curGroup.teams instanceof Array) {
         text += "Group " + curGroup.name + "\n";
-        for (var iTeam = 0; iTeam < curGroups.teams.length; iTeam++) {
-          var curTeam = curGroups.teams[iTeam];
+        for (var iTeam = 0; iTeam < curGroup.teams.length; iTeam++) {
+          var curTeam = curGroup.teams[iTeam];
           text += curTeam.name + "\n";
         }
         text += "------------------\n";
