@@ -1,4 +1,8 @@
 var Botkit = require('botkit');
+var Test = require('./test');
+
+Test.foo();
+
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
   verify_token: process.env.FACEBOOK_VERIFY_TOKEN,
