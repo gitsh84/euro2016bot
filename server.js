@@ -95,7 +95,14 @@ function buildGroupsObj(groups) {
           var curTeam = teams[iTeam];
           curElement.title = "#" + (iTeam+1) + " " + curTeam.name;
           curElement.image_url = curTeam.flag_url;
-          curElement.subtitle = "Pts: " + curTeam.points + ", Goals(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+          curElement.subtitle = "Points: " + curTeam.points
+          + ", Played: " + curTeam.games_played
+          + ", Won:" + curTeam.games_won
+          + ", Draw:" + curTeam.games_draw
+          + ", Lost:" + curTeam.games_lost
+          + ", Goals For:" + curTeam.goals_scored
+          + ", Goals Against:" + curTeam.goals_taken
+          + ", Goals (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
             title: 'Show stats',
@@ -127,7 +134,7 @@ function showGroupsToUser(bot, message) {
           var msgAttachment = attachment;
           var groupIndex = iObj;
           setTimeout(function() {
-            bot.reply(message, "Here is group #" + (groupIndex+1));
+            bot.reply(message, "Here is group " + String.fromCharCode(97 + groupIndex).toUpperCase());
           }, timeout - 500);
           setTimeout(function() {
             bot.reply(message, {

@@ -21,9 +21,15 @@ var welcoming_messages = [
 
 var show_groups = [
   "^Show me the groups",
-  "^Show groups",
+  "^Show group",
   "^What are the groups",
-  "^Groups$"
+  "^Groups$",
+  "^Groops$",
+  "^Grops$",
+  "^Grups$",
+  "^Standings$",
+  "^Show standings$",
+  "^Show standing$"
 ];
 
 module.exports = {

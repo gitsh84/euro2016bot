@@ -64,7 +64,7 @@ var groups = [{
 	},
 	{
 		name: "Russia",
-		flag_url: "https://upload.wikimedia.org/wikipedia/en/archive/f/f3/20120812153730!Flag_of_Russia.svg",
+		flag_url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Russia.png",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
