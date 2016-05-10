@@ -90,6 +90,7 @@ function showGroupsToUser(bot, message) {
         console.log(curText);
         //bot.reply(message, "Here is group #" + iText);
         //var textToSend = (typeof curText === "string" && curText.length > 0) ? curText : 'Not sure about the groups now...sorry :(';
+        bot.reply(message, "jfdhgkfdjhgkjdfhgkjdfhgkhdf");
         bot.reply(message, curText);
       }
     }
