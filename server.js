@@ -8,7 +8,6 @@ var FACEBOOK_PAGE_ID = "1559094254390341";
 var FACEBOOK_PAGE_ACCESS_TOKEN = ""; // This is just for local debugging.
 var FACEBOOK_WELCOME_MSG_URL = "https://graph.facebook.com/v2.6/" + FACEBOOK_PAGE_ID + "/thread_settings?access_token=" + (process.env.FACEBOOK_PAGE_ACCESS_TOKEN || FACEBOOK_PAGE_ACCESS_TOKEN);
 var ANALYTICS_API = "http://api.bot-metrics.com/v1/messages";
-var ANALYTICS_TOKEN = "5AteSPSLuGtNqSoVR9x4vaGD";
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -43,7 +42,7 @@ function sendToAnalytics(sender, text, direction) {
   request({
       url: ANALYTICS_API,
       qs: {
-        token: ANALYTICS_TOKEN
+        token: process.env.ANALYTICS_TOKEN
       },
       method: 'POST',
       json: {
