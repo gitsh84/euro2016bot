@@ -30,15 +30,22 @@ controller.hears(Sentences.welcoming_messages, 'message_received', function(bot,
   bot.reply(message, 'Hey, good to see ya !');
 });
 
-String.prototype.rpad = function(padString, length) {
-  var str = this;
+function rpadwithspace(string, length) {
+  var str = string;
+  while (str.length < length)
+      str = str + " ";
+  return str;
+}
+
+function lpadwithspace(string, length) {
+  var str = string;
     while (str.length < length)
-        str = str + padString;
+        str = " " + str;
     return str;
 }
 
 function sortTeamsByPoints(teams) {
-  teams.sort(function(a,b) {return (a.points > b.points) ? 1 : ((b.points > a.points) ? -1 : 0);} );
+  return teams.sort(function(a,b) {return (a.points > b.points) ? -1 : ((b.points > a.points) ? 1 : 0);} );
 }
 
 function buildGroupsText(groups) {
@@ -49,22 +56,23 @@ function buildGroupsText(groups) {
       var curGroup = groups[iGroup];
       if (curGroup.teams instanceof Array) {
         var teams = sortTeamsByPoints(curGroup.teams);
-        text += ("Group " + curGroup.name).rpad(" ", TEAM_NAME_PADDING);
-        text += "  P  W  D  L  F  A  +/-  Pts";
-        text += "\n";
+        text += rpadwithspace("Group " + curGroup.name, TEAM_NAME_PADDING);
+        text += " P  W  D  L  F  A  +/-  Pts\n";
+        text += "----------------------------------------------------\n";
         for (var iTeam = 0; iTeam < teams.length; iTeam++) {
           var curTeam = teams[iTeam];
-          text += curTeam.name.rpad(" ", TEAM_NAME_PADDING);
-          text += " " + curTeam.games_played;
-          text += " " + curTeam.games_won;
-          text += " " + curTeam.games_draw;
-          text += " " + curTeam.games_lost;
-          text += " " + curTeam.goals_scored;
-          text += " " + curTeam.goals_taken;
-          text += " " + curTeam.points;
+          text += rpadwithspace(curTeam.name, TEAM_NAME_PADDING);
+          text += lpadwithspace("" + curTeam.games_played, 2);
+          text += lpadwithspace("" + curTeam.games_won, 3);
+          text += lpadwithspace("" + curTeam.games_draw, 3);
+          text += lpadwithspace("" + curTeam.games_lost, 3);
+          text += lpadwithspace("" + curTeam.goals_scored, 3);
+          text += lpadwithspace("" + curTeam.goals_taken, 3);
+          text += lpadwithspace("" + (curTeam.goals_scored - curTeam.goals_taken), 4);
+          text += lpadwithspace("" + curTeam.points, 5);
           text += "\n";
         }
-        text += "------------------\n";
+        text += "----------------------------------------------------\n";
       }
     }
   }
@@ -74,11 +82,9 @@ function buildGroupsText(groups) {
 function showGroupsToUser(message) {
   Api.getGroups(function(groups){
     var text = buildGroupsText(groups);
-    if(typeof text === "string" && text.length > 0) {
-      bot.reply(message, text);
-    } else {
-      bot.reply(message, 'Not sure about the groups now...sorry :(');
-    }
+    console.log(text);
+    var text_returned = (typeof text === "string" && text.length > 0) ? text : 'Not sure about the groups now...sorry :(';
+    (message ? bot.reply(message, text_returned) : text_returned);
   });
 }
 

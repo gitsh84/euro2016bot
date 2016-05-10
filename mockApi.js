@@ -17,6 +17,7 @@ var groups = [{
 	{
 		name: "France",
 		games_played: 2,
+		games_won: 2,
 		games_draw: 0,
 		games_lost: 0,
 		points: 6,
@@ -26,6 +27,7 @@ var groups = [{
 	{
 		name: "Romania",
 		games_played: 2,
+		games_won: 2,
 		games_draw: 0,
 		games_lost: 0,
 		points: 1,
@@ -35,6 +37,7 @@ var groups = [{
 	{
 		name: "Switzerland",
 		games_played: 2,
+		games_won: 2,
 		games_draw: 0,
 		games_lost: 0,
 		points: 3,
@@ -47,24 +50,27 @@ var groups = [{
 	teams: [{
 		name: "England",
 		games_played: 2,
+		games_won: 2,
 		games_draw: 0,
 		games_lost: 0,
 		points: 6,
-		goals_scored: 8,
+		goals_scored: 11,
 		goals_taken: 2
 	},
 	{
 		name: "Russia",
 		games_played: 2,
+		games_won: 2,
 		games_draw: 0,
 		games_lost: 0,
 		points: 0,
 		goals_scored: 8,
-		goals_taken: 2
+		goals_taken: 12
 	},
 	{
 		name: "Slovakia",
 		games_played: 2,
+		games_won: 2,
 		games_draw: 0,
 		games_lost: 0,
 		points: 2,
@@ -74,6 +80,7 @@ var groups = [{
 	{
 		name: "Wales",
 		games_played: 2,
+		games_won: 2,
 		games_draw: 0,
 		games_lost: 0,
 		points: 2,
