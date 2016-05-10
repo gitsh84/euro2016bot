@@ -93,7 +93,7 @@ function buildGroupsObj(groups) {
         for (var iTeam = 0; iTeam < teams.length; iTeam++) {
           var curElement = {};
           var curTeam = teams[iTeam];
-          curElement.title = curTeam.name;
+          curElement.title = "#" + (iTeam+1) + " " + urTeam.name;
           curElement.image_url = curTeam.flag_url;
           curElement.subtitle = "Pts: " + curTeam.points + ", Goals(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
@@ -124,9 +124,10 @@ function showGroupsToUser(bot, message) {
         };
         (function(){
           var timeout = 1000*iObj;
+          var msgAttachment = attachment;
           setTimeout(function() {
             bot.reply(message, {
-              attachment: attachment,
+              attachment: msgAttachment,
             });
           }, timeout);
         }());
