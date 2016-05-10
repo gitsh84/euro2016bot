@@ -222,6 +222,14 @@ function buildGameTeamObj(team) {
     return teamObj;
 }
 
+function buildGameVsObj(game) {
+  var vsObj = {};
+  teamObj.title = game.status;
+  teamObj.subtitle = game.time + " at " + game.location;
+  teamObj.image_url = "http://www.flexraid.com/wp-content/uploads/2013/10/Vs.pn_.png";
+  return vsObj;
+}
+
 function buildGamesObj(games) {
   var allElements = [];
   if (games instanceof Array) {
@@ -229,7 +237,8 @@ function buildGamesObj(games) {
       var curGame = games[iGame];
       var elements = [];
       elements[0] = buildGameTeamObj(curGame.home_team);
-      elements[1] = buildGameTeamObj(curGame.away_team);
+      elements[1] = buildGameVsObj(curGame);
+      elements[2] = buildGameTeamObj(curGame.away_team);
       allElements[iGame] = elements;
     }
   }
