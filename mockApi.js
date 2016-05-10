@@ -98,6 +98,7 @@ var groups = [{
 }];
 
 var games = [{
+	id: 123,
 	status: "Ongoing",
 	location: "Stade de France",
 	time: "10/5/2016 20:00",

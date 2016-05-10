@@ -227,11 +227,16 @@ function buildGameVsObj(game) {
   vsObj.title = game.status;
   vsObj.subtitle = game.time + " at " + game.location;
   vsObj.image_url = "http://mojano.com/wp-content/uploads/2014/07/versus.jpg";
-  vsObj.buttons: [{
+  vsObj.buttons = [{
     'type': 'web_url',
     'title': 'Bet on this game',
     'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
-  }]
+  },
+  {
+    'type': 'postback',
+    'title': 'Set notifications',
+    'payload': 'set_notifications_' + game.id
+  }];
   return vsObj;
 }
 
@@ -333,6 +338,9 @@ controller.on('facebook_postback', function(bot, message) {
     var teamName = message.payload.replace("show_games_for_","");
     bot.reply(message, 'Games for ' + teamName);
     showGamesToUser(bot, message, Api.getGames);
+  } else if (message.payload.indexOf('set_notifications_') === 0) {
+    var gameId = message.payload.replace("set_notifications_","");
+    bot.reply(message, "Sure thing ! You will get notifications for this game from now on.");
   }
 });
 
