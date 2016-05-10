@@ -59,7 +59,7 @@ function buildGroupsText(groups) {
         var teams = sortTeamsByPoints(curGroup.teams);
         text += rpadwithspace("Group " + curGroup.name, TEAM_NAME_PADDING);
         text += " P  W  D  L  F  A  +/-  Pts\n";
-        text += "----------------------------------------------------\n";
+        //text += "----------------------------------------------------\n";
         for (var iTeam = 0; iTeam < teams.length; iTeam++) {
           var curTeam = teams[iTeam];
           text += rpadwithspace(curTeam.name, TEAM_NAME_PADDING);
@@ -73,7 +73,7 @@ function buildGroupsText(groups) {
           text += lpadwithspace("" + curTeam.points, 5);
           text += "\n";
         }
-        text += "----------------------------------------------------\n";
+        //text += "----------------------------------------------------\n";
         text_array[iGroup] = text;
       }
     }
