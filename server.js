@@ -1,14 +1,13 @@
 "use strict";
 
 var Botkit = require('botkit');
-var Request = require('request');
+var request = require('request');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
-
 var FACEBOOK_PAGE_ID = "1559094254390341";
-var FACEBOOK_WELCOME_MSG_URL = "https://graph.facebook.com/v2.6/" + FACEBOOK_PAGE_ID + "/thread_settings?access_token=" + process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
-var analytics_api = "http://api.bot-metrics.com/v1/messages";
-var analytics_token = "5AteSPSLuGtNqSoVR9x4vaGD";
+var FACEBOOK_WELCOME_MSG_URL = "https://graph.facebook.com/v2.6/" + FACEBOOK_PAGE_ID + "/thread_settings?access_token=" + (process.env.FACEBOOK_PAGE_ACCESS_TOKEN || FACEBOOK_PAGE_ACCESS_TOKEN);
+var ANALYTICS_API = "http://api.bot-metrics.com/v1/messages";
+var ANALYTICS_TOKEN = "5AteSPSLuGtNqSoVR9x4vaGD";
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -17,14 +16,15 @@ var controller = Botkit.facebookbot({
 
 var bot = controller.spawn({});
 
+// Set up the welcome message:
+setWelcomeMessage();
+
 // if you are already using Express, you can use your own server instance...
 // see "Use BotKit with an Express web server"
 var webServerPort = process.env.PORT || 8080;
 controller.setupWebserver(webServerPort, function(err, webserver) {
   controller.createWebhookEndpoints(controller.webserver, bot, function() {
     console.log('This bot is online!!!');
-    // Set up the welcome message:
-    setWelcomeMessage();
   });
 });
 
@@ -40,9 +40,9 @@ controller.hears(Sentences.welcoming_messages, 'message_received', function(bot,
 
 function sendToAnalytics(sender, text, direction) {
   request({
-      url: analytics_api,
+      url: ANALYTICS_API,
       qs: {
-        token: analytics_token
+        token: ANALYTICS_TOKEN
       },
       method: 'POST',
       json: {
@@ -64,14 +64,22 @@ function sendToAnalytics(sender, text, direction) {
 }
 
 function setWelcomeMessage() {
-  var welcome_message = "Welcome !";
+  var welcome_message = "Hey ! Great to see you :)\n";
+  welcome_message += "Since this is our first time talking I'll try and explain what's going on here.\n";
+  welcome_message += "Just tell me what kind of info you are looking for about UEFA Euro 2016.\n";
+  welcome_message += "To get things started, you can write something like:\nShow me the groups\n";
+  welcome_message += "Or even just write:\ngroups\n(if you're a bit lazy...)";
   request({
     url: FACEBOOK_WELCOME_MSG_URL,
     method: 'POST',
     json: {
-      message: {
-        text: welcome_message
-      }
+      setting_type: "call_to_actions",
+      thread_state: "new_thread",
+      call_to_actions: [{
+        message: {
+          text: welcome_message
+        }
+      }]
     }
   }, function(error, response, body) {
     if (error) {
