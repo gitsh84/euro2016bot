@@ -215,7 +215,7 @@ function buildGameTeamObj(team, game) {
     if (team.goals instanceof Array) {
       for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
         var curGoal = team.goals[iGoal];
-        teamObj.subtitle = curGoal.time + " " + curGoal.player_name + (curGoal.notes && curGoal.notes.length > 0 ? " (" + curGoal.notes + ")" : "");
+        teamObj.subtitle += curGoal.time + " " + curGoal.player_name + (curGoal.notes && curGoal.notes.length > 0 ? " (" + curGoal.notes + ")" : "");
         teamObj.subtitle += "\n";
       }
     }
@@ -238,7 +238,22 @@ function buildGameTeamObj(team, game) {
 function buildGameVsObj(game) {
   var vsObj = {};
   vsObj.title = game.status;
-  vsObj.subtitle = game.time + " at " + game.location;
+  if (game.status === "Over") {
+    vsObj.title += " - ";
+    if (game.home_team.goals.length > game.away_team.goals.length) {
+      vsObj.title += game.home_team.name + " won";
+    } else if (game.home_team.goals.length < game.away_team.goals.length) {
+      vsObj.title += game.away_team.name + " won";
+    } else {
+      vsObj.title += " Draw";
+    }
+  }
+  if (game.status === "Prematch") {
+    vsObj.subtitle = "Game will start ";
+  } else {
+    vsObj.subtitle = "Game started ";
+  }
+  vsObj.subtitle += game.time + " at " + game.location;
   vsObj.image_url = game.location_image_url;
   if (game.status !== "Over") {
     vsObj.buttons = [{
