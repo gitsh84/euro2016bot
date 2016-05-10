@@ -1,9 +1,8 @@
+"use strict";
+
 var Botkit = require('botkit');
-var Test = require('./test');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
-
-Test.foo();
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -31,16 +30,39 @@ controller.hears(Sentences.welcoming_messages, 'message_received', function(bot,
   bot.reply(message, 'Hey, good to see ya !');
 });
 
+String.prototype.rpad = function(padString, length) {
+  var str = this;
+    while (str.length < length)
+        str = str + padString;
+    return str;
+}
+
+function sortTeamsByPoints(teams) {
+  teams.sort(function(a,b) {return (a.points > b.points) ? 1 : ((b.points > a.points) ? -1 : 0);} );
+}
+
 function buildGroupsText(groups) {
+  var TEAM_NAME_PADDING = 20;
   var text = "";
   if (groups instanceof Array) {
     for (var iGroup = 0; iGroup < groups.length; iGroup++) {
       var curGroup = groups[iGroup];
       if (curGroup.teams instanceof Array) {
-        text += "Group " + curGroup.name + "\n";
-        for (var iTeam = 0; iTeam < curGroup.teams.length; iTeam++) {
-          var curTeam = curGroup.teams[iTeam];
-          text += curTeam.name + "\n";
+        var teams = sortTeamsByPoints(curGroup.teams);
+        text += ("Group " + curGroup.name).rpad(" ", TEAM_NAME_PADDING);
+        text += "  P  W  D  L  F  A  +/-  Pts";
+        text += "\n";
+        for (var iTeam = 0; iTeam < teams.length; iTeam++) {
+          var curTeam = teams[iTeam];
+          text += curTeam.name.rpad(" ", TEAM_NAME_PADDING);
+          text += " " + curTeam.games_played;
+          text += " " + curTeam.games_won;
+          text += " " + curTeam.games_draw;
+          text += " " + curTeam.games_lost;
+          text += " " + curTeam.goals_scored;
+          text += " " + curTeam.goals_taken;
+          text += " " + curTeam.points;
+          text += "\n";
         }
         text += "------------------\n";
       }
