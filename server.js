@@ -115,7 +115,6 @@ function showGroupsToUser(bot, message) {
     var obj_array = buildGroupsObj(groups);
     if (obj_array instanceof Array) {
       for (var iObj = 0; iObj < obj_array.length; iObj++) {
-        //if(iObj != 0) Sleep.sleep(1);
         var curObj = obj_array[iObj];
         var attachment = {};
         attachment.type = 'template';
@@ -123,9 +122,14 @@ function showGroupsToUser(bot, message) {
           template_type: 'generic',
           elements: curObj
         };
-        bot.reply(message, {
-          attachment: attachment,
-        });
+        (function(){
+          var timeout = 1000*iObj;
+          setTimeout(function() {
+            bot.reply(message, {
+              attachment: attachment,
+            });
+          }, timeout);
+        }());
       }
     }
   });
@@ -136,7 +140,6 @@ function showGroupsToUserAsText(bot, message) {
     var text_array = buildGroupsText(groups);
     if (text_array instanceof Array) {
       for (var iText = 0; iText < text_array.length; iText++) {
-        if(iText != 0) Sleep.sleep(1);
         var curText = text_array[iText];
         console.log(curText);
         //var textToSend = (typeof curText === "string" && curText.length > 0) ? curText : 'Not sure about the groups now...sorry :(';
