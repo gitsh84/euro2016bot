@@ -81,7 +81,7 @@ function buildGroupsText(groups) {
   return text_array;
 }
 
-function showGroupsToUser(message) {
+function showGroupsToUser(bot, message) {
   Api.getGroups(function(groups){
     var text_array = buildGroupsText(groups);
     if (text_array instanceof Array) {
@@ -96,7 +96,7 @@ function showGroupsToUser(message) {
 }
 
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
-  showGroupsToUser(message);
+  showGroupsToUser(bot, message);
 });
 
 controller.hears(['cookies'], 'message_received', function(bot, message) {
