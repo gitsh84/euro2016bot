@@ -211,14 +211,12 @@ function buildGameTeamObj(team) {
     var teamObj = {};
     teamObj.title = team.name + " (" + team.goals.length + ")";
     teamObj.image_url = team.flag_url;
-    // teamObj.subtitle = "Points: " + curTeam.points
-    // + ", Played: " + curTeam.games_played
-    // + ", Won:" + curTeam.games_won
-    // + ", Draw:" + curTeam.games_draw
-    // + ", Lost:" + curTeam.games_lost
-    // + ", Goals For:" + curTeam.goals_scored
-    // + ", Goals Against:" + curTeam.goals_taken
-    // + ", Goals (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+    if (team.goals instanceof Array) {
+    for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
+        var curGoal = team.goals[iGoal];
+        teamObj.subtitle = curGoal.time + " " + curGoal.player_name + (curGoal.notes && curGoal.notes.length > 0 ? " (" + curGoal.notes + ")" : "");
+      }
+    }
     return teamObj;
 }
 
