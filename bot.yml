@@ -1,1 +1,6 @@
 name: ShaisBoopBeepBot
+config:
+  - name: ANALYTICS_TOKEN
+    friendly_name: ANALYTICS_TOKEN
+    type: secret
+    global: true

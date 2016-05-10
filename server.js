@@ -5,6 +5,7 @@ var request = require('request');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
 var FACEBOOK_PAGE_ID = "1559094254390341";
+var FACEBOOK_PAGE_ACCESS_TOKEN = ""; // This is just for local debugging.
 var FACEBOOK_WELCOME_MSG_URL = "https://graph.facebook.com/v2.6/" + FACEBOOK_PAGE_ID + "/thread_settings?access_token=" + (process.env.FACEBOOK_PAGE_ACCESS_TOKEN || FACEBOOK_PAGE_ACCESS_TOKEN);
 var ANALYTICS_API = "http://api.bot-metrics.com/v1/messages";
 var ANALYTICS_TOKEN = "5AteSPSLuGtNqSoVR9x4vaGD";
@@ -64,6 +65,7 @@ function sendToAnalytics(sender, text, direction) {
 }
 
 function setWelcomeMessage() {
+  if((process.env.FACEBOOK_PAGE_ACCESS_TOKEN || FACEBOOK_PAGE_ACCESS_TOKEN).length === 0) return;
   var welcome_message = "Hey ! Great to see you :)\n";
   welcome_message += "Since this is our first time talking I'll try and explain what's going on here.\n";
   welcome_message += "Just tell me what kind of info you are looking for about UEFA Euro 2016.\n";
@@ -164,8 +166,8 @@ function buildGroupsObj(groups) {
           + ", Goals (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
-            title: 'Show stats',
-            payload: 'show_stats_for_' + curTeam.name
+            title: 'Show Games',
+            payload: 'show_games_for_' + curTeam.name
           }];
           elements[iTeam] = curElement;
         }
@@ -195,6 +197,60 @@ function showGroupsToUser(bot, message) {
           setTimeout(function() {
             bot.reply(message, "Here is group " + String.fromCharCode(97 + groupIndex).toUpperCase());
           }, timeout - 500);
+          setTimeout(function() {
+            bot.reply(message, {
+              attachment: msgAttachment,
+            });
+          }, timeout);
+        }());
+      }
+    }
+  });
+}
+
+function buildGameTeamObj(team) {
+    var teamObj = {};
+    teamObj.title = team.name + " (" + team.goals.length + ")";
+    teamObj.image_url = team.flag_url;
+    // teamObj.subtitle = "Points: " + curTeam.points
+    // + ", Played: " + curTeam.games_played
+    // + ", Won:" + curTeam.games_won
+    // + ", Draw:" + curTeam.games_draw
+    // + ", Lost:" + curTeam.games_lost
+    // + ", Goals For:" + curTeam.goals_scored
+    // + ", Goals Against:" + curTeam.goals_taken
+    // + ", Goals (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+}
+
+function buildGamesObj(games) {
+  var allElements = [];
+  if (games instanceof Array) {
+    for (var iGame = 0; iGame < games.length; iGame++) {
+      var curGame = games[iGame];
+      var elements = [];
+      elements[0] = buildGameTeamObj(curGame.home_team);
+      elements[1] = buildGameTeamObj(curGame.away_team);
+      allElements[iGame] = elements;
+    }
+  }
+  return allElements;
+}
+
+function showGamesToUser(bot, message, getter) {
+  getter(function(games){
+    var obj_array = buildGamesObj(games);
+    if (obj_array instanceof Array) {
+      for (var iObj = 0; iObj < obj_array.length; iObj++) {
+        var curObj = obj_array[iObj];
+        var attachment = {};
+        attachment.type = 'template';
+        attachment.payload = {
+          template_type: 'generic',
+          elements: curObj
+        };
+        (function(){
+          var timeout = 1000*iObj;
+          var msgAttachment = attachment;
           setTimeout(function() {
             bot.reply(message, {
               attachment: msgAttachment,
@@ -259,9 +315,10 @@ controller.hears('test', 'message_received', function(bot, message) {
 controller.on('facebook_postback', function(bot, message) {
   if (message.payload == 'chocolate') {
     bot.reply(message, 'You ate the chocolate cookie!')
-  } else if (message.payload.indexOf('show_stats_for_') === 0) {
-    var teamName = message.payload.replace("show_stats_for_","");
-    bot.reply(message, 'Stats for ' + teamName);
+  } else if (message.payload.indexOf('show_games_for_') === 0) {
+    var teamName = message.payload.replace("show_games_for_","");
+    bot.reply(message, 'Games for ' + teamName);
+    showGamesToUser(bot, message, Api.getGames);
   }
 });
 
