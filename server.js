@@ -125,8 +125,9 @@ function showGroupsToUser(bot, message) {
         (function(){
           var timeout = 1000*iObj;
           var msgAttachment = attachment;
+          var groupIndex = iObj;
           setTimeout(function() {
-            bot.reply(message, "Here is group " + groups[iObj].name);
+            bot.reply(message, "Here is group #" + (groupIndex+1));
           }, timeout - 500);
           setTimeout(function() {
             bot.reply(message, {
