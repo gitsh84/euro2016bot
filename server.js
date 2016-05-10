@@ -1,9 +1,14 @@
 "use strict";
 
 var Botkit = require('botkit');
+var Request = require('request');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
-//var Sleep = require('sleep');
+
+var FACEBOOK_PAGE_ID = "1559094254390341";
+var FACEBOOK_WELCOME_MSG_URL = "https://graph.facebook.com/v2.6/" + FACEBOOK_PAGE_ID + "/thread_settings?access_token=" + process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+var analytics_api = "http://api.bot-metrics.com/v1/messages";
+var analytics_token = "5AteSPSLuGtNqSoVR9x4vaGD";
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -18,6 +23,8 @@ var webServerPort = process.env.PORT || 8080;
 controller.setupWebserver(webServerPort, function(err, webserver) {
   controller.createWebhookEndpoints(controller.webserver, bot, function() {
     console.log('This bot is online!!!');
+    // Set up the welcome message:
+    setWelcomeMessage();
   });
 });
 
@@ -30,6 +37,50 @@ controller.on('facebook_optin', function(bot, message) {
 controller.hears(Sentences.welcoming_messages, 'message_received', function(bot, message) {
   bot.reply(message, 'Hey, good to see ya !');
 });
+
+function sendToAnalytics(sender, text, direction) {
+  request({
+      url: analytics_api,
+      qs: {
+        token: analytics_token
+      },
+      method: 'POST',
+      json: {
+        message: {
+          text: text,
+          message_type: direction,
+          user_id: sender,
+          conversation_id: sender // Conv ID can (and should) be different from user id...but for now it is good enough.
+        }
+      }
+    },
+    function(error, response, body) {
+      if (error) {
+        console.log('Error sending message to analytics: ', error);
+      } else if (response.body.error) {
+        console.log('Error in body response when sending message to analytics: ', response.body.error);
+      }
+    });
+}
+
+function setWelcomeMessage() {
+  var welcome_message = "Welcome !";
+  request({
+    url: FACEBOOK_WELCOME_MSG_URL,
+    method: 'POST',
+    json: {
+      message: {
+        text: welcome_message
+      }
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending welcome message: ', error);
+    } else if (response.body.error) {
+      console.log('Error in response body when sending welcome message: ', response.body.error);
+    }
+  });
+}
 
 function rpadwithspace(string, length) {
   var str = string;
