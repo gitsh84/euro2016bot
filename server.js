@@ -211,10 +211,12 @@ function buildGameTeamObj(team) {
     var teamObj = {};
     teamObj.title = team.name + " (" + team.goals.length + ")";
     teamObj.image_url = team.flag_url;
+    teamObj.subtitle = "";
     if (team.goals instanceof Array) {
-    for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
+      for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
         var curGoal = team.goals[iGoal];
         teamObj.subtitle = curGoal.time + " " + curGoal.player_name + (curGoal.notes && curGoal.notes.length > 0 ? " (" + curGoal.notes + ")" : "");
+        teamObj.subtitle += "\n";
       }
     }
     return teamObj;
