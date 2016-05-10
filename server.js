@@ -84,7 +84,7 @@ function showGroupsToUser(message) {
     var text = buildGroupsText(groups);
     console.log(text);
     var text_returned = (typeof text === "string" && text.length > 0) ? text : 'Not sure about the groups now...sorry :(';
-    (message ? bot.reply(message, text_returned) : text_returned);
+    bot.reply(message, text_returned);
   });
 }
 
