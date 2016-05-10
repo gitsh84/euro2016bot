@@ -207,9 +207,9 @@ function showGroupsToUser(bot, message) {
   });
 }
 
-function buildGameTeamObj(team) {
+function buildGameTeamObj(team, game) {
     var teamObj = {};
-    teamObj.title = team.name + " (" + team.goals.length + ")";
+    teamObj.title = team.name + (game.status !== "Prematch" ? " (" + team.goals.length + ")" : "");
     teamObj.image_url = team.flag_url;
     teamObj.subtitle = "";
     if (team.goals instanceof Array) {
@@ -219,16 +219,19 @@ function buildGameTeamObj(team) {
         teamObj.subtitle += "\n";
       }
     }
-    teamObj.buttons = [{
-      'type': 'web_url',
-      'title': 'Bet on ' + team.name,
-      'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
-    },
-    {
+    teamObj.buttons = [];
+    if (game.status !== "Over") {
+      teamObj.buttons.push({
+        'type': 'web_url',
+        'title': 'Bet on ' + team.name,
+        'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
+      });
+    }
+    teamObj.buttons.push({
       'type': 'postback',
-      'title': 'Notifications for ' + team.name,
+      'title': 'Set notifications',
       'payload': 'set_notifications_' + team.name
-    }];
+    });
     return teamObj;
 }
 
@@ -237,16 +240,18 @@ function buildGameVsObj(game) {
   vsObj.title = game.status;
   vsObj.subtitle = game.time + " at " + game.location;
   vsObj.image_url = game.location_image_url;
-  vsObj.buttons = [{
-    'type': 'web_url',
-    'title': 'Bet on this game',
-    'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
-  },
-  {
-    'type': 'postback',
-    'title': 'Set notifications',
-    'payload': 'set_notifications_' + game.id
-  }];
+  if (game.status !== "Over") {
+    vsObj.buttons = [{
+      'type': 'web_url',
+      'title': 'Bet on this game',
+      'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
+    },
+    {
+      'type': 'postback',
+      'title': 'Set notifications',
+      'payload': 'set_notifications_' + game.id
+    }];
+  }
   return vsObj;
 }
 
@@ -256,9 +261,9 @@ function buildGamesObj(games) {
     for (var iGame = 0; iGame < games.length; iGame++) {
       var curGame = games[iGame];
       var elements = [];
-      elements[0] = buildGameTeamObj(curGame.home_team);
+      elements[0] = buildGameTeamObj(curGame.home_team, curGame);
       elements[1] = buildGameVsObj(curGame);
-      elements[2] = buildGameTeamObj(curGame.away_team);
+      elements[2] = buildGameTeamObj(curGame.away_team, curGame);
       allElements[iGame] = elements;
     }
   }
