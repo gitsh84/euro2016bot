@@ -219,6 +219,7 @@ function buildGameTeamObj(team) {
     // + ", Goals For:" + curTeam.goals_scored
     // + ", Goals Against:" + curTeam.goals_taken
     // + ", Goals (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+    return teamObj;
 }
 
 function buildGamesObj(games) {
