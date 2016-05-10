@@ -192,6 +192,9 @@ controller.hears('test', 'message_received', function(bot, message) {
 controller.on('facebook_postback', function(bot, message) {
   if (message.payload == 'chocolate') {
     bot.reply(message, 'You ate the chocolate cookie!')
+  } else if (message.payload.indexOf('show_stats_for_') === 0) {
+    var teamName = message.payload.replace("show_stats_for_","");
+    bot.reply(message, 'Stats for ' + teamName);
   }
 });
 
