@@ -272,6 +272,7 @@ function showGamesToUser(bot, message, getter) {
           var msgAttachment = attachment;
           setTimeout(function() {
             bot.reply(message, {
+              text: "testing this",
               attachment: msgAttachment,
             });
           }, timeout);
