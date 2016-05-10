@@ -155,14 +155,14 @@ function buildGroupsObj(groups) {
           var curTeam = teams[iTeam];
           curElement.title = "#" + (iTeam+1) + " " + curTeam.name;
           curElement.image_url = curTeam.flag_url;
-          curElement.subtitle = "Points: " + curTeam.points
-          + ", Played: " + curTeam.games_played
-          + ", Won:" + curTeam.games_won
-          + ", Draw:" + curTeam.games_draw
-          + ", Lost:" + curTeam.games_lost
-          + ", Goals For:" + curTeam.goals_scored
-          + ", Goals Against:" + curTeam.goals_taken
-          + ", Goals (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+          curElement.subtitle = "Pts: " + curTeam.points
+          + ", Plyd: " + curTeam.games_played
+          + ", W:" + curTeam.games_won
+          + ", D:" + curTeam.games_draw
+          + ", L:" + curTeam.games_lost
+          + ", Gls F:" + curTeam.goals_scored
+          + ", Gls A:" + curTeam.goals_taken
+          + ", Gls (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
             title: 'Show Games',
@@ -226,7 +226,7 @@ function buildGameVsObj(game) {
   var vsObj = {};
   vsObj.title = game.status;
   vsObj.subtitle = game.time + " at " + game.location;
-  vsObj.image_url = "http://www.flexraid.com/wp-content/uploads/2013/10/Vs.pn_.png";
+  vsObj.image_url = "http://mojano.com/wp-content/uploads/2014/07/versus.jpg";
   return vsObj;
 }
 
