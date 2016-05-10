@@ -88,8 +88,9 @@ function showGroupsToUser(bot, message) {
       for (var iText = 0; iText < text_array.length; iText++) {
         var curText = text_array[iText];
         console.log(curText);
-        var textToSend = (typeof curText === "string" && curText.length > 0) ? curText : 'Not sure about the groups now...sorry :(';
-        bot.reply(message, textToSend);
+        //bot.reply(message, "Here is group #" + iText);
+        //var textToSend = (typeof curText === "string" && curText.length > 0) ? curText : 'Not sure about the groups now...sorry :(';
+        bot.reply(message, curText);
       }
     }
   });
