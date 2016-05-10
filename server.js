@@ -3,6 +3,7 @@
 var Botkit = require('botkit');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
+//var Sleep = require('sleep');
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -81,16 +82,64 @@ function buildGroupsText(groups) {
   return text_array;
 }
 
+function buildGroupsObj(groups) {
+  var allElements = [];
+  if (groups instanceof Array) {
+    for (var iGroup = 0; iGroup < groups.length; iGroup++) {
+      var curGroup = groups[iGroup];
+      if (curGroup.teams instanceof Array) {
+        var elements = [];
+        var teams = sortTeamsByPoints(curGroup.teams);
+        for (var iTeam = 0; iTeam < teams.length; iTeam++) {
+          var curElement = {};
+          var curTeam = teams[iTeam];
+          curElement.title = curTeam.name;
+          curElement.image_url = curTeam.flag_url;
+          curElement.subtitle = curTeam.flag_url;
+          curElement.buttons = [{
+            type: 'postback',
+            title: 'Show stats',
+            payload: 'show_stats_for_' + curTeam.name
+          }];
+          elements[iTeam] = curElement;
+        }
+      }
+      allElements[iGroup] = elements;
+    }
+  }
+  return allElements;
+}
+
 function showGroupsToUser(bot, message) {
+  Api.getGroups(function(groups){
+    var obj_array = buildGroupsObj(groups);
+    if (obj_array instanceof Array) {
+      for (var iObj = 0; iObj < obj_array.length; iObj++) {
+        //if(iObj != 0) Sleep.sleep(1);
+        var curObj = obj_array[iObj];
+        var attachment = {};
+        attachment.type = 'template';
+        attachment.payload = {
+          template_type: 'generic',
+          elements: curObj
+        };
+        bot.reply(message, {
+          attachment: attachment,
+        });
+      }
+    }
+  });
+}
+
+function showGroupsToUserAsText(bot, message) {
   Api.getGroups(function(groups){
     var text_array = buildGroupsText(groups);
     if (text_array instanceof Array) {
       for (var iText = 0; iText < text_array.length; iText++) {
+        if(iText != 0) Sleep.sleep(1);
         var curText = text_array[iText];
         console.log(curText);
-        //bot.reply(message, "Here is group #" + iText);
         //var textToSend = (typeof curText === "string" && curText.length > 0) ? curText : 'Not sure about the groups now...sorry :(';
-        bot.reply(message, "jfdhgkfdjhgkjdfhgkjdfhgkhdf");
         bot.reply(message, curText);
       }
     }

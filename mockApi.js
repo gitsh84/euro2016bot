@@ -6,6 +6,7 @@ var groups = [{
 	name: "A",
 	teams: [{
 		name: "Albania",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -16,6 +17,7 @@ var groups = [{
 	},
 	{
 		name: "France",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -26,6 +28,7 @@ var groups = [{
 	},
 	{
 		name: "Romania",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -36,6 +39,7 @@ var groups = [{
 	},
 	{
 		name: "Switzerland",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -49,6 +53,7 @@ var groups = [{
 	name: "B",
 	teams: [{
 		name: "England",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -59,6 +64,7 @@ var groups = [{
 	},
 	{
 		name: "Russia",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -69,6 +75,7 @@ var groups = [{
 	},
 	{
 		name: "Slovakia",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -79,6 +86,7 @@ var groups = [{
 	},
 	{
 		name: "Wales",
+		flag_url: "http://1fotonin.com/image.php?pic=/data/wallpapers/220/WDF_2574011.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
