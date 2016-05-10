@@ -1,5 +1,6 @@
 "use strict";
 
+// TEST - Remove this line
 var Botkit = require('botkit');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
