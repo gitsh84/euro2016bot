@@ -224,9 +224,9 @@ function buildGameTeamObj(team) {
 
 function buildGameVsObj(game) {
   var vsObj = {};
-  teamObj.title = game.status;
-  teamObj.subtitle = game.time + " at " + game.location;
-  teamObj.image_url = "http://www.flexraid.com/wp-content/uploads/2013/10/Vs.pn_.png";
+  vsObj.title = game.status;
+  vsObj.subtitle = game.time + " at " + game.location;
+  vsObj.image_url = "http://www.flexraid.com/wp-content/uploads/2013/10/Vs.pn_.png";
   return vsObj;
 }
 
