@@ -50,9 +50,10 @@ function sortTeamsByPoints(teams) {
 
 function buildGroupsText(groups) {
   var TEAM_NAME_PADDING = 20;
-  var text = "";
+  var text_array = [];
   if (groups instanceof Array) {
     for (var iGroup = 0; iGroup < groups.length; iGroup++) {
+      var text = "";
       var curGroup = groups[iGroup];
       if (curGroup.teams instanceof Array) {
         var teams = sortTeamsByPoints(curGroup.teams);
@@ -73,18 +74,24 @@ function buildGroupsText(groups) {
           text += "\n";
         }
         text += "----------------------------------------------------\n";
+        text_array[iGroup] = text;
       }
     }
   }
-  return text;
+  return text_array;
 }
 
 function showGroupsToUser(message) {
   Api.getGroups(function(groups){
-    var text = buildGroupsText(groups);
-    console.log(text);
-    var text_returned = (typeof text === "string" && text.length > 0) ? text : 'Not sure about the groups now...sorry :(';
-    bot.reply(message, text_returned);
+    var text_array = buildGroupsText(groups);
+    if (text_array instanceof Array) {
+      for (var iText = 0; iText < text_array.length; iText++) {
+        var curText = text_array[iText];
+        console.log(curText);
+        var textToSend = (typeof curText === "string" && curText.length > 0) ? curText : 'Not sure about the groups now...sorry :(';
+        bot.reply(message, textToSend);
+      }
+    }
   });
 }
 
