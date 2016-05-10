@@ -227,6 +227,11 @@ function buildGameVsObj(game) {
   vsObj.title = game.status;
   vsObj.subtitle = game.time + " at " + game.location;
   vsObj.image_url = "http://mojano.com/wp-content/uploads/2014/07/versus.jpg";
+  vsObj.buttons: [{
+    'type': 'web_url',
+    'title': 'Bet on this game',
+    'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
+  }]
   return vsObj;
 }
 
