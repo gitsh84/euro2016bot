@@ -95,7 +95,7 @@ function buildGroupsObj(groups) {
           var curTeam = teams[iTeam];
           curElement.title = curTeam.name;
           curElement.image_url = curTeam.flag_url;
-          curElement.subtitle = curTeam.flag_url;
+          curElement.subtitle = "Pts: " + curTeam.points + ", Goals(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
             title: 'Show stats',
