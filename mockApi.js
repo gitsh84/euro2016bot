@@ -101,6 +101,7 @@ var games = [{
 	id: 123,
 	status: "Ongoing",
 	location: "Stade de France",
+	location_image_url: "http://assets.regus.com/images/2955/officespace/1_454x340.jpg",
 	time: "10/5/2016 20:00",
 	home_team: {
 		name: "England",

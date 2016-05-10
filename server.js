@@ -219,6 +219,16 @@ function buildGameTeamObj(team) {
         teamObj.subtitle += "\n";
       }
     }
+    teamObj.buttons = [{
+      'type': 'web_url',
+      'title': 'Bet on ' + team.name,
+      'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
+    },
+    {
+      'type': 'postback',
+      'title': 'Notifications for ' + team.name,
+      'payload': 'set_notifications_' + team.name
+    }];
     return teamObj;
 }
 
@@ -226,7 +236,7 @@ function buildGameVsObj(game) {
   var vsObj = {};
   vsObj.title = game.status;
   vsObj.subtitle = game.time + " at " + game.location;
-  vsObj.image_url = "http://mojano.com/wp-content/uploads/2014/07/versus.jpg";
+  vsObj.image_url = game.location_image_url;
   vsObj.buttons = [{
     'type': 'web_url',
     'title': 'Bet on this game',
@@ -272,8 +282,7 @@ function showGamesToUser(bot, message, getter) {
           var msgAttachment = attachment;
           setTimeout(function() {
             bot.reply(message, {
-              text: "testing this",
-              attachment: msgAttachment,
+              attachment: msgAttachment
             });
           }, timeout);
         }());
