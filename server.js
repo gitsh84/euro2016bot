@@ -81,7 +81,7 @@ controller.on('message_received', function(bot, message) {
 
 // Facebook postsbacks.
 controller.on('facebook_postback', function(bot, message) {
-  sendToAnalytics(message.user, "facebook_postback-" + message.payload, "incoming");
+  Utils.sendToAnalytics(message.user, "facebook_postback-" + message.payload, "incoming");
   if (message.payload.indexOf('show_games_for_') === 0) {
     var teamName = message.payload.replace("show_games_for_","");
     bot.reply(message, 'Games for ' + teamName);
