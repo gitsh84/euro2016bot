@@ -30,6 +30,22 @@ var sentences = {
     "Yo !",
     "Greetings."
   ],
+  user_says_thanks: [
+    "^thanks$",
+    "^thanks !",
+    "^thank you$",
+    "^thank you !",
+    "^danke",
+    "^cheers",
+    "spank you"
+  ],
+  bot_says_you_are_welcome: [
+    "No worries ;)",
+    "Sure thing !",
+    "You're welcome :)",
+    "I'm Here to help.",
+    "Don't worry about it."
+  ],
   show_groups: [
     "^Show me the group",
     "^Show group",
@@ -44,6 +60,7 @@ var sentences = {
   ],
   help_me: [
     "^help$",
+    "^help !",
     "^help me",
     "^hellp",
     "^heelp",

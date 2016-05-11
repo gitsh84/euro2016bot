@@ -41,6 +41,12 @@ controller.hears(Sentences.user_welcoming_messages, 'message_received', function
   bot.reply(message, randomFromArray(Sentences.bot_welcoming_messages));
 });
 
+// user said thanks
+controller.hears(Sentences.user_says_thanks, 'message_received', function(bot, message) {
+  sendUserMsgToAnalytics(message);
+  bot.reply(message, randomFromArray(Sentences.bot_says_you_are_welcome));
+});
+
 // user wants help
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
   sendUserMsgToAnalytics(message);
