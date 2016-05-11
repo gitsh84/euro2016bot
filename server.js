@@ -17,7 +17,9 @@ var controller = Botkit.facebookbot({
 var bot = controller.spawn({});
 
 // Set up the welcome message:
-setWelcomeMessage();
+if (process.env.FACEBOOK_PAGE_ACCESS_TOKEN) {
+  setWelcomeMessage();
+}
 
 // if you are already using Express, you can use your own server instance...
 // see "Use BotKit with an Express web server"
