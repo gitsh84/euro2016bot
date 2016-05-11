@@ -226,8 +226,8 @@ function buildGameTeamObj(team, game) {
     if (team.goals instanceof Array) {
       for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
         var curGoal = team.goals[iGoal];
+        if(iGoal > 0) teamObj.subtitle += ", ";
         teamObj.subtitle += curGoal.time + " " + curGoal.player_name + (curGoal.notes && curGoal.notes.length > 0 ? " (" + curGoal.notes + ")" : "");
-        teamObj.subtitle += "\n";
       }
     }
     teamObj.buttons = [];
