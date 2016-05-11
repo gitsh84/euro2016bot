@@ -1,10 +1,8 @@
 "use strict";
 
 var Botkit = require('botkit');
-var request = require('request');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
-var Consts = require('./consts');
 var Utils = require('./utils');
 
 var controller = Botkit.facebookbot({

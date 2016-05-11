@@ -1,5 +1,10 @@
 "use strict";
 
+var request = require('request');
+var Consts = require('./consts');
+var Sentences = require('./sentences');
+var Api = require('./mockApi');
+
 function sendToAnalytics(sender, text, direction) {
   request({
       url: Consts.ANALYTICS_API,
