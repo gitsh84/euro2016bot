@@ -37,13 +37,13 @@ controller.on('facebook_optin', function(bot, message) {
 
 // user said hello
 controller.hears(Sentences.user_welcoming_messages, 'message_received', function(bot, message) {
-  sendUserMsgToAnalytics(message.user, text);
+  sendUserMsgToAnalytics(message);
   bot.reply(message, randomFromArray(Sentences.bot_welcoming_messages));
 });
 
 // user wants help
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
-  sendUserMsgToAnalytics(message.user, text);
+  sendUserMsgToAnalytics(message);
   bot.reply(message, Sentences.help_message);
 });
 
@@ -76,8 +76,8 @@ function sendToAnalytics(sender, text, direction) {
     });
 }
 
-function sendUserMsgToAnalytics(sender, text) {
-  sendToAnalytics(sender, text, incoming);
+function sendUserMsgToAnalytics(message) {
+  sendToAnalytics(message.user, message.text, "incoming");
 }
 
 function setWelcomeMessage() {
@@ -338,7 +338,7 @@ function showGroupsToUserAsText(bot, message) {
 
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
-  sendUserMsgToAnalytics(message.user, text);
+  sendUserMsgToAnalytics(message);
   showGroupsToUser(bot, message);
 });
 
@@ -353,7 +353,7 @@ controller.hears(['cookies'], 'message_received', function(bot, message) {
 });
 
 controller.on('facebook_postback', function(bot, message) {
-  sendUserMsgToAnalytics(message.user, "facebook_postback-" + message.payload);
+  sendToAnalytics(message.user, "facebook_postback-" + message.payload, "incoming");
   if (message.payload.indexOf('show_games_for_') === 0) {
     var teamName = message.payload.replace("show_games_for_","");
     bot.reply(message, 'Games for ' + teamName);
@@ -365,7 +365,7 @@ controller.on('facebook_postback', function(bot, message) {
 });
 
 controller.on('message_received', function(bot, message) {
-  sendUserMsgToAnalytics(message.user, text);
+  sendUserMsgToAnalytics(message);
   bot.reply(message, 'Oopsy oops...not sure what you mean by that :(');
   return false;
 });
