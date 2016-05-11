@@ -42,11 +42,7 @@ controller.hears(Sentences.user_welcoming_messages, 'message_received', function
 
 // user wants help
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
-  var help_message = "No worries, I'll try and help out.\n";
-  help_message += "I can show you a few cool things:\n";
-  help_message += "To see the groups just type something like: groups or show me the group\n";
-  help_message += "Hmm...and test's pretty much it for now. But don't worry I'll think about more things soon !";
-  bot.reply(message, help_message);
+  bot.reply(message, Sentences.help_message);
 });
 
 function randomFromArray(arr) {
@@ -79,12 +75,6 @@ function sendToAnalytics(sender, text, direction) {
 }
 
 function setWelcomeMessage() {
-  var welcome_message = "Hey ! :)\n";
-  welcome_message += "Let me know what kind of info you are looking for about Euro2016.\n";
-  welcome_message += "To get things started, you can write something like:\nShow me the groups\n";
-  welcome_message += "Or even just write:\ngroups\n(if you're a bit lazy...)\n";
-  welcome_message += "And last thing - just write...\nhelp\n...any time to get some more info from me.\n";
-  welcome_message += "Have fun !";
   request({
     url: FACEBOOK_WELCOME_MSG_URL,
     method: 'POST',
@@ -93,7 +83,7 @@ function setWelcomeMessage() {
       thread_state: "new_thread",
       call_to_actions: [{
         message: {
-          text: welcome_message
+          text: Sentences.page_welcome_msg
         }
       }]
     }
@@ -175,9 +165,9 @@ function buildGroupsObj(groups) {
           + ", W:" + curTeam.games_won
           + ", D:" + curTeam.games_draw
           + ", L:" + curTeam.games_lost
-          + ", Gls F:" + curTeam.goals_scored
-          + ", Gls A:" + curTeam.goals_taken
-          + ", Gls (+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+          + ", GlsF:" + curTeam.goals_scored
+          + ", GlsA:" + curTeam.goals_taken
+          + ", Gls(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
             title: 'Show Games',
