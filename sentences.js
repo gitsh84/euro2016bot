@@ -70,6 +70,12 @@ var sentences = {
     "^helpp",
     "^please help",
     "^help please"
+  ],
+  bot_not_sure_what_user_means: [
+    "Oopsy oops...not sure what you mean by that :(",
+    "Not really sure what you mean by that...",
+    "Hmmm, what ?",
+    "Sorry but I don't quite understand what u mean :("
   ]
 }
 

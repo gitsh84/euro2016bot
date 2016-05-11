@@ -4,3 +4,7 @@ config:
     friendly_name: ANALYTICS_TOKEN
     type: secret
     global: true
+  - name: LUIS_NLP_TOKEN
+    friendly_name: LUIS_NLP_TOKEN
+    type: secret
+    global: true
