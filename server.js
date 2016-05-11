@@ -247,7 +247,7 @@ function buildGameTeamObj(team, game) {
     teamObj.buttons.push({
       'type': 'postback',
       'title': 'Set notifications',
-      'payload': 'set_notifications_' + team.name
+      'payload': 'set_notifications_for_team_' + team.name
     });
     return teamObj;
 }
@@ -281,7 +281,7 @@ function buildGameVsObj(game) {
     {
       'type': 'postback',
       'title': 'Set notifications',
-      'payload': 'set_notifications_' + game.id
+      'payload': 'set_notifications_for_game_' + game.id
     }];
   }
   return vsObj;
@@ -364,8 +364,11 @@ controller.on('facebook_postback', function(bot, message) {
     var teamName = message.payload.replace("show_games_for_","");
     bot.reply(message, 'Games for ' + teamName);
     showGamesToUser(bot, message, Api.getGames);
-  } else if (message.payload.indexOf('set_notifications_') === 0) {
-    var gameId = message.payload.replace("set_notifications_","");
+  } else if (message.payload.indexOf('set_notifications_for_team_') === 0) {
+    var team = message.payload.replace("set_notifications_for_team_","");
+    bot.reply(message, "Sure thing ! You will get notifications for " + team + " from now on.");
+  } else if (message.payload.indexOf('set_notifications_for_game_') === 0) {
+    var gameId = message.payload.replace("set_notifications_for_game_","");
     bot.reply(message, "Sure thing ! You will get notifications for this game from now on.");
   }
 });
