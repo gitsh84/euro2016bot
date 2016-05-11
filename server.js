@@ -26,7 +26,6 @@ controller.setupWebserver(webServerPort, function(err, webserver) {
 
 // Log the message and add more info to the message.
 controller.middleware.receive.use(function(bot, message, next) {
-  console.log("HEY THERE !");
   Utils.sendUserMsgToAnalytics(message);
   Utils.addInfoFromNLP(message, function(message) {
     next();
@@ -40,25 +39,25 @@ controller.on('facebook_optin', function(bot, message) {
 
 // User said hello.
 controller.hears(Sentences.user_welcoming_messages, 'message_received', function(bot, message) {
-  Utils.sendUserMsgToAnalytics(message);
+  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Utils.randomFromArray(Sentences.bot_welcoming_messages));
 });
 
 // User said thanks.
 controller.hears(Sentences.user_says_thanks, 'message_received', function(bot, message) {
-  Utils.sendUserMsgToAnalytics(message);
+  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Utils.randomFromArray(Sentences.bot_says_you_are_welcome));
 });
 
 // User wants help.
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
-  Utils.sendUserMsgToAnalytics(message);
+  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Sentences.help_message);
 });
 
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
-  Utils.sendUserMsgToAnalytics(message);
+  //Utils.sendUserMsgToAnalytics(message);
   Utils.showGroupsToUser(bot, message);
 });
 
@@ -74,7 +73,7 @@ controller.hears(['cookies'], 'message_received', function(bot, message) {
 
 // Not suer what the users wants. Final fallback.
 controller.on('message_received', function(bot, message) {
-  Utils.sendUserMsgToAnalytics(message);
+  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
   return false;
 });
