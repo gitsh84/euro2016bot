@@ -5,7 +5,7 @@ var Consts = require('./consts');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
 
-function sendToAnalytics(sender, text, direction) {
+function sendToAnalyticsInternal(sender, text, direction) {
   request({
       url: Consts.ANALYTICS_API,
       qs: {
@@ -295,6 +295,9 @@ var utils = {
   },
   sendUserMsgToAnalytics: function(message) {
     sendToAnalytics(message.user, message.text, "incoming");
+  },
+  sendToAnalytics: function(sender, text, direction) {
+    sendToAnalyticsInternal(sender, text, direction);
   },
   addInfoFromNLP: function(message, callback) {
     // TODO
