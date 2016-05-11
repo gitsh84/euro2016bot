@@ -339,6 +339,7 @@ function showGroupsToUserAsText(bot, message) {
   });
 }
 
+// Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
   showGroupsToUser(bot, message);
 });
@@ -350,28 +351,6 @@ controller.hears(['cookies'], 'message_received', function(bot, message) {
       convo.say('Golly, I love ' + response.text + ' too!!!');
       convo.next();
     });
-  });
-});
-
-controller.hears('test', 'message_received', function(bot, message) {
-  var attachment = {
-    'type': 'template',
-    'payload': {
-      'template_type': 'generic',
-      'elements': [{
-        'title': 'Chocolate Cookie',
-        'image_url': 'https://www.hamptoncreek.com/img/p-just-cookies/panel-cookie-choc-cookie.png',
-        'subtitle': 'A delicious chocolate cookie',
-        'buttons': [{
-          'type': 'postback',
-          'title': 'Eat Cookie',
-          'payload': 'chocolate'
-        }]
-      }, ]
-    }
-  };
-  bot.reply(message, {
-    attachment: attachment,
   });
 });
 
