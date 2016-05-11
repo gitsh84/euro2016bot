@@ -37,11 +37,13 @@ controller.on('facebook_optin', function(bot, message) {
 
 // user said hello
 controller.hears(Sentences.user_welcoming_messages, 'message_received', function(bot, message) {
+  sendUserMsgToAnalytics(message.user, text);
   bot.reply(message, randomFromArray(Sentences.bot_welcoming_messages));
 });
 
 // user wants help
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
+  sendUserMsgToAnalytics(message.user, text);
   bot.reply(message, Sentences.help_message);
 });
 
@@ -72,6 +74,10 @@ function sendToAnalytics(sender, text, direction) {
         console.log('Error in body response when sending message to analytics: ', response.body.error);
       }
     });
+}
+
+function sendUserMsgToAnalytics(sender, text) {
+  sendToAnalytics(sender, text, incoming);
 }
 
 function setWelcomeMessage() {
@@ -195,7 +201,7 @@ function showGroupsToUser(bot, message) {
           elements: curObj
         };
         (function(){
-          var timeout = 1000*iObj;
+          var timeout = 2000*iObj;
           var msgAttachment = attachment;
           var groupIndex = iObj;
           setTimeout(function() {
@@ -332,23 +338,23 @@ function showGroupsToUserAsText(bot, message) {
 
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
+  sendUserMsgToAnalytics(message.user, text);
   showGroupsToUser(bot, message);
 });
 
 controller.hears(['cookies'], 'message_received', function(bot, message) {
-  bot.startConversation(message, function(err, convo) {
-    convo.say('Did someone say cookies!?!!');
-    convo.ask('What is your favorite type of cookie?', function(response, convo) {
-      convo.say('Golly, I love ' + response.text + ' too!!!');
-      convo.next();
-    });
-  });
+  // bot.startConversation(message, function(err, convo) {
+  //   convo.say('Did someone say cookies!?!!');
+  //   convo.ask('What is your favorite type of cookie?', function(response, convo) {
+  //     convo.say('Golly, I love ' + response.text + ' too!!!');
+  //     convo.next();
+  //   });
+  // });
 });
 
 controller.on('facebook_postback', function(bot, message) {
-  if (message.payload == 'chocolate') {
-    bot.reply(message, 'You ate the chocolate cookie!')
-  } else if (message.payload.indexOf('show_games_for_') === 0) {
+  sendUserMsgToAnalytics(message.user, "facebook_postback-" + message.payload);
+  if (message.payload.indexOf('show_games_for_') === 0) {
     var teamName = message.payload.replace("show_games_for_","");
     bot.reply(message, 'Games for ' + teamName);
     showGamesToUser(bot, message, Api.getGames);
@@ -359,6 +365,7 @@ controller.on('facebook_postback', function(bot, message) {
 });
 
 controller.on('message_received', function(bot, message) {
-    bot.reply(message, 'Oopsy oops...not sure what you mean by that :(');
-    return false;
+  sendUserMsgToAnalytics(message.user, text);
+  bot.reply(message, 'Oopsy oops...not sure what you mean by that :(');
+  return false;
 });
