@@ -294,7 +294,7 @@ var utils = {
     return arr[Math.floor(Math.random()*arr.length)];
   },
   sendUserMsgToAnalytics: function(message) {
-    sendToAnalytics(message.user, message.text, "incoming");
+    sendToAnalyticsInternal(message.user, message.text, "incoming");
   },
   sendToAnalytics: function(sender, text, direction) {
     sendToAnalyticsInternal(sender, text, direction);
