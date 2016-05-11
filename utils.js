@@ -286,6 +286,22 @@ function showGamesToUserInternal(bot, message, getter) {
   });
 }
 
+function queryLuisNLP(message, callback) {
+  request({
+    url: Consts.LUIS_NLP_API + message.text,
+    method: 'GET'
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error querying NLP: ', error);
+    } else if (response.body.error) {
+      console.log('Error in response body when querying NLP: ', response.body.error);
+    } else {
+      console.log(response.body);
+    }
+    callback(message);
+  });
+}
+
 var utils = {
   setWelcomeMessage: function() {
     sendWelcomeMessage();
@@ -300,8 +316,11 @@ var utils = {
     sendToAnalyticsInternal(sender, text, direction);
   },
   addInfoFromNLP: function(message, callback) {
-    // TODO
-    callback(message);
+    if (message.text && message.text.length > 0) {
+      queryLuisNLP(message, callback);
+    } else {
+      callback(message);
+    }
   },
   showGroupsToUser: function(bot, message) {
     showGroupsToUserInternal(bot, message);
