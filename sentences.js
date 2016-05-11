@@ -1,5 +1,5 @@
 
-var welcoming_messages = [
+var user_welcoming_messages = [
   "^Hello",
   "^Hi",
   "^Hey",
@@ -19,6 +19,17 @@ var welcoming_messages = [
   "^Look what the cat dragged in"
 ];
 
+var bot_welcoming_messages = [
+  "Hello :)",
+  "Hi there !",
+  "Hey !",
+  "Howdy...",
+  "Well hello.",
+  "Why hello there.",
+  "Yo !",
+  "Greetings."
+];
+
 var show_groups = [
   "^Show me the groups",
   "^Show group",
@@ -32,7 +43,18 @@ var show_groups = [
   "^Show standing$"
 ];
 
+var help_me = [
+  "^help$",
+  "^help me",
+  "^hellp",
+  "^heelp",
+  "^helpp",
+  "^please help",
+  "^help please"
+];
+
 module.exports = {
   welcoming_messages: welcoming_messages,
-  show_groups: show_groups
+  show_groups: show_groups,
+  help_me: help_me
 };

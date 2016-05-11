@@ -34,9 +34,22 @@ controller.on('facebook_optin', function(bot, message) {
 });
 
 // user said hello
-controller.hears(Sentences.welcoming_messages, 'message_received', function(bot, message) {
-  bot.reply(message, 'Hey, good to see ya !');
+controller.hears(Sentences.user_welcoming_messages, 'message_received', function(bot, message) {
+  bot.reply(message, randomFromArray(Sentences.bot_welcoming_messages));
 });
+
+// user wants help
+controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
+  var help_message = "No worries, I'll try and help out.\n";
+  help_message += "I can show you a few cool things:\n";
+  help_message += "To see the groups just type something like: groups or show me the group\n";
+  help_message += "Hmm...and test's pretty much it for now. But don't worry I'll think about more things soon !";
+  bot.reply(message, help_message);
+});
+
+function randomFromArray(arr) {
+  return arr[Math.floor(Math.random()*arr.length)];
+}
 
 function sendToAnalytics(sender, text, direction) {
   request({
@@ -65,11 +78,12 @@ function sendToAnalytics(sender, text, direction) {
 
 function setWelcomeMessage() {
   if((process.env.FACEBOOK_PAGE_ACCESS_TOKEN || FACEBOOK_PAGE_ACCESS_TOKEN).length === 0) return;
-  var welcome_message = "Hey ! Great to see you :)\n";
-  welcome_message += "Since this is our first time talking I'll try and explain what's going on here.\n";
-  welcome_message += "Just tell me what kind of info you are looking for about UEFA Euro 2016.\n";
+  var welcome_message = "Hey ! :)\n";
+  welcome_message += "Let me know what kind of info you are looking for about Euro2016.\n";
   welcome_message += "To get things started, you can write something like:\nShow me the groups\n";
-  welcome_message += "Or even just write:\ngroups\n(if you're a bit lazy...)";
+  welcome_message += "Or even just write:\ngroups\n(if you're a bit lazy...)\n";
+  welcome_message += "And last thing - just write...\nhelp\n...any time to get some more info from me.\n";
+  welcome_message += "Have fun !";
   request({
     url: FACEBOOK_WELCOME_MSG_URL,
     method: 'POST',
