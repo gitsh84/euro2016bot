@@ -315,7 +315,7 @@ function showGamesToUser(bot, message, getter) {
           elements: curObj
         };
         (function(){
-          var timeout = 1000*iObj;
+          var timeout = 2000*iObj;
           var msgAttachment = attachment;
           setTimeout(function() {
             bot.reply(message, {
