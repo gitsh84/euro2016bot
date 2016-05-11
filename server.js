@@ -77,7 +77,7 @@ function sendToAnalytics(sender, text, direction) {
 }
 
 function setWelcomeMessage() {
-  if((process.env.FACEBOOK_PAGE_ACCESS_TOKEN || FACEBOOK_PAGE_ACCESS_TOKEN).length === 0) return;
+  if(!process.env.FACEBOOK_PAGE_ACCESS_TOKEN && FACEBOOK_PAGE_ACCESS_TOKEN.length === 0) return;
   var welcome_message = "Hey ! :)\n";
   welcome_message += "Let me know what kind of info you are looking for about Euro2016.\n";
   welcome_message += "To get things started, you can write something like:\nShow me the groups\n";
