@@ -80,7 +80,12 @@ controller.hears(['test'], 'message_received', function(bot, message) {
 
 // Not suer what the users wants. Final fallback.
 controller.on('message_received', function(bot, message) {
-  bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+  var matchedIntent = Utils.findSuitableIntent(message);
+  if (matchedIntent) {
+    bot.reply(message, "Did you mean " + matchedIntent + " ?");
+  } else {
+    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+  }
   return false;
 });
 
