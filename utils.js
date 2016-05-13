@@ -311,7 +311,7 @@ function httpGetJson(url, callback) {
 
 function findSuitableIntent(message) {
   if (message && message.nlp && message.nlp.intents && message.nlp.intents.length > 0) {
-    var sortedIntents = message.nlp.intents.sort(function(a,b) {return (a.points > b.points) ? -1 : ((b.points > a.points) ? 1 : 0);} );
+    var sortedIntents = message.nlp.intents.sort(function(a,b) {return (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0);} );
     if(sortedIntents[0].score > 0.7) {
       return sortedIntents[0].intent;
     }
