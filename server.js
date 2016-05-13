@@ -38,6 +38,11 @@ controller.middleware.receive.use(function(bot, message, next) {
   });
 });
 
+controller.middleware.send.use(function(bot, message, next) {
+  Utils.sendBotMsgToAnalytics(message.fullNameWithId || message.user, message.text || "-empty-");
+  next();
+});
+
 // User clicked the send-to-messenger plugin.
 controller.on('facebook_optin', function(bot, message) {
   bot.reply(message, 'Hey, welcome !');
@@ -45,41 +50,36 @@ controller.on('facebook_optin', function(bot, message) {
 
 // User said hello.
 controller.hears(Sentences.user_welcoming_messages, 'message_received', function(bot, message) {
-  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Utils.randomFromArray(Sentences.bot_welcoming_messages));
 });
 
 // User said thanks.
 controller.hears(Sentences.user_says_thanks, 'message_received', function(bot, message) {
-  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Utils.randomFromArray(Sentences.bot_says_you_are_welcome));
 });
 
 // User wants help.
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
-  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Sentences.help_message);
 });
 
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
-  //Utils.sendUserMsgToAnalytics(message);
   Utils.showGroupsToUser(bot, message);
 });
 
-controller.hears(['cookies'], 'message_received', function(bot, message) {
-  // bot.startConversation(message, function(err, convo) {
-  //   convo.say('Did someone say cookies!?!!');
-  //   convo.ask('What is your favorite type of cookie?', function(response, convo) {
-  //     convo.say('Golly, I love ' + response.text + ' too!!!');
-  //     convo.next();
-  //   });
-  // });
+controller.hears(['test'], 'message_received', function(bot, message) {
+  bot.startConversation(message, function(err, convo) {
+     convo.say('Ok...');
+     convo.ask('What are you testing ?', function(response, convo) {
+       convo.say('yeah, let\'s test ' + response.text);
+       convo.next();
+    });
+  });
 });
 
 // Not suer what the users wants. Final fallback.
 controller.on('message_received', function(bot, message) {
-  //Utils.sendUserMsgToAnalytics(message);
   bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
   return false;
 });

@@ -326,6 +326,9 @@ var utils = {
   sendUserMsgToAnalytics: function(sender, text) {
     sendToAnalyticsInternal(sender, text, "incoming");
   },
+  sendBotMsgToAnalytics: function(sender, text) {
+    sendToAnalyticsInternal(sender, text, "outgoing");
+  },
   sendToAnalytics: function(sender, text, direction) {
     sendToAnalyticsInternal(sender, text, direction);
   },

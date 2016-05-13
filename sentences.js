@@ -51,6 +51,7 @@ var sentences = {
   ],
   show_groups: [
     "^Show me the group",
+    "^Show me group",
     "^Show group",
     "^What are the group",
     "^Groups$",
