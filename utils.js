@@ -286,20 +286,34 @@ function showGamesToUserInternal(bot, message, getter) {
   });
 }
 
-function queryLuisNLP(message, callback) {
+function httpGetJson(url, callback) {
   request({
-    url: Consts.LUIS_NLP_API + message.text,
+    url: url,
     method: 'GET'
   }, function(error, response, body) {
     if (error) {
-      console.log('Error querying NLP: ', error);
+      console.error('Error http get ' + url, error);
     } else if (response.body.error) {
-      console.log('Error in response body when querying NLP: ', response.body.error);
+      console.error('Error in response body for http get ' + url, response.body.error);
     } else {
-      console.log(response.body);
-    }
+      try {
+        console.log(response.body);
+        var jsonResponse = JSON.parse(response.body);
+        callback(jsonResponse);
+        return;
+      } catch (e) {
+        console.error('Error parsing json response from http get ' + url);
+      }    }
     callback(message);
   });
+}
+
+function queryLuisNLP(message, callback) {
+  httpGetJson(Consts.LUIS_NLP_API + message.text, callback);
+}
+
+function getUserInfoInternal(userId, callback) {
+  httpGetJson(Consts.FACEBOOK_USER_PROFILE_API.replace("<USER_ID>", userId), callback);
 }
 
 var utils = {
@@ -309,8 +323,8 @@ var utils = {
   randomFromArray: function(arr) {
     return arr[Math.floor(Math.random()*arr.length)];
   },
-  sendUserMsgToAnalytics: function(message) {
-    sendToAnalyticsInternal(message.user, message.text, "incoming");
+  sendUserMsgToAnalytics: function(sender, text) {
+    sendToAnalyticsInternal(sender, text, "incoming");
   },
   sendToAnalytics: function(sender, text, direction) {
     sendToAnalyticsInternal(sender, text, direction);
@@ -327,6 +341,9 @@ var utils = {
   },
   showGamesToUser: function(bot, message, getter) {
     showGamesToUserInternal(bot, message, getter);
+  },
+  getUserInfo: function(userId, callback) {
+    getUserInfoInternal(userId, callback);
   }
 }
 

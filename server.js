@@ -7,7 +7,7 @@ var Utils = require('./utils');
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
-  verify_token: process.env.FACEBOOK_VERIFY_TOKEN,
+  verify_token: process.env.FACEBOOK_VERIFY_TOKEN
 })
 
 var bot = controller.spawn({});
@@ -26,9 +26,15 @@ controller.setupWebserver(webServerPort, function(err, webserver) {
 
 // Log the message and add more info to the message.
 controller.middleware.receive.use(function(bot, message, next) {
-  Utils.sendUserMsgToAnalytics(message);
-  Utils.addInfoFromNLP(message, function(message) {
-    next();
+  Utils.getUserInfo(message.user, function(userInfo) {
+    if (userInfo) {
+      message.userInfo = userInfo;
+      message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.user;
+    }
+    Utils.sendUserMsgToAnalytics(message.fullNameWithId || message.user, message.text);
+    Utils.addInfoFromNLP(message, function(message) {
+      next();
+    });
   });
 });
 
