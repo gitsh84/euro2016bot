@@ -311,10 +311,15 @@ function httpGetJson(url, callback) {
 
 function findSuitableIntentInternal(message) {
   if (message && message.nlp && message.nlp.intents && message.nlp.intents.length > 0) {
+    console.log("Found " + message.nlp.intents.length + " possible intents");
     var sortedIntents = message.nlp.intents.sort(function(a,b) {return (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0);} );
     if(sortedIntents[0].score > Consts.LUIS_MIN_SCORE && sortedIntents[0].intent !== "None") {
       return sortedIntents[0].intent;
+    } else {
+      console.log("Score for intent " + sortedIntents[0].intent + " was too low: " + sortedIntents[0].score);  
     }
+  } else {
+    console.log("No NLP data available so cant find intent");
   }
   return null;
 }
