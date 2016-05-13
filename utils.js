@@ -312,7 +312,7 @@ function httpGetJson(url, callback) {
 function findSuitableIntentInternal(message) {
   if (message && message.nlp && message.nlp.intents && message.nlp.intents.length > 0) {
     var sortedIntents = message.nlp.intents.sort(function(a,b) {return (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0);} );
-    if(sortedIntents[0].score > 0.7) {
+    if(sortedIntents[0].score > Consts.LUIS_MIN_SCORE && sortedIntents[0].intent !== "None") {
       return sortedIntents[0].intent;
     }
   }

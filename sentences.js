@@ -19,7 +19,8 @@ var sentences = {
     "^Yo",
     "^Greetings",
     "^Look who it is",
-    "^Look what the cat dragged in"],
+    "^Look what the cat dragged in"
+  ],
   bot_welcoming_messages: [
     "Hello :)",
     "Hi there !",
@@ -60,7 +61,11 @@ var sentences = {
     "^Grups$",
     "^Standings$",
     "^Show standings$",
-    "^Show standing$"
+    "^Show standing$",
+    "^Please show groups",
+    "^Show groops",
+    "^Show me grups",
+    "^Show grups"
   ],
   help_me: [
     "^help$",
