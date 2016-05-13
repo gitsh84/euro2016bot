@@ -80,10 +80,13 @@ controller.hears(['test'], 'message_received', function(bot, message) {
 
 // Not suer what the users wants. Final fallback.
 controller.on('message_received', function(bot, message) {
+  console.log("Reached unknown user message");
   var matchedIntent = Utils.findSuitableIntent(message);
   if (matchedIntent) {
+    console.log("Found intent: " + matchedIntent);
     bot.reply(message, "Did you mean " + matchedIntent + " ?");
   } else {
+    console.log("No idea what the user wants...");
     bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
   }
   return false;

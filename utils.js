@@ -309,7 +309,7 @@ function httpGetJson(url, callback) {
   });
 }
 
-function findSuitableIntent(message) {
+function findSuitableIntentInternal(message) {
   if (message && message.nlp && message.nlp.intents && message.nlp.intents.length > 0) {
     var sortedIntents = message.nlp.intents.sort(function(a,b) {return (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0);} );
     if(sortedIntents[0].score > 0.7) {
@@ -361,6 +361,9 @@ var utils = {
   },
   getUserInfo: function(userId, callback) {
     getUserInfoInternal(userId, callback);
+  },
+  findSuitableIntent: function(message) {
+    return findSuitableIntentInternal(message);
   }
 }
 
