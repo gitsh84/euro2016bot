@@ -13,7 +13,9 @@ function insertUserInfoToMongo(userInfo, callback) {
     var col = db.collection(Consts.MONGODB_USER_INFO_COL);
     console.log("found the collection");
     col.insertOne({a: (new Date()).getTime()}, function(err, r) {
+      console.log("insert complete");
       db.close();
+      console.log("db closed");
       callback();
     });
   });
