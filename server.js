@@ -6,6 +6,7 @@
 // show team games
 // show live games
 // show group A|B|C
+// show next games
 // show quarter/semi/final game
 // show team stats/info
 // save user data to mongo as cache
@@ -15,6 +16,7 @@ var Botkit = require('botkit');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
 var Utils = require('./utils');
+var DateFormat = require('dateformat');
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -151,6 +153,13 @@ controller.hears(Sentences.show_live_games, 'message_received', function(bot, me
   Utils.showGamesToUser(bot, message, Api.getLiveGames);
 });
 
+// Show todays games.
+controller.hears(Sentences.show_games_today, 'message_received', function(bot, message) {
+  console.log("Show todays games to user");
+  Utils.showGamesToUser(bot, message, Api.getGamesByDate, DateFormat(new Date(), "dd/mm/yy"););
+});
+
+// Test
 controller.hears(['test'], 'message_received', function(bot, message) {
   bot.startConversation(message, function(err, convo) {
      convo.say('Ok...');

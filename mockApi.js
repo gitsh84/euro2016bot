@@ -200,4 +200,9 @@ mockApi.getLiveGames = function(callback) {
 	callback(games);
 }
 
+mockApi.getGamesByDate = function(callback, date) {
+	if(typeof callback !== "function") return;
+	callback(games);
+}
+
 module.exports = mockApi;

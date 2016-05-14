@@ -2,6 +2,7 @@
 var game = "(game|match)";
 var live = "(live|ongoing|current|curent)";
 var group = "(group|grup|groop|standing|table)";
+var today = "(today|todays|tonight|tonights|this evening|this evenings)";
 
 var teams_array = [
   "Albania",
@@ -116,6 +117,12 @@ var sentences = {
     "^" + live + " " + game,
     "^show(.*)" + live + " " + game,
     "^what(.*)" + live + " " + game,
+  ],
+  show_games_today: [
+    "^show me " + today + " " + game,
+    "^" + today + " " + game,
+    "^show(.*)" + today + " " + game,
+    "^what(.*)" + today + " " + game,
   ],
   help_me: [
     "^help$",
