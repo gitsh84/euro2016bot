@@ -262,7 +262,9 @@ function showGroupsToUserInternal(bot, message) {
 }
 
 function showGamesToUserInternal(bot, message, getter, getterParams) {
+  console.log("showGamesToUserInternal started");
   getter(function(games){
+    console.log("showGamesToUserInternal getter callback");
     var obj_array = buildGamesObj(games);
     if (obj_array instanceof Array) {
       for (var iObj = 0; iObj < obj_array.length; iObj++) {

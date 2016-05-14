@@ -85,7 +85,9 @@ controller.hears(Sentences.show_team_games, 'message_received', function(bot, me
     team = message.match[2];  
   }
   if (typeof team === "string" && team.length > 0) {
-    bot.reply(message, "You want to see games for " + team + " ?");
+    console.log("Show games for " + team).
+    //bot.reply(message, "You want to see games for " + team + " ?");
+    Utils.showGamesToUser(bot, message, Api.getGamesOfTeam, team);
   } else {
     bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
   }
@@ -98,8 +100,9 @@ controller.hears(Sentences.show_games_for_team, 'message_received', function(bot
     team = message.match[4];  
   }
   if (typeof team === "string" && team.length > 0) {
+    console.log("Show games for " + team).
+    //bot.reply(message, "You want to see games for " + team + " ?");
     Utils.showGamesToUser(bot, message, Api.getGamesOfTeam, team);
-    bot.reply(message, "You want to see games for " + team + " ?");
   } else {
     bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
   }
@@ -107,6 +110,7 @@ controller.hears(Sentences.show_games_for_team, 'message_received', function(bot
 
 // Show live games.
 controller.hears(Sentences.show_live_games, 'message_received', function(bot, message) {
+  console.log("Show live games to user").
   Utils.showGamesToUser(bot, message, Api.getLiveGames);
 });
 
