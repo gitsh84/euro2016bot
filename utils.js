@@ -230,9 +230,9 @@ function showSpecificGroupToUserInternal(bot, message, groups, groupIndex) {
   if (groupIndex >= groups.length) return;
   console.log("Showing group index " + groupIndex);
   var curObj = groups[groupIndex];
-  var attachment = {};
-  attachment.type = 'template';
-  attachment.payload = {
+  var msgAttachment = {};
+  msgAttachment.type = 'template';
+  msgAttachment.payload = {
     template_type: 'generic',
     elements: curObj
   };
