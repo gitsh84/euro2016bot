@@ -8,3 +8,11 @@ config:
     friendly_name: LUIS_NLP_TOKEN
     type: secret
     global: true
+  - name: MONGO_DB_USER
+    friendly_name: MONGO_DB_USER
+    type: secret
+    global: true
+  - name: MONGO_DB_PASSWORD
+    friendly_name: MONGO_DB_PASSWORD
+    type: secret
+    global: true

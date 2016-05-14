@@ -4,6 +4,7 @@ var request = require('request');
 var Consts = require('./consts');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
+var MongoClient = require('mongodb').MongoClient;
 
 function sendToAnalyticsInternal(sender, text, direction) {
   console.log("sendToAnalyticsInternal from sender " + sender + " with text: " + text);
