@@ -241,9 +241,23 @@ function showGroupsToUserInternal(bot, message, getterParams) {
           };
 
           convo.say("This is group " + (iObj + 1));
+
+/*
+          var msg = {};
+
+            
+            } else {
+                msg = resp;
+            }
+
+            msg.channel = src.channel;
+
+            bot.say(msg, cb);
+
           var messageToSend = message;
           messageToSend.attachment = msgAttachment;
-          convo.say(messageToSend);
+          */
+          convo.say({attachment: msgAttachment});
           //bot.reply(message, {attachment: msgAttachment});
 
           /*
