@@ -84,7 +84,7 @@ controller.hears(Sentences.show_team_games, 'message_received', function(bot, me
   if (message.match.length > 2) {
     team = message.match[2];  
   }
-  if (team typeof "string" && team.length > 0) {
+  if (typeof team === "string" && team.length > 0) {
     bot.reply(message, "You want to see games for " + team + " ?");
   } else {
     bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
