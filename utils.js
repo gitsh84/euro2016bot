@@ -225,80 +225,53 @@ function showGroupsToUserAsText(bot, message) {
   });
 }
 
+/*
 function showSpecificGroupToUserInternal(bot, message, groups, groupIndex) {
   if (typeof groupIndex !== "number") groupIndex = 0;
   if (groupIndex >= groups.length) return;
   console.log("Showing group index " + groupIndex);
-  var curObj = groups[groupIndex];
-  var msgAttachment = {};
-  msgAttachment.type = 'template';
-  msgAttachment.payload = {
-    template_type: 'generic',
-    elements: curObj
-  };
-  bot.reply(message, {attachment: msgAttachment}, function() {
-    var newGroupIndex = groupIndex + 1;
-    showSpecificGroupToUserInternal(bot, message, groups, newGroupIndex);
-  });            
-} 
+  bot.reply(message, {
+      attachment: {
+        type: 'template';
+        payload: {
+          template_type: 'generic',
+          elements: groups[groupIndex]
+        }
+      }
+    },
+    function() {
+      var newGroupIndex = groupIndex + 1;
+      showSpecificGroupToUserInternal(bot, message, groups, newGroupIndex);
+    });
+}
+*/
 
 function showGroupsToUserInternal(bot, message, getterParams) {
   Api.getGroups(function(groups) {
     var obj_array = buildGroupsObj(groups);
     if (obj_array instanceof Array && obj_array.length > 0) {
-      showSpecificGroupToUserInternal(bot, message, obj_array);
-      //bot.startConversation(message, function(err, convo) {
-        //convo.say('Here are the groups...');
-        /*
-        for (var iObj = 0; iObj < obj_array.length; iObj++) {
-          var curObj = obj_array[iObj];
-          var attachment = {};
-          attachment.type = 'template';
-          attachment.payload = {
-            template_type: 'generic',
-            elements: curObj
-          };
-
-          convo.say("This is group " + (iObj + 1));
-*/
-/*
-          var msg = {};
-
-            
-            } else {
-                msg = resp;
-            }
-
-            msg.channel = src.channel;
-
-            bot.say(msg, cb);
-
-          var messageToSend = message;
-          messageToSend.attachment = msgAttachment;
-          */
-         // convo.say({attachment: msgAttachment});
-          //bot.reply(message, {attachment: msgAttachment});
-
-          /*
-          (function(){
-            var timeout = 2000*iObj;
-            var msgAttachment = attachment;
-            var groupIndex = iObj;
-            setTimeout(function() {
-              bot.reply(message, "Here is group " + String.fromCharCode(97 + groupIndex).toUpperCase());
-            }, timeout - 500);
-            setTimeout(function() {
-              bot.reply(message, {
-                attachment: msgAttachment,
-              });
-            }, timeout);
-          }());
-            */
-     //   }
-       // convo.next();
-     // });
+      sendMultipleAttachmentsOneByOne(bot, message, obj_array);
     }
   }, getterParams);
+}
+
+function sendMultipleAttachmentsOneByOne(bot, message, arr, index) {
+  if (typeof index !== "number") index = 0;
+  if (index >= arr.length) return;
+  console.log("Showing index " + index);
+  bot.reply(message, {
+      attachment: {
+        type: 'template';
+        payload: {
+          template_type: 'generic',
+          elements: arr[index]
+        }
+      }
+    },
+    function() {
+      var newIndex = index + 1;
+      showSpecificGameToUserInternal(bot, message, arr, newIndex);
+    });
 }
 
 function showGamesToUserInternal(bot, message, getter, getterParams) {
@@ -307,6 +280,8 @@ function showGamesToUserInternal(bot, message, getter, getterParams) {
     console.log("showGamesToUserInternal getter callback");
     var obj_array = buildGamesObj(games);
     if (obj_array instanceof Array) {
+      sendMultipleAttachmentsOneByOne(bot, message, obj_array);
+      /*
       for (var iObj = 0; iObj < obj_array.length; iObj++) {
         var curObj = obj_array[iObj];
         var attachment = {};
@@ -325,6 +300,7 @@ function showGamesToUserInternal(bot, message, getter, getterParams) {
           }, timeout);
         }());
       }
+      */
     } else {
       bot.reply(message, "Sorry no such games...");
     }
