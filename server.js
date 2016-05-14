@@ -5,6 +5,7 @@
 // show team group
 // show team games
 // show live games
+// show group A|B|C
 // show quarter/semi/final game
 // show team stats/info
 // save user data to mongo as cache
@@ -118,7 +119,7 @@ controller.hears(Sentences.show_team_group, 'message_received', function(bot, me
   if (typeof team === "string" && team.length > 0) {
     console.log("Show group for " + team);
     //bot.reply(message, "You want to see games for " + team + " ?");
-    Utils.showGroupToUser(bot, message, Api.getGroupOfTeam, team);
+    Utils.showGroupsToUser(bot, message, Api.getGroupOfTeam, team);
   } else {
     bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
   }
@@ -133,7 +134,7 @@ controller.hears(Sentences.show_group_for_team, 'message_received', function(bot
   if (typeof team === "string" && team.length > 0) {
     console.log("Show group for " + team);
     //bot.reply(message, "You want to see games for " + team + " ?");
-    Utils.showGroupToUser(bot, message, Api.getGroupOfTeam, team);
+    Utils.showGroupsToUser(bot, message, Api.getGroupOfTeam, team);
   } else {
     bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
   }
