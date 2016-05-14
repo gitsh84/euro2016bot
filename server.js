@@ -42,9 +42,9 @@ controller.middleware.receive.use(function(bot, message, next) {
       message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.user;
     }
     Utils.sendUserMsgToAnalytics(message.fullNameWithId || message.user, message.text);
-    Utils.addInfoFromNLP(message, function(message) {
+    //Utils.addInfoFromNLP(message, function(message) {
       next();
-    });
+    //});
   });
 });
 
