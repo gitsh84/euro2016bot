@@ -91,6 +91,24 @@ controller.hears(Sentences.show_team_games, 'message_received', function(bot, me
   }
 });
 
+// Show the games of a specific team to the user #2.
+controller.hears(Sentences.show_games_for_team, 'message_received', function(bot, message) {
+  var team = null;
+  if (message.match.length > 4) {
+    team = message.match[4];  
+  }
+  if (typeof team === "string" && team.length > 0) {
+    bot.reply(message, "You want to see games for " + team + " ?");
+  } else {
+    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+  }
+});
+
+// Show live games.
+controller.hears(Sentences.show_live_games, 'message_received', function(bot, message) {
+  Utils.showGamesToUser(bot, message, Api.getLiveGames);
+});
+
 controller.hears(['test'], 'message_received', function(bot, message) {
   bot.startConversation(message, function(err, convo) {
      convo.say('Ok...');

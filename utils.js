@@ -283,6 +283,8 @@ function showGamesToUserInternal(bot, message, getter) {
           }, timeout);
         }());
       }
+    } else {
+      bot.reply(message, "Sorry no such games...");
     }
   });
 }

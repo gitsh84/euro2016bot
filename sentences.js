@@ -1,4 +1,7 @@
 
+var game = "(game|match)";
+var live = "(live|ongoing|current|curent)";
+
 var teams_array = [
   "Albania",
   "Austria",
@@ -96,7 +99,16 @@ var sentences = {
     "^Show grups"
   ],
   show_team_games: [
-    "(.*)(" + teams_array.join("|") + ")(.*)(.*)(game|match)"
+    "(.*)(" + teams_array.join("|") + ")(.*)(game|match)"
+  ],
+  show_games_for_team: [
+    "(.*)(game|match)(.*)(" + teams_array.join("|") + "(.*)"
+  ],
+  show_live_games: [
+    "^show me " + live + " " + game,
+    "^" + live + " " + game,
+    "^show(.*)" + live + " " + game,
+    "^what(.*)" + live + " " + game,
   ],
   help_me: [
     "^help$",
