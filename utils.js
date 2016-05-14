@@ -21,12 +21,12 @@ function insertUserInfoToMongo(userInfo, callback) {
   });
 }
 
-function getUserInfoFromMongo(userId) {
+function getUserInfoFromMongo(userId, callback) {
   console.log("getUserInfoFromMongo");
   MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
-    console.log("Connected correctly to server");
+    console.log("Connected correctly to server: " + err);
     var col = db.collection(Consts.MONGODB_USER_INFO_COL);
-    console.log("found the collection");
+    console.log("found the collection: " + err);
     col.find({user_id : userId}).limit(1).toArray(function(err, docs) {
       db.close();
       if (docs instanceof Array && docs.length == 1) {
@@ -389,7 +389,7 @@ function queryLuisNLP(message, callback) {
 
 function getUserInfoInternal(userId, callback) {
   getUserInfoFromMongo(userId, function(userInfo) {
-    if (userInfo) {
+    if (typeof userInfo !== "undefined") {
       console.log("Got the user info from mongoDB");
       callback(userInfo);
     } else {
