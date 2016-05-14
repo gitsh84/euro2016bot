@@ -10,7 +10,9 @@ function insertUserInfoToMongo(userInfo, callback) {
   console.log("insertUserInfoToMongo");
   MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
     console.log("Connected correctly to server");
-    db.collection(Consts.MONGODB_USER_INFO_COL).insertOne(userInfo, function(err, r) {
+    var col = db.collection(Consts.MONGODB_USER_INFO_COL);
+    console.log("found the collection");
+    col.insertOne(userInfo, function(err, r) {
       db.close();
       callback();
     });
@@ -21,7 +23,9 @@ function getUserInfoFromMongo(userId) {
   console.log("getUserInfoFromMongo");
   MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
     console.log("Connected correctly to server");
-    db.collection(Consts.MONGODB_USER_INFO_COL).find({user_id : userId}).limit(1).toArray(function(err, docs) {
+    var col = db.collection(Consts.MONGODB_USER_INFO_COL);
+    console.log("found the collection");
+    col.find({user_id : userId}).limit(1).toArray(function(err, docs) {
       db.close();
       if (docs instanceof Array && docs.length == 1) {
         callback(docs[0]);  
