@@ -270,7 +270,7 @@ function sendMultipleAttachmentsOneByOne(bot, message, arr, index) {
     },
     function() {
       var newIndex = index + 1;
-      showSpecificGameToUserInternal(bot, message, arr, newIndex);
+      sendMultipleAttachmentsOneByOne(bot, message, arr, newIndex);
     });
 }
 
