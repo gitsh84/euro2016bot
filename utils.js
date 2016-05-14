@@ -241,7 +241,9 @@ function showGroupsToUserInternal(bot, message, getterParams) {
           };
 
           convo.say("This is group " + (iObj + 1));
-          convo.say(message, {attachment: msgAttachment});
+          var messageToSend = message;
+          messageToSend.attachment = msgAttachment;
+          convo.say(messageToSend);
           //bot.reply(message, {attachment: msgAttachment});
 
           /*
