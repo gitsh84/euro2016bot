@@ -53,7 +53,7 @@ function sendToAnalyticsInternal(sender, text, direction) {
           text: text,
           message_type: direction,
           user_id: sender,
-          conversation_id: DateFormat(new Date(), "dd_mm_yy")
+          conversation_id: sender + "-" + DateFormat(new Date(), "dd_mm_yy")
         }
       }
     },
