@@ -30,6 +30,7 @@ function getUserInfoFromMongo(userId, callback) {
     col.find({user_id : userId}).limit(1).toArray(function(err, docs) {
       db.close();
       if (docs instanceof Array && docs.length == 1) {
+        console.log("Found the user in the mongo: " + docs[0]);
         callback(docs[0]);  
       } else {
         callback();

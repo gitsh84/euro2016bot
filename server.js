@@ -54,6 +54,7 @@ controller.middleware.receive.use(function(bot, message, next) {
 });
 
 controller.middleware.send.use(function(bot, message, next) {
+  console.log(JSON.stringify(message));
   Utils.getUserInfo(message.user, function(userInfo) {
     if (userInfo) {
       message.userInfo = userInfo;
