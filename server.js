@@ -156,7 +156,7 @@ controller.hears(Sentences.show_live_games, 'message_received', function(bot, me
 // Show todays games.
 controller.hears(Sentences.show_games_today, 'message_received', function(bot, message) {
   console.log("Show todays games to user");
-  Utils.showGamesToUser(bot, message, Api.getGamesByDate, DateFormat(new Date(), "dd/mm/yy"););
+  Utils.showGamesToUser(bot, message, Api.getGamesByDate, DateFormat(new Date(), "dd/mm/yy"));
 });
 
 // Test
