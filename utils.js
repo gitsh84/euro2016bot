@@ -12,7 +12,7 @@ function insertUserInfoToMongo(userInfo, callback) {
     console.log("Connected correctly to server: " + err);
     var col = db.collection(Consts.MONGODB_USER_INFO_COL);
     console.log("found the collection");
-    col.insertOne({a: (new Date()).getTime()}, function(err, r) {
+    col.insertOne(userInfo, function(err, r) {
       console.log("insert complete: " + err);
       db.close();
       console.log("db closed");
