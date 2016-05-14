@@ -55,7 +55,7 @@ controller.middleware.receive.use(function(bot, message, next) {
 
 controller.middleware.send.use(function(bot, message, next) {
   console.log(JSON.stringify(message));
-  Utils.getUserInfo(message.user, function(userInfo) {
+  Utils.getUserInfo(message.channel, function(userInfo) {
     if (userInfo) {
       message.userInfo = userInfo;
       message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.user;
