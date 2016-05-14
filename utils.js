@@ -361,8 +361,8 @@ var utils = {
   showGroupsToUser: function(bot, message) {
     showGroupsToUserInternal(bot, message);
   },
-  showGamesToUser: function(bot, message, getter) {
-    showGamesToUserInternal(bot, message, getter);
+  showGamesToUser: function(bot, message, getter, getterParams) {
+    showGamesToUserInternal(bot, message, getter, getterParams);
   },
   getUserInfo: function(userId, callback) {
     getUserInfoInternal(userId, callback);

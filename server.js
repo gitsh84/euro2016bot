@@ -1,5 +1,15 @@
 "use strict";
 
+// TODOs:
+// If sentence is unknown send to special conversation.
+// show team group
+// show team games
+// show live games
+// show quarter/semi/final game
+// show team stats/info
+// save user data to mongo as cache
+// Notifications about game events
+
 var Botkit = require('botkit');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
@@ -66,6 +76,12 @@ controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
   Utils.showGroupsToUser(bot, message);
+});
+
+// Show the games of a specific team to the user.
+controller.hears(Sentences.show_team_games, 'message_received', function(bot, message) {
+  var team = message.match[1];
+  bot.reply(message, "You want to see games for " + team + " ?");
 });
 
 controller.hears(['test'], 'message_received', function(bot, message) {

@@ -185,4 +185,9 @@ mockApi.getGames = function(callback) {
 	callback(games);
 }
 
+mockApi.getGamesOfTeam = function(team, callback) {
+	if(typeof callback !== "function") return;
+	callback(games);
+}
+
 module.exports = mockApi;
