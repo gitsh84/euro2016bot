@@ -102,7 +102,7 @@ var sentences = {
     "(.*)(" + teams_array.join("|") + ")(.*)(game|match)"
   ],
   show_games_for_team: [
-    "(.*)(game|match)(.*)(" + teams_array.join("|") + "(.*)"
+    "(.*)(game|match)(.*)(" + teams_array.join("|") + ")(.*)"
   ],
   show_live_games: [
     "^show me " + live + " " + game,
