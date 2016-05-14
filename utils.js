@@ -308,8 +308,9 @@ function httpGetJson(url, callback) {
         return;
       } catch (e) {
         console.error('Error parsing json response from http get ' + url);
-      }    }
-    callback(message);
+      }
+    }
+    callback();
   });
 }
 
