@@ -6,6 +6,32 @@ var Sentences = require('./sentences');
 var Api = require('./mockApi');
 var MongoClient = require('mongodb').MongoClient;
 
+function insertUserInfoToMongo(userInfo, callback) {
+  console.log("insertUserInfoToMongo");
+  MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
+    console.log("Connected correctly to server");
+    db.collection(Consts.MONGODB_NAME).insertOne(userInfo, function(err, r) {
+      db.close();
+      callback();
+    });
+  });
+}
+
+function getUserInfoFromMongo(userId) {
+  console.log("getUserInfoFromMongo");
+  MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
+    console.log("Connected correctly to server");
+    db.collection(Consts.MONGODB_NAME).find({user_id : userId}).limit(1).toArray(function(err, docs) {
+      db.close();
+      if (docs instanceof Array && docs.length == 1) {
+        callback(docs[0]);  
+      } else {
+        callback();
+      }
+    });
+  });
+}
+
 function sendToAnalyticsInternal(sender, text, direction) {
   console.log("sendToAnalyticsInternal from sender " + sender + " with text: " + text);
   request({
@@ -123,7 +149,7 @@ function buildGroupsObj(groups) {
           curElement.subtitle = "Pts: " + curTeam.points + ", Plyd: " + curTeam.games_played + ", W:" + curTeam.games_won + ", D:" + curTeam.games_draw + ", L:" + curTeam.games_lost + ", GlsF:" + curTeam.goals_scored + ", GlsA:" + curTeam.goals_taken + ", Gls(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
-            title: 'Show Games',
+            title: 'Show Teams Games',
             payload: 'show_games_for_' + curTeam.name
           }];
           elements[iTeam] = curElement;
@@ -356,7 +382,18 @@ function queryLuisNLP(message, callback) {
 }
 
 function getUserInfoInternal(userId, callback) {
-  httpGetJson(Consts.FACEBOOK_USER_PROFILE_API.replace("<USER_ID>", userId), callback);
+  getUserInfoFromMongo(userId, function(userInfo) {
+    if (userInfo) {
+      console.log("Got the user info from mongoDB");
+      callback(userInfo);
+    } else {
+      console.log("Can't find the user info in the mongoDB");
+      httpGetJson(Consts.FACEBOOK_USER_PROFILE_API.replace("<USER_ID>", userId), function(userInfo) {
+        userInfo.user_id = userId;
+        insertUserInfoToMongo(userInfo, callback);
+      });
+    }
+  });
 }
 
 var utils = {
