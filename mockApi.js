@@ -180,7 +180,7 @@ mockApi.getGroups = function(callback) {
 	callback(groups);
 }
 
-mockApi.getGroupOfTeam = function(team, callback) {
+mockApi.getGroupOfTeam = function(callback, team) {
 	if(typeof callback !== "function") return;
 	callback(groups);
 }
@@ -190,12 +190,12 @@ mockApi.getGames = function(callback) {
 	callback(games);
 }
 
-mockApi.getGamesOfTeam = function(team, callback) {
+mockApi.getGamesOfTeam = function(callback, team) {
 	if(typeof callback !== "function") return;
 	callback(games);
 }
 
-mockApi.getLiveGames = function(team, callback) {
+mockApi.getLiveGames = function(callback) {
 	if(typeof callback !== "function") return;
 	callback(games);
 }

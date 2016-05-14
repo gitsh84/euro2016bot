@@ -261,7 +261,7 @@ function showGroupsToUserInternal(bot, message) {
   });
 }
 
-function showGamesToUserInternal(bot, message, getter) {
+function showGamesToUserInternal(bot, message, getter, getterParams) {
   getter(function(games){
     var obj_array = buildGamesObj(games);
     if (obj_array instanceof Array) {
@@ -286,7 +286,7 @@ function showGamesToUserInternal(bot, message, getter) {
     } else {
       bot.reply(message, "Sorry no such games...");
     }
-  });
+  }, getterParams);
 }
 
 function httpGetJson(url, callback) {

@@ -98,6 +98,7 @@ controller.hears(Sentences.show_games_for_team, 'message_received', function(bot
     team = message.match[4];  
   }
   if (typeof team === "string" && team.length > 0) {
+    Utils.showGamesToUser(bot, message, Api.getGamesOfTeam, team);
     bot.reply(message, "You want to see games for " + team + " ?");
   } else {
     bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
