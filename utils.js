@@ -56,19 +56,21 @@ function sendWelcomeMessage() {
 function rpadwithspace(string, length) {
   var str = string;
   while (str.length < length)
-      str = str + " ";
+    str = str + " ";
   return str;
 }
 
 function lpadwithspace(string, length) {
   var str = string;
-    while (str.length < length)
-        str = " " + str;
-    return str;
+  while (str.length < length)
+    str = " " + str;
+  return str;
 }
 
 function sortTeamsByPoints(teams) {
-  return teams.sort(function(a,b) {return (a.points > b.points) ? -1 : ((b.points > a.points) ? 1 : 0);} );
+  return teams.sort(function(a, b) {
+    return (a.points > b.points) ? -1 : ((b.points > a.points) ? 1 : 0);
+  });
 }
 
 function buildGroupsText(groups) {
@@ -115,16 +117,9 @@ function buildGroupsObj(groups) {
         for (var iTeam = 0; iTeam < teams.length; iTeam++) {
           var curElement = {};
           var curTeam = teams[iTeam];
-          curElement.title = "#" + (iTeam+1) + " " + curTeam.name;
+          curElement.title = curGroup.name + (iTeam + 1) + " " + curTeam.name;
           curElement.image_url = curTeam.flag_url;
-          curElement.subtitle = "Pts: " + curTeam.points
-          + ", Plyd: " + curTeam.games_played
-          + ", W:" + curTeam.games_won
-          + ", D:" + curTeam.games_draw
-          + ", L:" + curTeam.games_lost
-          + ", GlsF:" + curTeam.goals_scored
-          + ", GlsA:" + curTeam.goals_taken
-          + ", Gls(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+          curElement.subtitle = "Pts: " + curTeam.points + ", Plyd: " + curTeam.games_played + ", W:" + curTeam.games_won + ", D:" + curTeam.games_draw + ", L:" + curTeam.games_lost + ", GlsF:" + curTeam.goals_scored + ", GlsA:" + curTeam.goals_taken + ", Gls(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
             title: 'Show Games',
@@ -140,31 +135,31 @@ function buildGroupsObj(groups) {
 }
 
 function buildGameTeamObj(team, game) {
-    var teamObj = {};
-    teamObj.title = team.name + (game.status !== "Prematch" ? " (" + team.goals.length + ")" : "");
-    teamObj.image_url = team.flag_url;
-    teamObj.subtitle = "";
-    if (team.goals instanceof Array) {
-      for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
-        var curGoal = team.goals[iGoal];
-        if(iGoal > 0) teamObj.subtitle += ", ";
-        teamObj.subtitle += curGoal.time + " " + curGoal.player_name + (curGoal.notes && curGoal.notes.length > 0 ? " (" + curGoal.notes + ")" : "");
-      }
+  var teamObj = {};
+  teamObj.title = team.name + (game.status !== "Prematch" ? " (" + team.goals.length + ")" : "");
+  teamObj.image_url = team.flag_url;
+  teamObj.subtitle = "";
+  if (team.goals instanceof Array) {
+    for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
+      var curGoal = team.goals[iGoal];
+      if (iGoal > 0) teamObj.subtitle += ", ";
+      teamObj.subtitle += curGoal.time + " " + curGoal.player_name + (curGoal.notes && curGoal.notes.length > 0 ? " (" + curGoal.notes + ")" : "");
     }
-    teamObj.buttons = [];
-    if (game.status !== "Over") {
-      teamObj.buttons.push({
-        'type': 'web_url',
-        'title': 'Bet on ' + team.name,
-        'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
-      });
-    }
+  }
+  teamObj.buttons = [];
+  if (game.status !== "Over") {
     teamObj.buttons.push({
-      'type': 'postback',
-      'title': 'Set notifications',
-      'payload': 'set_notifications_for_team_' + team.name
+      'type': 'web_url',
+      'title': 'Bet on ' + team.name,
+      'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
     });
-    return teamObj;
+  }
+  teamObj.buttons.push({
+    'type': 'postback',
+    'title': 'Set notifications',
+    'payload': 'set_notifications_for_team_' + team.name
+  });
+  return teamObj;
 }
 
 function buildGameVsObj(game) {
@@ -192,8 +187,7 @@ function buildGameVsObj(game) {
       'type': 'web_url',
       'title': 'Bet on this game',
       'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
-    },
-    {
+    }, {
       'type': 'postback',
       'title': 'Set notifications',
       'payload': 'set_notifications_for_game_' + game.id
@@ -218,7 +212,7 @@ function buildGamesObj(games) {
 }
 
 function showGroupsToUserAsText(bot, message) {
-  Api.getGroups(function(groups){
+  Api.getGroups(function(groups) {
     var text_array = buildGroupsText(groups);
     if (text_array instanceof Array) {
       for (var iText = 0; iText < text_array.length; iText++) {
@@ -231,39 +225,49 @@ function showGroupsToUserAsText(bot, message) {
   });
 }
 
-function showGroupsToUserInternal(bot, message) {
-  Api.getGroups(function(groups){
+function showGroupsToUserInternal(bot, message, getterParams) {
+  Api.getGroups(function(groups) {
     var obj_array = buildGroupsObj(groups);
-    if (obj_array instanceof Array) {
-      for (var iObj = 0; iObj < obj_array.length; iObj++) {
-        var curObj = obj_array[iObj];
-        var attachment = {};
-        attachment.type = 'template';
-        attachment.payload = {
-          template_type: 'generic',
-          elements: curObj
-        };
-        (function(){
-          var timeout = 2000*iObj;
-          var msgAttachment = attachment;
-          var groupIndex = iObj;
-          setTimeout(function() {
-            bot.reply(message, "Here is group " + String.fromCharCode(97 + groupIndex).toUpperCase());
-          }, timeout - 500);
-          setTimeout(function() {
-            bot.reply(message, {
-              attachment: msgAttachment,
-            });
-          }, timeout);
-        }());
-      }
+    if (obj_array instanceof Array && obj_array.length > 0) {
+      bot.startConversation(message, function(err, convo) {
+        convo.say('Here are the groups...');
+        for (var iObj = 0; iObj < obj_array.length; iObj++) {
+          var curObj = obj_array[iObj];
+          var attachment = {};
+          attachment.type = 'template';
+          attachment.payload = {
+            template_type: 'generic',
+            elements: curObj
+          };
+
+          convo.say("This is group " + (iObj + 1));
+          //bot.reply(message, {attachment: msgAttachment});
+
+          /*
+          (function(){
+            var timeout = 2000*iObj;
+            var msgAttachment = attachment;
+            var groupIndex = iObj;
+            setTimeout(function() {
+              bot.reply(message, "Here is group " + String.fromCharCode(97 + groupIndex).toUpperCase());
+            }, timeout - 500);
+            setTimeout(function() {
+              bot.reply(message, {
+                attachment: msgAttachment,
+              });
+            }, timeout);
+          }());
+            */
+        }
+        convo.next();
+      });
     }
-  });
+  }, getterParams);
 }
 
 function showGamesToUserInternal(bot, message, getter, getterParams) {
   console.log("showGamesToUserInternal started");
-  getter(function(games){
+  getter(function(games) {
     console.log("showGamesToUserInternal getter callback");
     var obj_array = buildGamesObj(games);
     if (obj_array instanceof Array) {
@@ -275,8 +279,8 @@ function showGamesToUserInternal(bot, message, getter, getterParams) {
           template_type: 'generic',
           elements: curObj
         };
-        (function(){
-          var timeout = 2000*iObj;
+        (function() {
+          var timeout = 2000 * iObj;
           var msgAttachment = attachment;
           setTimeout(function() {
             bot.reply(message, {
@@ -317,8 +321,10 @@ function httpGetJson(url, callback) {
 function findSuitableIntentInternal(message) {
   if (message && message.nlp && message.nlp.intents && message.nlp.intents.length > 0) {
     console.log("Found " + message.nlp.intents.length + " possible intents");
-    var sortedIntents = message.nlp.intents.sort(function(a,b) {return (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0);} );
-    if((sortedIntents[0].score > Consts.LUIS_MIN_SCORE) && (sortedIntents[0].intent !== "None")) {
+    var sortedIntents = message.nlp.intents.sort(function(a, b) {
+      return (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0);
+    });
+    if ((sortedIntents[0].score > Consts.LUIS_MIN_SCORE) && (sortedIntents[0].intent !== "None")) {
       return sortedIntents[0].intent;
     } else {
       console.log("Score for intent " + sortedIntents[0].intent + " was too low: " + sortedIntents[0].score);
@@ -345,7 +351,7 @@ var utils = {
     sendWelcomeMessage();
   },
   randomFromArray: function(arr) {
-    return arr[Math.floor(Math.random()*arr.length)];
+    return arr[Math.floor(Math.random() * arr.length)];
   },
   sendUserMsgToAnalytics: function(sender, text) {
     sendToAnalyticsInternal(sender, text, "incoming");
