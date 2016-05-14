@@ -58,9 +58,9 @@ controller.middleware.send.use(function(bot, message, next) {
   Utils.getUserInfo(message.channel, function(userInfo) {
     if (userInfo) {
       message.userInfo = userInfo;
-      message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.user;
+      message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.channel;
     } else {
-      message.fullNameWithId = message.user;
+      message.fullNameWithId = message.channel;
     }
     Utils.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
     next();
