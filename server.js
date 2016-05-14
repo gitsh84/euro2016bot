@@ -74,6 +74,11 @@ controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
   bot.reply(message, Sentences.help_message);
 });
 
+// User wants help.
+controller.hears(["אאא","אבג"], 'message_received', function(bot, message) {
+  bot.reply(message, "הי !");
+});
+
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
   Utils.showGroupsToUser(bot, message);
