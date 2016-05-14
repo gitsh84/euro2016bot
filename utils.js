@@ -8,7 +8,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 function insertUserInfoToMongo(userInfo, callback) {
   console.log("insertUserInfoToMongo");
-  MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
+  MongoClient.connect(Consts.MONGODB_URL + "TEST", function(err, db) {
     console.log("Connected correctly to server");
     var col = db.collection(Consts.MONGODB_USER_INFO_COL);
     console.log("found the collection");
