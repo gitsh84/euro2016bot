@@ -75,7 +75,7 @@ controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
 });
 
 // User wants help.
-controller.hears(["אאא","אבג"], 'message_received', function(bot, message) {
+controller.hears(["אאא","אבג"] , 'message_received', function(bot, message) {
   bot.reply(message, "הי !");
 });
 
