@@ -97,7 +97,7 @@ controller.hears(Sentences.show_team_games, 'message_received', function(bot, me
     //bot.reply(message, "You want to see games for " + team + " ?");
     Utils.showGamesToUser(bot, message, Api.getGamesOfTeam, team);
   } else {
-    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+    notSureWhatUserWants(bot, message);
   }
 });
 
@@ -112,7 +112,7 @@ controller.hears(Sentences.show_games_for_team, 'message_received', function(bot
     //bot.reply(message, "You want to see games for " + team + " ?");
     Utils.showGamesToUser(bot, message, Api.getGamesOfTeam, team);
   } else {
-    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+    notSureWhatUserWants(bot, message);
   }
 });
 
@@ -128,7 +128,7 @@ controller.hears(Sentences.show_team_group, 'message_received', function(bot, me
     //bot.reply(message, "You want to see games for " + team + " ?");
     Utils.showGroupsToUser(bot, message, Api.getGroupOfTeam, team);
   } else {
-    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+    notSureWhatUserWants(bot, message);
   }
 });
 
@@ -143,7 +143,7 @@ controller.hears(Sentences.show_group_for_team, 'message_received', function(bot
     //bot.reply(message, "You want to see games for " + team + " ?");
     Utils.showGroupsToUser(bot, message, Api.getGroupOfTeam, team);
   } else {
-    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+    notSureWhatUserWants(bot, message);
   }
 });
 
@@ -178,11 +178,16 @@ controller.on('message_received', function(bot, message) {
     console.log("Found intent: " + matchedIntent);
     bot.reply(message, "Did you mean " + matchedIntent + " ?");
   } else {
-    console.log("No idea what the user wants...");
-    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+    notSureWhatUserWants(bot, message);    
   }
   return false;
 });
+
+function notSureWhatUserWants(bot, message) {
+  console.log("No idea what the user wants...");
+  bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+  Utils.sendUserMsgToAnalytics("unknown_msgs", message.text);
+}
 
 // Facebook postsbacks.
 controller.on('facebook_postback', function(bot, message) {
