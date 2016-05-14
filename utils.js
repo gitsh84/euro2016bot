@@ -7,13 +7,13 @@ var Api = require('./mockApi');
 var MongoClient = require('mongodb').MongoClient;
 
 function insertUserInfoToMongo(userInfo, callback) {
-  console.log("insertUserInfoToMongo");
-  MongoClient.connect(Consts.MONGODB_URL + "TEST", function(err, db) {
-    console.log("Connected correctly to server");
+  console.log("insertUserInfoToMongo: " + Consts.MONGODB_URL);
+  MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
+    console.log("Connected correctly to server: " + err);
     var col = db.collection(Consts.MONGODB_USER_INFO_COL);
     console.log("found the collection");
     col.insertOne({a: (new Date()).getTime()}, function(err, r) {
-      console.log("insert complete");
+      console.log("insert complete: " + err);
       db.close();
       console.log("db closed");
       callback();
