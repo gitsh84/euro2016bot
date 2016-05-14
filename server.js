@@ -80,8 +80,15 @@ controller.hears(Sentences.show_groups, 'message_received', function(bot, messag
 
 // Show the games of a specific team to the user.
 controller.hears(Sentences.show_team_games, 'message_received', function(bot, message) {
-  var team = message.match[1];
-  bot.reply(message, "You want to see games for " + team + " ?");
+  var team = null;
+  if (message.match.length > 2) {
+    team = message.match[2];  
+  }
+  if (team typeof "string" && team.length > 0) {
+    bot.reply(message, "You want to see games for " + team + " ?");
+  } else {
+    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+  }
 });
 
 controller.hears(['test'], 'message_received', function(bot, message) {

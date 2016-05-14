@@ -27,6 +27,7 @@ var teams_array = [
 ];
 
 var sentences = {
+  teams: teams_array,
   page_welcome_msg: "Hey ! :)\nLet me know what kind of info you are looking for about Euro2016.\nTo get things started, you can write something like:\nShow me the groups\nOr even just write:\ngroups\n(if you're a bit lazy...)\nAnd last thing - just write:\nhelp\nto get some more info from me.\nHave fun !",
   help_message: "Don't you worry ! I'll try and help out.\nI can show you a few cool things.\nTo see the groups just type something like:\ngroups\nor\nshow me the group\nHmm...and test's pretty much it for now. But don't worry I'll think about more things soon !",
   user_welcoming_messages: [
