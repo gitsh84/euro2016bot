@@ -10,7 +10,8 @@ var consts = {
 	LUIS_NLP_API: "https://api.projectoxford.ai/luis/v1/application?id=f087a4b1-ce4c-4eb0-b2fb-35c0afd1b3b8&subscription-key=" + process.env.LUIS_NLP_TOKEN + "&q=",
 	LUIS_MIN_SCORE: 0.6,
 	MONGODB_NAME: MONGODB_NAME,
-	MONGODB_URL: "mongodb://" + process.env.MONGO_DB_USER + ":" + process.env.MONGO_DB_USER + "@ds021922.mlab.com:21922/" + MONGODB_NAME
+	MONGODB_URL: "mongodb://" + process.env.MONGO_DB_USER + ":" + process.env.MONGO_DB_USER + "@ds021922.mlab.com:21922/" + MONGODB_NAME,
+	MONGODB_USER_INFO_COL: "user_info"
 };
 
 module.exports = consts;
