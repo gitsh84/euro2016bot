@@ -225,12 +225,31 @@ function showGroupsToUserAsText(bot, message) {
   });
 }
 
+function showSpecificGroupToUserInternal(bot, message, groups, groupIndex) {
+  if (typeof groupIndex !== "number") groupIndex = 0;
+  if (groupIndex >= groups.length) return;
+  console.log("Showing group index " + groupIndex);
+  var curObj = groups[groupIndex];
+  var attachment = {};
+  attachment.type = 'template';
+  attachment.payload = {
+    template_type: 'generic',
+    elements: curObj
+  };
+  bot.reply(message, {attachment: msgAttachment}, function() {
+    var newGroupIndex = groupIndex + 1;
+    showSpecificGroupToUserInternal(bot, message, groups, newGroupIndex);
+  });            
+} 
+
 function showGroupsToUserInternal(bot, message, getterParams) {
   Api.getGroups(function(groups) {
     var obj_array = buildGroupsObj(groups);
     if (obj_array instanceof Array && obj_array.length > 0) {
-      bot.startConversation(message, function(err, convo) {
-        convo.say('Here are the groups...');
+      showSpecificGroupToUserInternal(bot, message, obj_array);
+      //bot.startConversation(message, function(err, convo) {
+        //convo.say('Here are the groups...');
+        /*
         for (var iObj = 0; iObj < obj_array.length; iObj++) {
           var curObj = obj_array[iObj];
           var attachment = {};
@@ -241,7 +260,7 @@ function showGroupsToUserInternal(bot, message, getterParams) {
           };
 
           convo.say("This is group " + (iObj + 1));
-
+*/
 /*
           var msg = {};
 
@@ -257,7 +276,7 @@ function showGroupsToUserInternal(bot, message, getterParams) {
           var messageToSend = message;
           messageToSend.attachment = msgAttachment;
           */
-          convo.say({attachment: msgAttachment});
+         // convo.say({attachment: msgAttachment});
           //bot.reply(message, {attachment: msgAttachment});
 
           /*
@@ -275,9 +294,9 @@ function showGroupsToUserInternal(bot, message, getterParams) {
             }, timeout);
           }());
             */
-        }
-        convo.next();
-      });
+     //   }
+       // convo.next();
+     // });
     }
   }, getterParams);
 }
