@@ -5,6 +5,7 @@ var Consts = require('./consts');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
 var MongoClient = require('mongodb').MongoClient;
+var DateFormat = require('dateformat');
 
 function insertUserInfoToMongo(userInfo, callback) {
   console.log("insertUserInfoToMongo: " + Consts.MONGODB_URL);
@@ -52,7 +53,7 @@ function sendToAnalyticsInternal(sender, text, direction) {
           text: text,
           message_type: direction,
           user_id: sender,
-          conversation_id: sender // Conv ID can (and should) be different from user id...but for now it is good enough.
+          conversation_id: DateFormat(new Date(), "dd_mm_yy")
         }
       }
     },

@@ -84,6 +84,7 @@ var sentences = {
     "Don't worry about it."
   ],
   show_groups: [
+    "^Can you please show me the group",
     "^Show me the group",
     "^Show me group",
     "^Show group",
@@ -96,6 +97,7 @@ var sentences = {
     "^Show standings$",
     "^Show standing$",
     "^Please show groups",
+    "^Please show me the groups",
     "^Show groops",
     "^Show me grups",
     "^Show grups"
@@ -138,6 +140,7 @@ var sentences = {
     "Oopsy oops...not sure what you mean by that :(",
     "Not really sure what you mean by that...",
     "Hmmm, what ?",
+    "mmmm, what was that again ?",
     "Sorry but I don't quite understand what u mean :("
   ]
 }
