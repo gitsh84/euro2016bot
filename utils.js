@@ -261,7 +261,7 @@ function sendMultipleAttachmentsOneByOne(bot, message, arr, index) {
   console.log("Showing index " + index);
   bot.reply(message, {
       attachment: {
-        type: 'template';
+        type: 'template',
         payload: {
           template_type: 'generic',
           elements: arr[index]
