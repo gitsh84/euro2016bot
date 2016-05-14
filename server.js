@@ -108,6 +108,37 @@ controller.hears(Sentences.show_games_for_team, 'message_received', function(bot
   }
 });
 
+
+// Show the group of a specific team to the user.
+controller.hears(Sentences.show_team_group, 'message_received', function(bot, message) {
+  var team = null;
+  if (message.match.length > 2) {
+    team = message.match[2];  
+  }
+  if (typeof team === "string" && team.length > 0) {
+    console.log("Show group for " + team);
+    //bot.reply(message, "You want to see games for " + team + " ?");
+    Utils.showGroupToUser(bot, message, Api.getGroupOfTeam, team);
+  } else {
+    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+  }
+});
+
+// Show the games of a specific team to the user #2.
+controller.hears(Sentences.show_group_for_team, 'message_received', function(bot, message) {
+  var team = null;
+  if (message.match.length > 4) {
+    team = message.match[4];  
+  }
+  if (typeof team === "string" && team.length > 0) {
+    console.log("Show group for " + team);
+    //bot.reply(message, "You want to see games for " + team + " ?");
+    Utils.showGroupToUser(bot, message, Api.getGroupOfTeam, team);
+  } else {
+    bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
+  }
+});
+
 // Show live games.
 controller.hears(Sentences.show_live_games, 'message_received', function(bot, message) {
   console.log("Show live games to user");

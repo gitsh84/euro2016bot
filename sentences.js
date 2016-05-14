@@ -1,6 +1,7 @@
 
 var game = "(game|match)";
 var live = "(live|ongoing|current|curent)";
+var group = "(group|grup|groop|standing|table)";
 
 var teams_array = [
   "Albania",
@@ -99,10 +100,16 @@ var sentences = {
     "^Show grups"
   ],
   show_team_games: [
-    "(.*)(" + teams_array.join("|") + ")(.*)(game|match)"
+    "(.*)(" + teams_array.join("|") + ")(.*)" + game
   ],
   show_games_for_team: [
-    "(.*)(game|match)(.*)(" + teams_array.join("|") + ")(.*)"
+    "(.*)" + game + "(.*)(" + teams_array.join("|") + ")(.*)"
+  ],
+  show_team_group: [
+    "(.*)(" + teams_array.join("|") + ")(.*)" + group
+  ],
+  show_group_for_team: [
+    "(.*)" + group + "(.*)(" + teams_array.join("|") + ")(.*)"
   ],
   show_live_games: [
     "^show me " + live + " " + game,
