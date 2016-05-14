@@ -43,8 +43,10 @@ controller.middleware.receive.use(function(bot, message, next) {
     if (userInfo) {
       message.userInfo = userInfo;
       message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.user;
+    } else {
+      message.fullNameWithId = message.user;
     }
-    Utils.sendUserMsgToAnalytics(message.fullNameWithId || message.user, message.text);
+    Utils.sendUserMsgToAnalytics(message.fullNameWithId, message.text);
     //Utils.addInfoFromNLP(message, function(message) {
       next();
     //});
@@ -52,8 +54,16 @@ controller.middleware.receive.use(function(bot, message, next) {
 });
 
 controller.middleware.send.use(function(bot, message, next) {
-  Utils.sendBotMsgToAnalytics(message.fullNameWithId || message.user, message.text || "-empty-");
-  next();
+  Utils.getUserInfo(message.user, function(userInfo) {
+    if (userInfo) {
+      message.userInfo = userInfo;
+      message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.user;
+    } else {
+      message.fullNameWithId = message.user;
+    }
+    Utils.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
+    next();
+  });
 });
 
 // User clicked the send-to-messenger plugin.
