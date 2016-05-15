@@ -1,4 +1,4 @@
-name: ShaisBoopBeepBot
+name: Euro2016Bot
 config:
   - name: ANALYTICS_TOKEN
     friendly_name: ANALYTICS_TOKEN
