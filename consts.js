@@ -1,5 +1,6 @@
 "use strict";
-// TEST 2
+
+// TEST
 var FACEBOOK_PAGE_ID = "1559094254390341";
 var FACEBOOK_PAGE_ACCESS_TOKEN = ""; // This is just for local debugging.
 var MONGODB_NAME = "euro2016";
