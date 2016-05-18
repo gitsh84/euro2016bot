@@ -47,9 +47,15 @@ controller.middleware.receive.use(function(bot, message, next) {
       message.fullNameWithId = message.user;
     }
     Utils.sendUserMsgToAnalytics(message.fullNameWithId, message.text);
-    //Utils.addInfoFromNLP(message, function(message) {
-      next();
-    //});
+    Utils.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
+      if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
+        console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
+        message.text = translationApiResponse.translation;
+      }
+      Utils.addInfoFromNLP(message, function(message) {
+        next();
+      });
+    });
   });
 });
 
@@ -63,7 +69,13 @@ controller.middleware.send.use(function(bot, message, next) {
       message.fullNameWithId = message.channel;
     }
     Utils.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
-    next();
+    Utils.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
+      if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
+        console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
+        message.text = translationApiResponse.translation;
+      }
+      next();
+    });
   });
 });
 
@@ -101,7 +113,7 @@ controller.hears(Sentences.show_groups, 'message_received', function(bot, messag
 controller.hears(Sentences.show_team_games, 'message_received', function(bot, message) {
   var team = null;
   if (message.match.length > 2) {
-    team = message.match[2];  
+    team = message.match[2];
   }
   if (typeof team === "string" && team.length > 0) {
     console.log("Show games for " + team);
@@ -116,7 +128,7 @@ controller.hears(Sentences.show_team_games, 'message_received', function(bot, me
 controller.hears(Sentences.show_games_for_team, 'message_received', function(bot, message) {
   var team = null;
   if (message.match.length > 4) {
-    team = message.match[4];  
+    team = message.match[4];
   }
   if (typeof team === "string" && team.length > 0) {
     console.log("Show games for " + team);
@@ -132,7 +144,7 @@ controller.hears(Sentences.show_games_for_team, 'message_received', function(bot
 controller.hears(Sentences.show_team_group, 'message_received', function(bot, message) {
   var team = null;
   if (message.match.length > 2) {
-    team = message.match[2];  
+    team = message.match[2];
   }
   if (typeof team === "string" && team.length > 0) {
     console.log("Show group for " + team);
@@ -147,7 +159,7 @@ controller.hears(Sentences.show_team_group, 'message_received', function(bot, me
 controller.hears(Sentences.show_group_for_team, 'message_received', function(bot, message) {
   var team = null;
   if (message.match.length > 4) {
-    team = message.match[4];  
+    team = message.match[4];
   }
   if (typeof team === "string" && team.length > 0) {
     console.log("Show group for " + team);
@@ -189,7 +201,7 @@ controller.on('message_received', function(bot, message) {
     console.log("Found intent: " + matchedIntent);
     bot.reply(message, "Did you mean " + matchedIntent + " ?");
   } else {
-    notSureWhatUserWants(bot, message);    
+    notSureWhatUserWants(bot, message);
   }
   return false;
 });

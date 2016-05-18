@@ -16,3 +16,11 @@ config:
     friendly_name: MONGO_DB_PASSWORD
     type: secret
     global: true
+  - name: CYRANOAPI_HOST
+    friendly_name: CYRANOAPI_HOST
+    type: secret
+    global: true
+  - name: CYRANOAPI_TOKEN
+    friendly_name: CYRANOAPI_TOKEN
+    type: secret
+    global: true

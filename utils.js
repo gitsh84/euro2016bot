@@ -32,7 +32,7 @@ function getUserInfoFromMongo(userId, callback) {
       db.close();
       if (docs instanceof Array && docs.length == 1) {
         console.log("Found the user in the mongo: " + docs[0]);
-        callback(docs[0]);  
+        callback(docs[0]);
       } else {
         callback();
       }
@@ -365,6 +365,66 @@ function httpGetJson(url, callback) {
   });
 }
 
+function httpPostJson(url, headers, body, callback) {
+  request({
+    url: url,
+    method: 'POST',
+    headers: headers,
+    bod: body
+  }, function(error, response, body) {
+    if (error) {
+      console.error('Error http post ' + url, error);
+    } else if (response.body.error) {
+      console.error('Error in response body for http post ' + url, response.body.error);
+    } else {
+      try {
+        console.log(response.body);
+        var jsonResponse = JSON.parse(response.body);
+        callback(jsonResponse);
+        return;
+      } catch (e) {
+        console.error('Error parsing json response from http post ' + url);
+      }
+    }
+    callback();
+  });
+}
+
+// see docs here: http://docs.cyrano.apiary.io
+function translateMessage(userInfo, text, direction, callback) {
+  if (!process.env.CYRANOAPI_HOST ||
+    !process.env.CYRANOAPI_TOKEN ||
+    !userInfo ||
+    typeof text !== "string" ||
+    text.length === 0) {
+    console.log("translateMessage: don't have all the info needed to translate via API");
+    callback();
+    return;
+  }
+  console.log("translateMessage: building request");
+  var url = process.env.CYRANOAPI_HOST + '/bots/euro2016/en/messages/' + direction;
+  var headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'cyrano:' + process.env.CYRANOAPI_TOKEN
+  };
+  var body = JSON.stringify({
+    user: {
+      id: userInfo.user_id,
+      gender: userInfo.gender
+    },
+    text: text
+  });
+  httpPostJson(url, headers, body, callback);
+}
+
+function translateUserMessageInternal(userInfo, text, callback) {
+  translateMessage(userInfo, text, "in", callback)
+}
+
+function translateBotMessageInternal(userInfo, text, callback) {
+  translateMessage(userInfo, text, "out", callback)
+}
+
 function findSuitableIntentInternal(message) {
   if (message && message.nlp && message.nlp.intents && message.nlp.intents.length > 0) {
     console.log("Found " + message.nlp.intents.length + " possible intents");
@@ -383,6 +443,10 @@ function findSuitableIntentInternal(message) {
 }
 
 function queryLuisNLP(message, callback) {
+  if (!process.env.LUIS_NLP_TOKEN) {
+    callback();
+    return;
+  }
   httpGetJson(Consts.LUIS_NLP_API + message.text, function(jsonResponse) {
     message.nlp = jsonResponse;
     callback(message);
@@ -438,6 +502,12 @@ var utils = {
   },
   findSuitableIntent: function(message) {
     return findSuitableIntentInternal(message);
+  },
+  translateUserMessage: function (userInfo, text, callback) {
+    translateUserMessageInternal(userInfo, text, callback);
+  },
+  translateBotMessage: function (userInfo, text, callback) {
+    translateBotMessageInternal(userInfo, text, callback);
   }
 }
 
