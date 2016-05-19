@@ -403,6 +403,7 @@ function translateMessage(userInfo, text, direction, callback) {
   }
   console.log("translateMessage: building request");
   var url = process.env.CYRANOAPI_HOST + '/bots/euro2016/en/messages/' + direction;
+  console.log("url: " + url);
   var headers = {
     'Content-Type': 'application/json',
     'Authorization': 'cyrano:' + process.env.CYRANOAPI_TOKEN
@@ -414,6 +415,7 @@ function translateMessage(userInfo, text, direction, callback) {
     },
     text: text
   });
+  console.log("body of translate request: " + body);
   httpPostJson(url, headers, body, callback);
 }
 
