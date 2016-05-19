@@ -408,15 +408,19 @@ function translateMessage(userInfo, text, direction, callback) {
     'Content-Type': 'application/json',
     'Authorization': 'cyrano:' + process.env.CYRANOAPI_TOKEN
   };
-  var body = JSON.stringify({
+  var body = {
     user: {
       id: userInfo.user_id,
       gender: userInfo.gender
     },
     text: text
-  });
-  console.log("body of translate request: " + body);
-  httpPostJson(url, headers, body, callback);
+  };
+  if(userInfo && userInfo.lang) {
+    body.user.lang = userInfo.lang;
+  }
+  var bodyString = JSON.stringify(body);
+  console.log("body of translate request: " + bodyString);
+  httpPostJson(url, headers, bodyString, callback);
 }
 
 function translateUserMessageInternal(userInfo, text, callback) {
