@@ -100,7 +100,8 @@ var sentences = {
     "^Please show me the groups",
     "^Show groops",
     "^Show me grups",
-    "^Show grups"
+    "^Show grups",
+    "^group(s)?(.*)show(.*)",
   ],
   show_team_games: [
     "(.*)(" + teams_array.join("|") + ")(.*)" + game
