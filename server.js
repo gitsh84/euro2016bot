@@ -68,8 +68,8 @@ controller.middleware.send.use(function(bot, message, next) {
   console.log(JSON.stringify(message));
   Utils.getUserInfo(message.channel, function(userInfo) {
     if (userInfo) {
-      if (UserInfoCache[message.user] && UserInfoCache[message.user].text_original_lang) {
-        userInfo.lang = UserInfoCache[message.user].text_original_lang;
+      if (UserInfoCache[message.channel] && UserInfoCache[message.channel].text_original_lang) {
+        userInfo.lang = UserInfoCache[message.channel].text_original_lang;
         console.log("user lang for translation: " + userInfo.lang);
       }
       message.userInfo = userInfo;
