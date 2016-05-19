@@ -70,6 +70,7 @@ controller.middleware.send.use(function(bot, message, next) {
     if (userInfo) {
       if (UserInfoCache[message.user] && UserInfoCache[message.user].text_original_lang) {
         userInfo.lang = UserInfoCache[message.user].text_original_lang;
+        console.log("user lang for translation: " + userInfo.lang);
       }
       message.userInfo = userInfo;
       message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.channel;
@@ -77,7 +78,7 @@ controller.middleware.send.use(function(bot, message, next) {
       message.fullNameWithId = message.channel;
     }
     Utils.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
-    Utils.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
+    Utils.translateBotMessage(userInfo, message.text, function(translationApiResponse) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
         message.text = translationApiResponse.translation;
