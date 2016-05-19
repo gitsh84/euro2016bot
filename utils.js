@@ -370,7 +370,7 @@ function httpPostJson(url, headers, body, callback) {
     url: url,
     method: 'POST',
     headers: headers,
-    bod: body
+    body: body
   }, function(error, response, body) {
     if (error) {
       console.error('Error http post ' + url, error);
