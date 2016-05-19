@@ -17,6 +17,7 @@ var Sentences = require('./sentences');
 var Api = require('./mockApi');
 var Utils = require('./utils');
 var DateFormat = require('dateformat');
+var UserInfoCache = {};
 
 var controller = Botkit.facebookbot({
   access_token: process.env.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -51,6 +52,7 @@ controller.middleware.receive.use(function(bot, message, next) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
         message.text = translationApiResponse.translation;
+        UserInfoCache[message.user].text_original_lang = translationApiResponse.user.lang;
       }
       Utils.addInfoFromNLP(message, function(message) {
         next();
@@ -63,6 +65,9 @@ controller.middleware.send.use(function(bot, message, next) {
   console.log(JSON.stringify(message));
   Utils.getUserInfo(message.channel, function(userInfo) {
     if (userInfo) {
+      if (UserInfoCache[message.user].text_original_lang) {
+        userInfo.lang = UserInfoCache[message.user].text_original_lang;
+      }
       message.userInfo = userInfo;
       message.fullNameWithId = userInfo.first_name + "_" + userInfo.last_name + "_" + message.channel;
     } else {
