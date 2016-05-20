@@ -88,57 +88,10 @@ function sendWelcomeMessage() {
   });
 }
 
-function rpadwithspace(string, length) {
-  var str = string;
-  while (str.length < length)
-    str = str + " ";
-  return str;
-}
-
-function lpadwithspace(string, length) {
-  var str = string;
-  while (str.length < length)
-    str = " " + str;
-  return str;
-}
-
 function sortTeamsByPoints(teams) {
   return teams.sort(function(a, b) {
     return (a.points > b.points) ? -1 : ((b.points > a.points) ? 1 : 0);
   });
-}
-
-function buildGroupsText(groups) {
-  var TEAM_NAME_PADDING = 20;
-  var text_array = [];
-  if (groups instanceof Array) {
-    for (var iGroup = 0; iGroup < groups.length; iGroup++) {
-      var text = "";
-      var curGroup = groups[iGroup];
-      if (curGroup.teams instanceof Array) {
-        var teams = sortTeamsByPoints(curGroup.teams);
-        text += rpadwithspace("Group " + curGroup.name, TEAM_NAME_PADDING);
-        text += " P  W  D  L  F  A  +/-  Pts\n";
-        //text += "----------------------------------------------------\n";
-        for (var iTeam = 0; iTeam < teams.length; iTeam++) {
-          var curTeam = teams[iTeam];
-          text += rpadwithspace(curTeam.name, TEAM_NAME_PADDING);
-          text += lpadwithspace("" + curTeam.games_played, 2);
-          text += lpadwithspace("" + curTeam.games_won, 3);
-          text += lpadwithspace("" + curTeam.games_draw, 3);
-          text += lpadwithspace("" + curTeam.games_lost, 3);
-          text += lpadwithspace("" + curTeam.goals_scored, 3);
-          text += lpadwithspace("" + curTeam.goals_taken, 3);
-          text += lpadwithspace("" + (curTeam.goals_scored - curTeam.goals_taken), 4);
-          text += lpadwithspace("" + curTeam.points, 5);
-          text += "\n";
-        }
-        //text += "----------------------------------------------------\n";
-        text_array[iGroup] = text;
-      }
-    }
-  }
-  return text_array;
 }
 
 function buildGroupsObj(groups) {
@@ -153,8 +106,11 @@ function buildGroupsObj(groups) {
           var curElement = {};
           var curTeam = teams[iTeam];
           curElement.title = curGroup.name + (iTeam + 1) + " " + curTeam.name;
-          curElement.image_url = curTeam.flag_url;
-          curElement.subtitle = "Pts: " + curTeam.points + ", Plyd: " + curTeam.games_played + ", W:" + curTeam.games_won + ", D:" + curTeam.games_draw + ", L:" + curTeam.games_lost + ", GlsF:" + curTeam.goals_scored + ", GlsA:" + curTeam.goals_taken + ", Gls(+/-): " + (curTeam.goals_scored - curTeam.goals_taken);
+          curElement.image_url = Consts.FLAGS[curTeam.name];
+          var goals_diff_sign = "";
+          if (curTeam.goals_scored - curTeam.goals_taken > 0) goals_diff_sign = "+";
+          if (curTeam.goals_scored - curTeam.goals_taken < 0) goals_diff_sign = "-";
+          curElement.subtitle = "Pts: " + curTeam.points + ", Plyd: " + curTeam.games_played + ", W:" + curTeam.games_won + ", D:" + curTeam.games_draw + ", L:" + curTeam.games_lost + ", F:" + curTeam.goals_scored + ", A:" + curTeam.goals_taken + ", (+/-): " + goals_diff_sign + (curTeam.goals_scored - curTeam.goals_taken);
           curElement.buttons = [{
             type: 'postback',
             title: 'Show Teams Games',
@@ -172,7 +128,7 @@ function buildGroupsObj(groups) {
 function buildGameTeamObj(team, game) {
   var teamObj = {};
   teamObj.title = team.name + (game.status !== "Prematch" ? " (" + team.goals.length + ")" : "");
-  teamObj.image_url = team.flag_url;
+  teamObj.image_url = Consts.FLAGS[team.name];
   teamObj.subtitle = "";
   if (team.goals instanceof Array) {
     for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
@@ -182,16 +138,16 @@ function buildGameTeamObj(team, game) {
     }
   }
   teamObj.buttons = [];
-  if (game.status !== "Over") {
-    teamObj.buttons.push({
-      'type': 'web_url',
-      'title': 'Bet on ' + team.name,
-      'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
-    });
-  }
+  // if (game.status !== "Over") {
+  //   teamObj.buttons.push({
+  //     'type': 'web_url',
+  //     'title': 'Bet on ' + team.name,
+  //     'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
+  //   });
+  // }
   teamObj.buttons.push({
     'type': 'postback',
-    'title': 'Set notifications',
+    'title': 'Get notifications',
     'payload': 'set_notifications_for_team_' + team.name
   });
   return teamObj;
@@ -215,18 +171,21 @@ function buildGameVsObj(game) {
   } else {
     vsObj.subtitle = "Game started ";
   }
-  vsObj.subtitle += game.time + " at " + game.location;
-  vsObj.image_url = game.location_image_url;
+  vsObj.subtitle += game.time + " at " + game.location + "\n";
+  vsObj.subtitle += Consts[game.location].location + " (" + Consts[game.location].seats + ")";
+  vsObj.image_url = Consts[game.location].image;
   if (game.status !== "Over") {
-    vsObj.buttons = [{
-      'type': 'web_url',
-      'title': 'Bet on this game',
-      'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
-    }, {
+    vsObj.buttons = [];
+    // vsObj.buttons.push({
+    //   'type': 'web_url',
+    //   'title': 'Bet on this game',
+    //   'url': 'http://sports.winner.com/en/t/30901/Euro-2016-Matches'
+    // });
+    vsObj.buttons.push({
       'type': 'postback',
       'title': 'Set notifications',
       'payload': 'set_notifications_for_game_' + game.id
-    }];
+    });
   }
   return vsObj;
 }
@@ -245,41 +204,6 @@ function buildGamesObj(games) {
   }
   return allElements;
 }
-
-function showGroupsToUserAsText(bot, message) {
-  Api.getGroups(function(groups) {
-    var text_array = buildGroupsText(groups);
-    if (text_array instanceof Array) {
-      for (var iText = 0; iText < text_array.length; iText++) {
-        var curText = text_array[iText];
-        console.log(curText);
-        //var textToSend = (typeof curText === "string" && curText.length > 0) ? curText : 'Not sure about the groups now...sorry :(';
-        bot.reply(message, curText);
-      }
-    }
-  });
-}
-
-/*
-function showSpecificGroupToUserInternal(bot, message, groups, groupIndex) {
-  if (typeof groupIndex !== "number") groupIndex = 0;
-  if (groupIndex >= groups.length) return;
-  console.log("Showing group index " + groupIndex);
-  bot.reply(message, {
-      attachment: {
-        type: 'template';
-        payload: {
-          template_type: 'generic',
-          elements: groups[groupIndex]
-        }
-      }
-    },
-    function() {
-      var newGroupIndex = groupIndex + 1;
-      showSpecificGroupToUserInternal(bot, message, groups, newGroupIndex);
-    });
-}
-*/
 
 function showGroupsToUserInternal(bot, message, getterParams) {
   Api.getGroups(function(groups) {
@@ -316,26 +240,6 @@ function showGamesToUserInternal(bot, message, getter, getterParams) {
     var obj_array = buildGamesObj(games);
     if (obj_array instanceof Array) {
       sendMultipleAttachmentsOneByOne(bot, message, obj_array);
-      /*
-      for (var iObj = 0; iObj < obj_array.length; iObj++) {
-        var curObj = obj_array[iObj];
-        var attachment = {};
-        attachment.type = 'template';
-        attachment.payload = {
-          template_type: 'generic',
-          elements: curObj
-        };
-        (function() {
-          var timeout = 2000 * iObj;
-          var msgAttachment = attachment;
-          setTimeout(function() {
-            bot.reply(message, {
-              attachment: msgAttachment
-            });
-          }, timeout);
-        }());
-      }
-      */
     } else {
       bot.reply(message, "Sorry no such games...");
     }

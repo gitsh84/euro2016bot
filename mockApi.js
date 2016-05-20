@@ -1,12 +1,12 @@
 "use strict";
 
+var Consts = require('./consts');
 var mockApi = {};
 
 var groups = [{
 	name: "A",
 	teams: [{
 		name: "Albania",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/2000px-Flag_of_Albania.svg.png",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -17,7 +17,6 @@ var groups = [{
 	},
 	{
 		name: "France",
-		flag_url: "https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/1280px-Flag_of_France.svg.png",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -28,7 +27,6 @@ var groups = [{
 	},
 	{
 		name: "Romania",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/2000px-Flag_of_Romania.svg.png",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -39,7 +37,6 @@ var groups = [{
 	},
 	{
 		name: "Switzerland",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_Switzerland_(Pantone).svg/2000px-Flag_of_Switzerland_(Pantone).svg.png",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -53,7 +50,6 @@ var groups = [{
 	name: "B",
 	teams: [{
 		name: "England",
-		flag_url: "http://www.freelargeimages.com/wp-content/uploads/2014/11/England_flag-4.jpg",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -64,7 +60,6 @@ var groups = [{
 	},
 	{
 		name: "Russia",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Russia.png",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -75,7 +70,6 @@ var groups = [{
 	},
 	{
 		name: "Slovakia",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Slovakia.svg/2000px-Flag_of_Slovakia.svg.png",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -86,7 +80,178 @@ var groups = [{
 	},
 	{
 		name: "Wales",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Wales_2.svg/2000px-Flag_of_Wales_2.svg.png",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	}]
+},
+{
+	name: "C",
+	teams: [{
+		name: "Germany",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 6,
+		goals_scored: 11,
+		goals_taken: 2
+	},
+	{
+		name: "Northern Ireland",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 0,
+		goals_scored: 8,
+		goals_taken: 12
+	},
+	{
+		name: "Poland",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	},
+	{
+		name: "Ukraine",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	}]
+},
+{
+	name: "D",
+	teams: [{
+		name: "Croatia",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 6,
+		goals_scored: 11,
+		goals_taken: 2
+	},
+	{
+		name: "Czech Republic",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 0,
+		goals_scored: 8,
+		goals_taken: 12
+	},
+	{
+		name: "Spain",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	},
+	{
+		name: "Turkey",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	}]
+},
+{
+	name: "E",
+	teams: [{
+		name: "Belgium",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 6,
+		goals_scored: 11,
+		goals_taken: 2
+	},
+	{
+		name: "Italy",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 0,
+		goals_scored: 8,
+		goals_taken: 12
+	},
+	{
+		name: "Republic of Ireland",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	},
+	{
+		name: "Sweden",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	}]
+},
+{
+	name: "F",
+	teams: [{
+		name: "Austria",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 6,
+		goals_scored: 11,
+		goals_taken: 2
+	},
+	{
+		name: "Hungary",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 0,
+		goals_scored: 8,
+		goals_taken: 12
+	},
+	{
+		name: "Iceland",
+		games_played: 2,
+		games_won: 2,
+		games_draw: 0,
+		games_lost: 0,
+		points: 2,
+		goals_scored: 8,
+		goals_taken: 2
+	},
+	{
+		name: "Portugal",
 		games_played: 2,
 		games_won: 2,
 		games_draw: 0,
@@ -98,80 +263,195 @@ var groups = [{
 }];
 
 var games = [{
-	id: 123,
-	status: "Ongoing",
-	location: "Stade de France",
-	location_image_url: "http://assets.regus.com/images/2955/officespace/1_454x340.jpg",
-	time: "10/5/2016 20:00",
-	home_team: {
-		name: "England",
-		flag_url: "http://www.freelargeimages.com/wp-content/uploads/2014/11/England_flag-4.jpg",
-		goals: [{
-			player_name: "Wayne Rooney",
-			time: 23,
-			notes: "Header"
-		}, {
-			player_name: "Wayne Rooney",
-			time: 89,
-			notes: "Penalty"
-		}]
-	},
-	away_team: {
-		name: "Russia",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Russia.png",
-		goals: [{
-			team: "Russia",
-			player_name: "Maksim Kanunnikov",
-			time: 33,
-			notes: ""
-		}]
-	}
-},
-{
-	id: 124,
+	id: 1,
+	type: "md1",
+	group: "A",
 	status: "Prematch",
 	location: "Stade de France",
-	location_image_url: "http://assets.regus.com/images/2955/officespace/1_454x340.jpg",
-	time: "11/5/2016 20:00",
+	time: "10/6/2016 22:00",
 	home_team: {
-		name: "England",
-		flag_url: "http://www.freelargeimages.com/wp-content/uploads/2014/11/England_flag-4.jpg",
+		name: "France",
 		goals: []
 	},
 	away_team: {
-		name: "Russia",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Russia.png",
+		name: "Romania",
 		goals: []
 	}
 },
 {
-	id: 125,
-	status: "Over",
-	location: "Stade de France",
-	location_image_url: "http://assets.regus.com/images/2955/officespace/1_454x340.jpg",
-	time: "09/5/2016 20:00",
+	id: 2,
+	type: "md1",
+	group: "A",
+	status: "Prematch",
+	location: "Stade Bollaert-Delelis",
+	time: "11/6/2016 16:00",
+	home_team: {
+		name: "Albania",
+		goals: []
+	},
+	away_team: {
+		name: "Switzerland",
+		goals: []
+	}
+},
+{
+	id: 3,
+	type: "md1",
+	group: "B",
+	status: "Prematch",
+	location: "Stade de Bordeaux",
+	time: "11/6/2016 19:00",
+	home_team: {
+		name: "Wales",
+		goals: []
+	},
+	away_team: {
+		name: "Slovakia",
+		goals: []
+	}
+},
+{
+	id: 4,
+	type: "md1",
+	group: "B",
+	status: "Prematch",
+	location: "Stade Velodrome",
+	time: "11/6/2016 22:00",
 	home_team: {
 		name: "England",
-		flag_url: "http://www.freelargeimages.com/wp-content/uploads/2014/11/England_flag-4.jpg",
-		goals: [{
-			player_name: "Wayne Rooney",
-			time: 23,
-			notes: "Header"
-		}, {
-			player_name: "Wayne Rooney",
-			time: 89,
-			notes: "Penalty"
-		}]
+		goals: []
 	},
 	away_team: {
 		name: "Russia",
-		flag_url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Russia.png",
-		goals: [{
-			team: "Russia",
-			player_name: "Maksim Kanunnikov",
-			time: 33,
-			notes: ""
-		}]
+		goals: []
+	}
+},
+{
+	id: 5,
+	type: "md1",
+	group: "D",
+	status: "Prematch",
+	location: "Parc des Princes",
+	time: "12/6/2016 16:00",
+	home_team: {
+		name: "Turkey",
+		goals: []
+	},
+	away_team: {
+		name: "Croatia",
+		goals: []
+	}
+},
+{
+	id: 6,
+	type: "md1",
+	group: "C",
+	status: "Prematch",
+	location: "Stade de Nice",
+	time: "12/6/2016 19:00",
+	home_team: {
+		name: "Poland",
+		goals: []
+	},
+	away_team: {
+		name: "Northern Ireland",
+		goals: []
+	}
+},
+{
+	id: 7,
+	type: "md1",
+	group: "C",
+	status: "Prematch",
+	location: "Stade Pierre Mauroy",
+	time: "12/6/2016 22:00",
+	home_team: {
+		name: "Germany",
+		goals: []
+	},
+	away_team: {
+		name: "Ukraine",
+		goals: []
+	}
+},
+{
+	id: 8,
+	type: "md1",
+	group: "D",
+	status: "Prematch",
+	location: "Stadium de Toulouse",
+	time: "13/6/2016 16:00",
+	home_team: {
+		name: "Spain",
+		goals: []
+	},
+	away_team: {
+		name: "Czech Republic",
+		goals: []
+	}
+},
+{
+	id: 9,
+	type: "md1",
+	group: "E",
+	status: "Prematch",
+	location: "Stade de France",
+	time: "13/6/2016 19:00",
+	home_team: {
+		name: "Republic of Ireland",
+		goals: []
+	},
+	away_team: {
+		name: "Sweden",
+		goals: []
+	}
+},
+{
+	id: 10,
+	type: "md1",
+	group: "E",
+	status: "Prematch",
+	location: "Stade de Lyon",
+	time: "13/6/2016 22:00",
+	home_team: {
+		name: "Belgium",
+		goals: []
+	},
+	away_team: {
+		name: "Italy",
+		goals: []
+	}
+},
+{
+	id: 11,
+	type: "md1",
+	group: "F",
+	status: "Prematch",
+	location: "Stade de Bordeaux",
+	time: "14/6/2016 19:00",
+	home_team: {
+		name: "Austria",
+		goals: []
+	},
+	away_team: {
+		name: "Hungary",
+		goals: []
+	}
+},
+{
+	id: 12,
+	type: "md1",
+	group: "F",
+	status: "Prematch",
+	location: "Stade Geoffroy-Guichard",
+	time: "14/6/2016 22:00",
+	home_team: {
+		name: "Portugal",
+		goals: []
+	},
+	away_team: {
+		name: "Iceland",
+		goals: []
 	}
 }];
 
