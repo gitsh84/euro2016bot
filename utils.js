@@ -172,7 +172,7 @@ function buildGameVsObj(game) {
     vsObj.subtitle = "Game started ";
   }
   vsObj.subtitle += game.time + " at " + game.location + "\n";
-  vsObj.subtitle += Consts.STADIUMS[game.location].location + " (" + Consts.STADIUMS[game.location].seats + ")";
+  vsObj.subtitle += Consts.STADIUMS[game.location].location + " (" + Consts.STADIUMS[game.location].seats + " seats)";
   vsObj.image_url = Consts.STADIUMS[game.location].image;
   if (game.status !== "Over") {
     vsObj.buttons = [];

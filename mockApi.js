@@ -462,6 +462,7 @@ mockApi.getGroups = function(callback) {
 
 mockApi.getGroupOfTeam = function(callback, team) {
 	if(typeof callback !== "function") return;
+	consoloe.log("getGroupOfTeam for " + team);
 	callback(groups);
 }
 
@@ -472,6 +473,7 @@ mockApi.getGames = function(callback) {
 
 mockApi.getGamesOfTeam = function(callback, team) {
 	if(typeof callback !== "function") return;
+	consoloe.log("getGamesOfTeam for " + team);
 	callback(games);
 }
 
