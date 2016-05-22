@@ -4,89 +4,8 @@ var request = require('request');
 var Consts = require('./consts');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
-var MongoClient = require('mongodb').MongoClient;
 var DateFormat = require('dateformat');
-
-function insertUserInfoToMongo(userInfo, callback) {
-  console.log("insertUserInfoToMongo: " + Consts.MONGODB_URL);
-  MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
-    console.log("Connected correctly to server: " + err);
-    var col = db.collection(Consts.MONGODB_USER_INFO_COL);
-    console.log("found the collection");
-    col.insertOne(userInfo, function(err, r) {
-      console.log("insert complete: " + err);
-      db.close();
-      console.log("db closed");
-      callback();
-    });
-  });
-}
-
-function getUserInfoFromMongo(userId, callback) {
-  console.log("getUserInfoFromMongo");
-  MongoClient.connect(Consts.MONGODB_URL, function(err, db) {
-    console.log("Connected correctly to server: " + err);
-    var col = db.collection(Consts.MONGODB_USER_INFO_COL);
-    console.log("found the collection: " + err);
-    col.find({user_id : userId}).limit(1).toArray(function(err, docs) {
-      db.close();
-      if (docs instanceof Array && docs.length == 1) {
-        console.log("Found the user in the mongo: " + docs[0]);
-        callback(docs[0]);
-      } else {
-        callback();
-      }
-    });
-  });
-}
-
-function sendToAnalyticsInternal(sender, text, direction) {
-  console.log("sendToAnalyticsInternal from sender " + sender + " with text: " + text);
-  request({
-      url: Consts.ANALYTICS_API,
-      qs: {
-        token: process.env.ANALYTICS_TOKEN
-      },
-      method: 'POST',
-      json: {
-        message: {
-          text: text,
-          message_type: direction,
-          user_id: sender,
-          conversation_id: sender + "-" + DateFormat(new Date(), "dd_mm_yy")
-        }
-      }
-    },
-    function(error, response, body) {
-      if (error) {
-        console.log('Error sending message to analytics: ', error);
-      } else if (response.body.error) {
-        console.log('Error in body response when sending message to analytics: ', response.body.error);
-      }
-    });
-}
-
-function sendWelcomeMessage() {
-  request({
-    url: Consts.FACEBOOK_WELCOME_MSG_URL,
-    method: 'POST',
-    json: {
-      setting_type: "call_to_actions",
-      thread_state: "new_thread",
-      call_to_actions: [{
-        message: {
-          text: Sentences.page_welcome_msg
-        }
-      }]
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending welcome message: ', error);
-    } else if (response.body.error) {
-      console.log('Error in response body when sending welcome message: ', response.body.error);
-    }
-  });
-}
+var MongoHelper = require('./mongoHelper');
 
 function sortTeamsByPoints(teams) {
   return teams.sort(function(a, b) {
@@ -125,21 +44,6 @@ function buildGroupsObj(groups) {
   return allElements;
 }
 
-function sendGenericTemplate(bot, message, elements, callback) {
-  if (!(elements instanceof Array)) {
-    elements = [elements];
-  }
-  bot.reply(message, {
-    attachment: {
-      type: 'template',
-      payload: {
-        template_type: 'generic',
-        elements: elements
-      }
-    }
-  },
-  callback);
-}
 
 function showMainMenuInternal(bot, message) {
   var menu = {};
@@ -253,19 +157,11 @@ function showGroupsToUserInternal(bot, message, getterParams) {
   Api.getGroups(function(groups) {
     var obj_array = buildGroupsObj(groups);
     if (obj_array instanceof Array && obj_array.length > 0) {
-      sendMultipleAttachmentsOneByOne(bot, message, obj_array);
+      sendMultipleGenericTemplates(bot, message, obj_array);
     }
   }, getterParams);
 }
 
-function sendMultipleAttachmentsOneByOne(bot, message, arr, index) {
-  if (typeof index !== "number") index = 0;
-  if (index >= arr.length) return;
-  sendGenericTemplate(bot, message, arr[index], function() {
-    var newIndex = index + 1;
-    sendMultipleAttachmentsOneByOne(bot, message, arr, newIndex);
-  });
-}
 
 function showGamesToUserInternal(bot, message, getter, getterParams) {
   console.log("showGamesToUserInternal started");
@@ -273,59 +169,11 @@ function showGamesToUserInternal(bot, message, getter, getterParams) {
     console.log("showGamesToUserInternal getter callback");
     var obj_array = buildGamesObj(games);
     if (obj_array instanceof Array) {
-      sendMultipleAttachmentsOneByOne(bot, message, obj_array);
+      sendMultipleGenericTemplates(bot, message, obj_array);
     } else {
       bot.reply(message, "Sorry no such games...");
     }
   }, getterParams);
-}
-
-function httpGetJson(url, callback) {
-  request({
-    url: url,
-    method: 'GET'
-  }, function(error, response, body) {
-    if (error) {
-      console.error('Error http get ' + url, error);
-    } else if (response.body.error) {
-      console.error('Error in response body for http get ' + url, response.body.error);
-    } else {
-      try {
-        console.log(response.body);
-        var jsonResponse = JSON.parse(response.body);
-        callback(jsonResponse);
-        return;
-      } catch (e) {
-        console.error('Error parsing json response from http get ' + url);
-      }
-    }
-    callback();
-  });
-}
-
-function httpPostJson(url, headers, body, callback) {
-  request({
-    url: url,
-    method: 'POST',
-    headers: headers,
-    body: body
-  }, function(error, response, body) {
-    if (error) {
-      console.error('Error http post ' + url, error);
-    } else if (response.body.error) {
-      console.error('Error in response body for http post ' + url, response.body.error);
-    } else {
-      try {
-        console.log(response.body);
-        var jsonResponse = JSON.parse(response.body);
-        callback(jsonResponse);
-        return;
-      } catch (e) {
-        console.error('Error parsing json response from http post ' + url);
-      }
-    }
-    callback();
-  });
 }
 
 // see docs here: http://docs.cyrano.apiary.io
@@ -398,7 +246,7 @@ function queryLuisNLP(message, callback) {
 }
 
 function getUserInfoInternal(userId, callback) {
-  getUserInfoFromMongo(userId, function(userInfo) {
+  MongoHelper.getUserInfoFromMongo(userId, function(userInfo) {
     if (typeof userInfo !== "undefined") {
       console.log("Got the user info from mongoDB");
       callback(userInfo);
@@ -406,27 +254,15 @@ function getUserInfoInternal(userId, callback) {
       console.log("Can't find the user info in the mongoDB");
       httpGetJson(Consts.FACEBOOK_USER_PROFILE_API.replace("<USER_ID>", userId), function(userInfo) {
         userInfo.user_id = userId;
-        insertUserInfoToMongo(userInfo, callback);
+        MongoHelper.insertUserInfoToMongo(userInfo, callback);
       });
     }
   });
 }
 
 var utils = {
-  setWelcomeMessage: function() {
-    sendWelcomeMessage();
-  },
   randomFromArray: function(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
-  },
-  sendUserMsgToAnalytics: function(sender, text) {
-    sendToAnalyticsInternal(sender, text, "incoming");
-  },
-  sendBotMsgToAnalytics: function(sender, text) {
-    sendToAnalyticsInternal(sender, text, "outgoing");
-  },
-  sendToAnalytics: function(sender, text, direction) {
-    sendToAnalyticsInternal(sender, text, direction);
   },
   addInfoFromNLP: function(message, callback) {
     if (message.text && message.text.length > 0) {

@@ -17,6 +17,8 @@ var Sentences = require('./sentences');
 var Api = require('./mockApi');
 var Utils = require('./utils');
 var DateFormat = require('dateformat');
+var FacebookHelper = require('./facebookHelper');
+var AnalyticsHelper = require('./analyticsHelper');
 var UserInfoCache = {};
 
 var controller = Botkit.facebookbot({
@@ -28,7 +30,7 @@ var bot = controller.spawn({});
 
 // Set up the welcome message.
 if (process.env.FACEBOOK_PAGE_ACCESS_TOKEN) {
-  Utils.setWelcomeMessage();
+  FacebookHelper.setWelcomeMessage();
 }
 
 // Start web server.
@@ -47,7 +49,7 @@ controller.middleware.receive.use(function(bot, message, next) {
     } else {
       message.fullNameWithId = message.user;
     }
-    Utils.sendUserMsgToAnalytics(message.fullNameWithId, message.text);
+    AnalyticsHelper.sendUserMsgToAnalytics(message.fullNameWithId, message.text);
     Utils.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
@@ -77,7 +79,7 @@ controller.middleware.send.use(function(bot, message, next) {
     } else {
       message.fullNameWithId = message.channel;
     }
-    Utils.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
+    AnalyticsHelper.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
     Utils.translateBotMessage(userInfo, message.text, function(translationApiResponse) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
@@ -111,11 +113,6 @@ controller.hears(["menu"], 'message_received', function(bot, message) {
 // User wants main menu.
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
   bot.reply(message, Sentences.help_message);
-});
-
-// User wants help.
-controller.hears(["אאא","אבג"] , 'message_received', function(bot, message) {
-  bot.reply(message, "הי !");
 });
 
 // Show the groups to the user.
@@ -223,12 +220,12 @@ controller.on('message_received', function(bot, message) {
 function notSureWhatUserWants(bot, message) {
   console.log("No idea what the user wants...");
   bot.reply(message, Utils.randomFromArray(Sentences.bot_not_sure_what_user_means));
-  Utils.sendUserMsgToAnalytics("unknown_msgs", message.text);
+  AnalyticsHelper.sendUserMsgToAnalytics("unknown_msgs", message.text);
 }
 
 // Facebook postsbacks.
 controller.on('facebook_postback', function(bot, message) {
-  Utils.sendToAnalytics(message.user, "facebook_postback-" + message.payload, "incoming");
+  AnalyticsHelper.sendUserMsgToAnalytics(message.user, "facebook_postback-" + message.payload);
   if (message.payload.indexOf('show_games_for_') === 0) {
     var teamName = message.payload.replace("show_games_for_","");
     bot.reply(message, 'Games for ' + teamName);
@@ -243,9 +240,7 @@ controller.on('facebook_postback', function(bot, message) {
     var gamesBy = message.payload.replace("games_by_","");
     if (gamesBy.indexOf("teams") === 0) {
     } else if (gamesBy.indexOf("date") === 0) {
-    }
     } else if (gamesBy.indexOf("stage") === 0) {
-    }
     } else if (gamesBy.indexOf("group") === 0) {
     }
   }

@@ -1,11 +1,11 @@
 name: Euro2016Bot
 config:
-  - name: ANALYTICS_TOKEN
-    friendly_name: ANALYTICS_TOKEN
+  - name: FACEBOOK_PAGE_ID
+    friendly_name: FACEBOOK_PAGE_ID
     type: secret
     global: true
-  - name: LUIS_NLP_TOKEN
-    friendly_name: LUIS_NLP_TOKEN
+  - name: MONGO_DB_NAME
+    friendly_name: MONGO_DB_NAME
     type: secret
     global: true
   - name: MONGO_DB_USER
@@ -16,11 +16,27 @@ config:
     friendly_name: MONGO_DB_PASSWORD
     type: secret
     global: true
+  - name: MONGO_DB_HOST
+    friendly_name: MONGO_DB_HOST
+    type: secret
+    global: true
+  - name: MONGO_DB_PORT
+    friendly_name: MONGO_DB_PORT
+    type: secret
+    global: true
+  - name: ANALYTICS_TOKEN
+    friendly_name: ANALYTICS_TOKEN
+    type: secret
+    global: true
   - name: CYRANOAPI_HOST
     friendly_name: CYRANOAPI_HOST
     type: secret
     global: true
   - name: CYRANOAPI_TOKEN
     friendly_name: CYRANOAPI_TOKEN
+    type: secret
+    global: true
+  - name: LUIS_NLP_TOKEN
+    friendly_name: LUIS_NLP_TOKEN
     type: secret
     global: true
