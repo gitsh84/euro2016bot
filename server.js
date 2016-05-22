@@ -104,6 +104,11 @@ controller.hears(Sentences.user_says_thanks, 'message_received', function(bot, m
 });
 
 // User wants help.
+controller.hears(["menu"], 'message_received', function(bot, message) {
+  Utils.showMainMenu(bot, message);
+});
+
+// User wants main menu.
 controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
   bot.reply(message, Sentences.help_message);
 });

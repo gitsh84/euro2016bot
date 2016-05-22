@@ -125,6 +125,50 @@ function buildGroupsObj(groups) {
   return allElements;
 }
 
+function sendGenericTemplate(bot, message, elements, callback) {
+  if (!(elements instanceof Array)) {
+    elements = [elements];
+  }
+  bot.reply(message, {
+    attachment: {
+      type: 'template',
+      payload: {
+        template_type: 'generic',
+        elements: elements
+      }
+    }
+  },
+  callback);
+}
+
+function showMainMenuInternal(bot, message) {
+  var menu = {};
+  menu.title = "What do you want to see ?";
+  menu.image_url = "http://www.allsoccerplanet.com/wp-content/uploads/2015/11/Euro-2016-official-logo.jpg";
+  menu.buttons = [];
+  menu.buttons.push({
+    'type': 'postback',
+    'title': 'Games by teams',
+    'payload': 'games_by_teams'
+  });
+  menu.buttons.push({
+    'type': 'postback',
+    'title': 'Games by dates',
+    'payload': 'games_by_dates'
+  });
+  menu.buttons.push({
+    'type': 'postback',
+    'title': 'Games by stage',
+    'payload': 'games_by_stage'
+  });
+  menu.buttons.push({
+    'type': 'postback',
+    'title': 'Games by stage',
+    'payload': 'games_by_group'
+  });
+  sendGenericTemplate(bot, message, menu);
+}
+
 function buildGameTeamObj(team, game) {
   var teamObj = {};
   teamObj.title = team.name + (game.status !== "Prematch" ? " (" + team.goals.length + ")" : "");
@@ -217,20 +261,10 @@ function showGroupsToUserInternal(bot, message, getterParams) {
 function sendMultipleAttachmentsOneByOne(bot, message, arr, index) {
   if (typeof index !== "number") index = 0;
   if (index >= arr.length) return;
-  console.log("Showing index " + index);
-  bot.reply(message, {
-      attachment: {
-        type: 'template',
-        payload: {
-          template_type: 'generic',
-          elements: arr[index]
-        }
-      }
-    },
-    function() {
-      var newIndex = index + 1;
-      sendMultipleAttachmentsOneByOne(bot, message, arr, newIndex);
-    });
+  sendGenericTemplate(bot, message, arr[index], function() {
+    var newIndex = index + 1;
+    sendMultipleAttachmentsOneByOne(bot, message, arr, newIndex);
+  });
 }
 
 function showGamesToUserInternal(bot, message, getter, getterParams) {
@@ -418,6 +452,9 @@ var utils = {
   },
   translateBotMessage: function (userInfo, text, callback) {
     translateBotMessageInternal(userInfo, text, callback);
+  },
+  showMainMenu: function (bot, message) {
+    showMainMenuInternal(bot, message);
   }
 }
 
