@@ -161,11 +161,11 @@ function showMainMenuInternal(bot, message) {
     'title': 'Games by stage',
     'payload': 'games_by_stage'
   });
-  // menu.buttons.push({
-  //   'type': 'postback',
-  //   'title': 'Games by stage',
-  //   'payload': 'games_by_group'
-  // });
+  menu.buttons.push({
+    'type': 'postback',
+    'title': 'Games by stage',
+    'payload': 'games_by_group'
+  });
   sendGenericTemplate(bot, message, menu);
 }
 
