@@ -239,5 +239,14 @@ controller.on('facebook_postback', function(bot, message) {
   } else if (message.payload.indexOf('set_notifications_for_game_') === 0) {
     var gameId = message.payload.replace("set_notifications_for_game_","");
     bot.reply(message, "Sure thing ! You will get notifications for this game from now on.");
+  } else if (message.payload.indexOf('games_by_') === 0) {
+    var gamesBy = message.payload.replace("games_by_","");
+    if (gamesBy.indexOf("teams") === 0) {
+    } else if (gamesBy.indexOf("date") === 0) {
+    }
+    } else if (gamesBy.indexOf("stage") === 0) {
+    }
+    } else if (gamesBy.indexOf("group") === 0) {
+    }
   }
 });
