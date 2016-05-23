@@ -270,7 +270,6 @@ function buildStadiumElement(stadiumName, stadiumInfo) {
     'title': 'Show Matches',
     'payload': 'showGamesInStadium-' + stadiumName
   });
-  elements.push(element);
   return element;
 }
 
