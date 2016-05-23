@@ -306,6 +306,11 @@ function buildGameTeamElement(team, game) {
   teamObj.buttons = [];
   teamObj.buttons.push({
 	type: 'postback',
+	title: 'Main Menu',
+	payload: 'showMainMenu'
+  });
+  teamObj.buttons.push({
+	type: 'postback',
 	title: 'Show Teams Games',
 	payload: 'showMatchesForTeam-' + team.name
   });
@@ -344,6 +349,11 @@ function buildGameVsElement(game) {
   vsObj.subtitle += Stadiums[game.location].location + " (" + Stadiums[game.location].seats + " seats)";
   vsObj.image_url = Stadiums[game.location].image;
   vsObj.buttons = [];
+  vsObj.buttons.push({
+	type: 'postback',
+	title: 'Main Menu',
+	payload: 'showMainMenu'
+  });
   vsObj.buttons.push({
       'type': 'postback',
       'title': 'Show All Stadiums',
@@ -394,11 +404,17 @@ function buildTeamElement(group, iTeam, team) {
 	if (team.goals_scored - team.goals_taken > 0) goals_diff_sign = "+";
 	if (team.goals_scored - team.goals_taken < 0) goals_diff_sign = "-";
 	curElement.subtitle = "Pts: " + team.points + ", Plyd: " + team.games_played + ", W:" + team.games_won + ", D:" + team.games_draw + ", L:" + team.games_lost + ", F:" + team.goals_scored + ", A:" + team.goals_taken + ", (+/-): " + goals_diff_sign + (team.goals_scored - team.goals_taken);
-	curElement.buttons = [{
+	curElement.buttons = [];
+	curElement.buttons.push({
+		type: 'postback',
+		title: 'Main Menu',
+		payload: 'showMainMenu'
+	});
+	curElement.buttons.push({
 		type: 'postback',
 		title: 'Show Teams Games',
 		payload: 'showMatchesForTeam-' + team.name
-	}];
+	});
 	return curElement;
 }
 
