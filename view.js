@@ -5,8 +5,8 @@ var Api = require('./mockApi');
 var FacebookHelper = require('./facebookHelper');
 var view = {};
 
-view.showMainMenu = function(bot, message) {
-  var gamesElement = {}
+view.buildMainMenu = function() {
+	var gamesElement = {}
   gamesElement.title = "Matches";
   gamesElement.image_url = "http://www.allsoccerplanet.com/wp-content/uploads/2015/11/Euro-2016-official-logo.jpg";
   gamesElement.buttons = [];
@@ -35,8 +35,11 @@ view.showMainMenu = function(bot, message) {
     'title': 'Stadiums',
     'payload': 'showStadiums'
   });
+  return [gamesElement, teamsElement, stadiumsElement];
+}
 
-  FacebookHelper.sendGenericTemplate(bot, message, [gamesElement, teamsElement, stadiumsElement]);
+view.showMainMenu = function(bot, message) {
+  FacebookHelper.sendGenericTemplate(bot, message, view.buildMainMenu());
 }
 
 view.showMatchesMenu = function(bot, message) {

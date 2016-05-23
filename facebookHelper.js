@@ -7,6 +7,34 @@ var Api = require('./mockApi');
 var DateFormat = require('dateformat');
 var facebookHelper = {};
 
+facebookHelper.setWelcomeMessageStructuredMessage = function(elements) {
+  request({
+    url: Consts.FACEBOOK_WELCOME_MSG_URL,
+    method: 'POST',
+    json: {
+      setting_type: "call_to_actions",
+      thread_state: "new_thread",
+      call_to_actions: [{
+        message: {
+          attachment:{
+            type: "template",
+            payload: {
+              template_type: "generic",
+              elements: elements
+            }
+          }
+        }
+      }]
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error setting welcome message: ', error);
+    } else if (response.body.error) {
+      console.log('Error in response body when setting welcome message: ', response.body.error);
+    }
+  });
+}
+
 facebookHelper.setWelcomeMessage = function(text) {
   request({
     url: Consts.FACEBOOK_WELCOME_MSG_URL,
