@@ -376,9 +376,9 @@ function sortTeamsByPoints(teams) {
   });
 }
 
-function buildTeamElement(team) {
+function buildTeamElement(group, team) {
 	var curElement = {};
-	curElement.title = curGroup.name + (iTeam + 1) + " " + team.name;
+	curElement.title = group.name + (iTeam + 1) + " " + team.name;
 	curElement.image_url = Consts.FLAGS[team.name];
 	var goals_diff_sign = "";
 	if (team.goals_scored - team.goals_taken > 0) goals_diff_sign = "+";
@@ -396,7 +396,7 @@ function buildGroupElements(group) {
 	var elements = [];
 	var teams = sortTeamsByPoints(group.teams);
 	for (var iTeam = 0; iTeam < teams.length; iTeam++) {
-		elements.push(buildTeamElement(teams[iTeam]));
+		elements.push(buildTeamElement(group, teams[iTeam]));
 	}
 	return elements;
 }

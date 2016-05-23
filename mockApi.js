@@ -36,7 +36,7 @@ mockApi.getGames = function(callback) {
 
 mockApi.getGamesOfTeam = function(callback, teamName) {
 	if(typeof callback !== "function") return;
-	callback(Games.filter(function(obj) {return (obj.home_team === teamName || obj.away_team === teamName)}));
+	callback(Games.filter(function(obj) {return (obj.home_team.name === teamName || obj.away_team.name === teamName)}));
 }
 
 mockApi.getGamesForStage = function(callback, stageName) {
