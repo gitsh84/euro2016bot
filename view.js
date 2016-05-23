@@ -347,7 +347,7 @@ function buildGameVsElement(game) {
   vsObj.buttons.push({
     'type': 'postback',
     'title': 'Show Stadium Matches',
-    'payload': 'showGamesInStadium-' + stadiumName
+    'payload': 'showGamesInStadium-' + game.location
   });
   if (game.status !== "Over") {
     // vsObj.buttons.push({
