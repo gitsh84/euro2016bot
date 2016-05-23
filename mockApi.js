@@ -76,12 +76,12 @@ mockApi.getGamesForGroup = function(callback, groupName) {
 
 mockApi.getGamesForToday = function(callback) {
 	if(typeof callback !== "function") return;
-	getGamesByDate(callback, DateFormat(new Date(), "dd/mm/yyyy"));
+	mockApi.getGamesByDate(callback, DateFormat(new Date(), "dd/mm/yyyy"));
 }
 
 mockApi.getGamesForTomorrow = function(callback, date) {
 	if(typeof callback !== "function") return;
-	getGamesByDate(callback, DateFormat(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), "dd/mm/yyyy"));
+	mockApi.getGamesByDate(callback, DateFormat(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), "dd/mm/yyyy"));
 }
 
 mockApi.getGamesByDate = function(callback, date) {

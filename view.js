@@ -43,12 +43,12 @@ view.showMatchesMenu = function(bot, message) {
   var elements = [];
 
   var gamesElement = {}
-  gamesElement.title = "Matches";
+  gamesElement.title = "Matches Options";
   gamesElement.image_url = "http://www.allsoccerplanet.com/wp-content/uploads/2015/11/Euro-2016-official-logo.jpg";
   gamesElement.buttons = [];
   gamesElement.buttons.push({
     'type': 'postback',
-    'title': 'Matches by teams',
+    'title': 'Matches By Teams',
     'payload': 'showMatchesByTeamMenu'
   });
   gamesElement.buttons.push({
@@ -64,7 +64,7 @@ view.showMatchesMenu = function(bot, message) {
   elements.push(gamesElement);
 
   gamesElement = {}
-  gamesElement.title = "Matches";
+  gamesElement.title = "More Options";
   gamesElement.image_url = "http://www.allsoccerplanet.com/wp-content/uploads/2015/11/Euro-2016-official-logo.jpg";
   gamesElement.buttons = [];
   gamesElement.buttons.push({
@@ -83,7 +83,7 @@ view.showMatchesMenu = function(bot, message) {
 }
 
 view.showMatchesByTeamMenu = function(bot, message) {
-  showAllGroups(bot, message);
+  view.showAllGroups(bot, message);
 }
 
 view.showMatchesByGroupMenu = function(bot, message) {
