@@ -12,13 +12,13 @@ var insertIntoMongo = function(document, collection, callback) {
 			db.close();
 			callback();
 		});
-	});	
+	});
 }
 
-var getFromMongo = function(document, collection, callback) {
+var getFromMongo = function(docToFind, collection, callback) {
 	MongoClient.connect(Consts.MONGO_DB_URL, function(err, db) {
 		console.log("getFromMongo - Connected to server with error: " + err);
-		db.collection(collection).find({user_id : userId}).limit(1).toArray(function(err, docs) {
+		db.collection(collection).find(docToFind).limit(1).toArray(function(err, docs) {
 			db.close();
 			if (docs instanceof Array && docs.length == 1) {
 				console.log("getFromMongo - Found the document: " + docs[0]);
@@ -36,7 +36,7 @@ mongoHelper.insertUserInfoToMongo = function(userInfo, callback) {
 }
 
 mongoHelper.getUserInfoFromMongo = function(userId, callback) {
-  getFromMongo(userId, Consts.MONGO_DB_USER_INFO_COL, callback);
+  getFromMongo({user_id : userId}, Consts.MONGO_DB_USER_INFO_COL, callback);
 }
 
 module.exports = mongoHelper;
