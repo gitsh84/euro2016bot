@@ -122,7 +122,7 @@ controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
 
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
-  View.showGroupsToUser(bot, message);
+  View.showAllGroups(bot, message);
 });
 
 // Show the games of a specific team to the user.
@@ -133,8 +133,7 @@ controller.hears(Sentences.show_team_games, 'message_received', function(bot, me
   }
   if (typeof team === "string" && team.length > 0) {
     console.log("Show games for " + team);
-    //bot.reply(message, "You want to see games for " + team + " ?");
-    Utils.showGamesToUser(bot, message, Api.getGamesOfTeam, team);
+    View.showMatchesForTeam(bot, message,team);
   } else {
     notSureWhatUserWants(bot, message);
   }
@@ -148,8 +147,7 @@ controller.hears(Sentences.show_games_for_team, 'message_received', function(bot
   }
   if (typeof team === "string" && team.length > 0) {
     console.log("Show games for " + team);
-    //bot.reply(message, "You want to see games for " + team + " ?");
-    Utils.showGamesToUser(bot, message, Api.getGamesOfTeam, team);
+    View.showMatchesForTeam(bot, message, team);
   } else {
     notSureWhatUserWants(bot, message);
   }
@@ -163,9 +161,7 @@ controller.hears(Sentences.show_team_group, 'message_received', function(bot, me
     team = message.match[2];
   }
   if (typeof team === "string" && team.length > 0) {
-    console.log("Show group for " + team);
-    //bot.reply(message, "You want to see games for " + team + " ?");
-    Utils.showGroupsToUser(bot, message, Api.getGroupOfTeam, team);
+    View.showGroup(bot, message, team);
   } else {
     notSureWhatUserWants(bot, message);
   }
@@ -178,9 +174,7 @@ controller.hears(Sentences.show_group_for_team, 'message_received', function(bot
     team = message.match[4];
   }
   if (typeof team === "string" && team.length > 0) {
-    console.log("Show group for " + team);
-    //bot.reply(message, "You want to see games for " + team + " ?");
-    Utils.showGroupsToUser(bot, message, Api.getGroupOfTeam, team);
+    View.showGroup(bot, message, team);
   } else {
     notSureWhatUserWants(bot, message);
   }
@@ -188,14 +182,11 @@ controller.hears(Sentences.show_group_for_team, 'message_received', function(bot
 
 // Show live games.
 controller.hears(Sentences.show_live_games, 'message_received', function(bot, message) {
-  console.log("Show live games to user");
-  Utils.showGamesToUser(bot, message, Api.getLiveGames);
 });
 
 // Show todays games.
 controller.hears(Sentences.show_games_today, 'message_received', function(bot, message) {
-  console.log("Show todays games to user");
-  Utils.showGamesToUser(bot, message, Api.getGamesByDate, DateFormat(new Date(), "dd/mm/yy"));
+  View.showMatchesForToday(bot, message);
 });
 
 // Test
