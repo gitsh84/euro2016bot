@@ -15,10 +15,14 @@
 var Botkit = require('botkit');
 var Sentences = require('./sentences');
 var Api = require('./mockApi');
+var View = require('./view');
 var Utils = require('./utils');
 var DateFormat = require('dateformat');
 var FacebookHelper = require('./facebookHelper');
+var PostBackHelper = require('./postBackHelper');
 var AnalyticsHelper = require('./analyticsHelper');
+var TranslateHelper = require('./translateHelper');
+var NlpHelper = require('./nlpHelper');
 var UserInfoCache = {};
 
 var controller = Botkit.facebookbot({
@@ -50,7 +54,7 @@ controller.middleware.receive.use(function(bot, message, next) {
       message.fullNameWithId = message.user;
     }
     AnalyticsHelper.sendUserMsgToAnalytics(message.fullNameWithId, message.text);
-    Utils.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
+    translateHelper.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
         message.text = translationApiResponse.translation;
@@ -59,7 +63,7 @@ controller.middleware.receive.use(function(bot, message, next) {
         }
         UserInfoCache[message.user].text_original_lang = translationApiResponse.user.lang;
       }
-      Utils.addInfoFromNLP(message, function(message) {
+      NlpHelper.addInfoFromNLP(message, function(message) {
         next();
       });
     });
@@ -80,7 +84,7 @@ controller.middleware.send.use(function(bot, message, next) {
       message.fullNameWithId = message.channel;
     }
     AnalyticsHelper.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
-    Utils.translateBotMessage(userInfo, message.text, function(translationApiResponse) {
+    translateHelper.translateBotMessage(userInfo, message.text, function(translationApiResponse) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
         message.text = translationApiResponse.translation;
@@ -107,7 +111,7 @@ controller.hears(Sentences.user_says_thanks, 'message_received', function(bot, m
 
 // User wants help.
 controller.hears(["menu"], 'message_received', function(bot, message) {
-  Utils.showMainMenu(bot, message);
+  View.showMainMenu(bot, message);
 });
 
 // User wants main menu.
@@ -117,7 +121,7 @@ controller.hears(Sentences.help_me, 'message_received', function(bot, message) {
 
 // Show the groups to the user.
 controller.hears(Sentences.show_groups, 'message_received', function(bot, message) {
-  Utils.showGroupsToUser(bot, message);
+  View.showGroupsToUser(bot, message);
 });
 
 // Show the games of a specific team to the user.
@@ -207,7 +211,7 @@ controller.hears(['test'], 'message_received', function(bot, message) {
 // Not suer what the users wants. Final fallback.
 controller.on('message_received', function(bot, message) {
   console.log("Reached unknown user message");
-  var matchedIntent = Utils.findSuitableIntent(message);
+  var matchedIntent = NlpHelper.findSuitableIntent(message);
   if (matchedIntent) {
     console.log("Found intent: " + matchedIntent);
     bot.reply(message, "Did you mean " + matchedIntent + " ?");
@@ -226,22 +230,5 @@ function notSureWhatUserWants(bot, message) {
 // Facebook postsbacks.
 controller.on('facebook_postback', function(bot, message) {
   AnalyticsHelper.sendUserMsgToAnalytics(message.user, "facebook_postback-" + message.payload);
-  if (message.payload.indexOf('show_games_for_') === 0) {
-    var teamName = message.payload.replace("show_games_for_","");
-    bot.reply(message, 'Games for ' + teamName);
-    Utils.showGamesToUser(bot, message, Api.getGames);
-  } else if (message.payload.indexOf('set_notifications_for_team_') === 0) {
-    var team = message.payload.replace("set_notifications_for_team_","");
-    bot.reply(message, "Sure thing ! You will get notifications for " + team + " from now on.");
-  } else if (message.payload.indexOf('set_notifications_for_game_') === 0) {
-    var gameId = message.payload.replace("set_notifications_for_game_","");
-    bot.reply(message, "Sure thing ! You will get notifications for this game from now on.");
-  } else if (message.payload.indexOf('games_by_') === 0) {
-    var gamesBy = message.payload.replace("games_by_","");
-    if (gamesBy.indexOf("teams") === 0) {
-    } else if (gamesBy.indexOf("date") === 0) {
-    } else if (gamesBy.indexOf("stage") === 0) {
-    } else if (gamesBy.indexOf("group") === 0) {
-    }
-  }
+  PostBackHelper.handlePostBack(bot, message, message.payload);
 });

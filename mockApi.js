@@ -19,9 +19,9 @@ mockApi.getGroups = function(callback) {
 	callback(Groups);
 }
 
-mockApi.getGroup = function(callback, group) {
+mockApi.getGroup = function(callback, groupName) {
 	if(typeof callback !== "function") return;
-	callback(Groups.filter(function(obj) {return (obj.name === group)}));
+	callback(Groups.filter(function(obj) {return (obj.name === groupName)}));
 }
 
 mockApi.getGroupOfTeam = function(callback, team) {
@@ -34,17 +34,17 @@ mockApi.getGames = function(callback) {
 	callback(Games);
 }
 
-mockApi.getGamesOfTeam = function(callback, team) {
+mockApi.getGamesOfTeam = function(callback, teamName) {
 	if(typeof callback !== "function") return;
-	callback(Games.filter(function(obj) {return (obj.home_team === team || obj.away_team === team)}));
+	callback(Games.filter(function(obj) {return (obj.home_team === teamName || obj.away_team === teamName)}));
 }
 
-mockApi.getGamesOfRound = function(callback, round) {
+mockApi.getGamesForStage = function(callback, stageName) {
 	if(typeof callback !== "function") return;
-	callback(Games.filter(function(obj) {return (obj.type === round)}));
+	callback(Games.filter(function(obj) {return (obj.type === stageName)}));
 }
 
-mockApi.getGamesOfGroupStage = function(callback, round) {
+mockApi.getGamesOfGroupStage = function(callback) {
 	if(typeof callback !== "function") return;
 	callback(Games.filter(function(obj) {return (obj.type === "md1" || obj.type === "md2" || obj.type === "md3")}));
 }
@@ -59,7 +59,22 @@ mockApi.getGamesInStadium = function(callback, stadium) {
 	callback(Games.filter(function(obj) {return (obj.location === stadium)}));
 }
 
-mockApi.getGamesForToday = function(callback, date) {
+mockApi.getGamesForGroup = function(callback, groupName) {
+	if(typeof callback !== "function") return;
+	getGamesOfGroupStage(function(games) {
+		getGroup(function(group) {
+			callback(games.filter(function(game) {
+				for (var iTeam = 0; iTeam < group.teams.length; iTeam++) {
+					if (group.teams[iTeam].name === game.home_team) {
+						return true;
+					}
+				}
+			}));
+		}, groupName);
+	});
+}
+
+mockApi.getGamesForToday = function(callback) {
 	if(typeof callback !== "function") return;
 	getGamesByDate(callback, DateFormat(new Date(), "dd/mm/yyyy"));
 }
