@@ -275,7 +275,7 @@ function buildStadiumElement(stadiumName, stadiumInfo) {
 }
 
 view.showStadiums = function(bot, message) {
-	showMatchesByStadiumMenu(bot, message);
+	view.showMatchesByStadiumMenu(bot, message);
 }
 
 view.showMatchesByStadiumMenu = function(bot, message) {
