@@ -16,6 +16,12 @@ function isObjectInArray(arr, propName, propVal) {
     return false;
 }
 
+function sortGamesByStartTime(games) {
+  return games.sort(function(a, b) {
+    return (new Date(Utils.changeDateFormat(a.time)) > new Date(Utils.changeDateFormat(b.time))) ? -1 : ((new Date(Utils.changeDateFormat(a.time)) > new Date(Utils.changeDateFormat(b.time))) ? 1 : 0);
+  });
+}
+
 mockApi.getGroups = function(callback) {
 	if(typeof callback !== "function") return;
 	callback(Groups);
