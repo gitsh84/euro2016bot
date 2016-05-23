@@ -54,7 +54,7 @@ controller.middleware.receive.use(function(bot, message, next) {
       message.fullNameWithId = message.user;
     }
     AnalyticsHelper.sendUserMsgToAnalytics(message.fullNameWithId, message.text);
-    translateHelper.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
+    TranslateHelper.translateUserMessage(userInfo, message.text, function(translationApiResponse) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
         message.text = translationApiResponse.translation;
@@ -84,7 +84,7 @@ controller.middleware.send.use(function(bot, message, next) {
       message.fullNameWithId = message.channel;
     }
     AnalyticsHelper.sendBotMsgToAnalytics(message.fullNameWithId, message.text || "-empty-");
-    translateHelper.translateBotMessage(userInfo, message.text, function(translationApiResponse) {
+    TranslateHelper.translateBotMessage(userInfo, message.text, function(translationApiResponse) {
       if(translationApiResponse && translationApiResponse.translation && translationApiResponse.translation.length > 0) {
         console.log("Text - " + message.text + " - was translated to - " + translationApiResponse.translation);
         message.text = translationApiResponse.translation;
