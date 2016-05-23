@@ -251,13 +251,8 @@ view.showMatchesByStageMenu = function(bot, message) {
   });
   element.buttons.push({
     'type': 'postback',
-    'title': 'Semi Finals',
+    'title': 'Semi Finals + Final',
     'payload': 'showMatchesForStage-semi_finals'
-  });
-  element.buttons.push({
-    'type': 'postback',
-    'title': 'Final',
-    'payload': 'showMatchesForStage-final'
   });
   elements.push(element);
 
