@@ -86,8 +86,9 @@ mockApi.getNextGame = function(callback) {
 	if(typeof callback !== "function") return;
 	var curTime = new Date();
 	var iGame = 0;
-	for (var iGame = 0; iGame < Games.length; iGame++) {
-		var curGame = Games[iGame];
+	var sortedGames = sortGamesByStartTime(Games);
+	for (var iGame = 0; iGame < sortedGames.length; iGame++) {
+		var curGame = sortedGames[iGame];
 		var curGameTime = new Date(Utils.changeDateFormat(curGame.time));
 		if (curGameTime > curTime) {
 			var nextGame = curGame;
@@ -95,8 +96,8 @@ mockApi.getNextGame = function(callback) {
 			games.push(curGame);
 			// Check if next games are on the same time.
 			iGame++;
-			while(iGame < Games.length && (nextGame.time === Games[iGame].time)) {
-				games.push(Games[iGame]);
+			while(iGame < sortedGames.length && (nextGame.time === sortedGames[iGame].time)) {
+				games.push(sortedGames[iGame]);
 				iGame++;
 			}
 			callback(games);
