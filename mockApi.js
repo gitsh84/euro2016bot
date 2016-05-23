@@ -90,6 +90,8 @@ mockApi.getNextGame = function(callback) {
 	for (var iGame = 0; iGame < sortedGames.length; iGame++) {
 		var curGame = sortedGames[iGame];
 		var curGameTime = new Date(Utils.changeDateFormat(curGame.time));
+		console.log("Cur game: " + curGame.home_team.name + " vs " + curGame.away_team.name);
+		console.log("Cur game time: " + curGameTime);
 		if (curGameTime > curTime) {
 			console.log("First game found as next match: " + curGame.home_team.name + " vs " + curGame.away_team.name);
 			var nextGame = curGame;
