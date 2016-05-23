@@ -309,11 +309,11 @@ function buildGameTeamElement(team, game) {
 	title: 'Show Teams Group',
 	payload: 'showGroupForTeam-' + team.name
   });
-  teamObj.buttons.push({
-    'type': 'postback',
-    'title': 'Notify Me About ' + team.name,
-    'payload': 'set_notifications_for_team_' + team.name
-  });
+  // teamObj.buttons.push({
+  //   'type': 'postback',
+  //   'title': 'Notify Me About ' + team.name,
+  //   'payload': 'set_notifications_for_team_' + team.name
+  // });
   return teamObj;
 }
 
@@ -345,12 +345,11 @@ function buildGameVsElement(game) {
       'payload': 'showStadiums'
     });
   if (game.status !== "Over") {
-
-    vsObj.buttons.push({
-      'type': 'postback',
-      'title': 'Notify Me About Game',
-      'payload': 'set_notifications_for_game_' + game.id
-    });
+    // vsObj.buttons.push({
+    //   'type': 'postback',
+    //   'title': 'Notify Me About Game',
+    //   'payload': 'set_notifications_for_game_' + game.id
+    // });
   }
   return vsObj;
 }
@@ -423,7 +422,7 @@ view.showGroup = function(bot, message, groupName) {
 }
 
 view.showGroupForTeam = function(bot, message, teamName) {
-	Api.getGroupOfTeam(function(group) {
+	Api.getGroupOfTeam(function(groups) {
 		FacebookHelper.sendMultipleGenericTemplates(bot, message, buildGroupsElements(groups));
 	}, teamName);
 }
