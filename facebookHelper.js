@@ -48,9 +48,9 @@ facebookHelper.sendGenericTemplate = function(bot, message, elements, callback) 
 facebookHelper.sendMultipleGenericTemplates = function(bot, message, arr, index) {
   if (typeof index !== "number") index = 0;
   if (index >= arr.length) return;
-  sendGenericTemplate(bot, message, arr[index], function() {
+  facebookHelper.sendGenericTemplate(bot, message, arr[index], function() {
     var newIndex = index + 1;
-    sendMultipleGenericTemplates(bot, message, arr, newIndex);
+    facebookHelper.sendMultipleGenericTemplates(bot, message, arr, newIndex);
   });
 }
 
