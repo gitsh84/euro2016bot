@@ -36,7 +36,7 @@ view.showMainMenu = function(bot, message) {
     'payload': 'showStadiums'
   });
 
-  FacebookHelper.sendGenericTemplate(bot, message, [gamesElement, groupElement, teamsElement, stadiumsElement]);
+  FacebookHelper.sendGenericTemplate(bot, message, [gamesElement, teamsElement, stadiumsElement]);
 }
 
 view.showMatchesMenu = function(bot, message) {
