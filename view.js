@@ -3,12 +3,14 @@
 var Consts = require('./consts');
 var Api = require('./mockApi');
 var FacebookHelper = require('./facebookHelper');
+var Stadiums = require('./stadiums');
+var Flags = require('./flags');
 var view = {};
 
 view.buildMainMenu = function() {
-	var gamesElement = {}
+  var gamesElement = {}
   gamesElement.title = "Matches";
-  gamesElement.image_url = "http://www.allsoccerplanet.com/wp-content/uploads/2015/11/Euro-2016-official-logo.jpg";
+  gamesElement.image_url = "http://www.clipartbest.com/cliparts/ncB/rjq/ncBrjqRcA.png";
   gamesElement.buttons = [];
   gamesElement.buttons.push({
     'type': 'postback',
@@ -18,7 +20,7 @@ view.buildMainMenu = function() {
 
   var teamsElement = {}
   teamsElement.title = "Teams";
-  teamsElement.image_url = "http://www.allsoccerplanet.com/wp-content/uploads/2015/11/Euro-2016-official-logo.jpg";
+  teamsElement.image_url = "https://upload.wikimedia.org/wikipedia/commons/b/bc/Europe_flags.png";
   teamsElement.buttons = [];
   teamsElement.buttons.push({
     'type': 'postback',
@@ -28,7 +30,7 @@ view.buildMainMenu = function() {
 
   var stadiumsElement = {}
   stadiumsElement.title = "Stadiums";
-  stadiumsElement.image_url = "http://www.allsoccerplanet.com/wp-content/uploads/2015/11/Euro-2016-official-logo.jpg";
+  stadiumsElement.image_url = "http://img.uefa.com/MultimediaFiles/Photo/competitions/Venues/02/04/30/30/2043030_w1.jpg";
   stadiumsElement.buttons = [];
   stadiumsElement.buttons.push({
     'type': 'postback',
@@ -282,9 +284,9 @@ view.showStadiums = function(bot, message) {
 
 view.showMatchesByStadiumMenu = function(bot, message) {
   var elements = [];
-  for (var key in Consts.STADIUMS) {
-    if (!Consts.STADIUMS.hasOwnProperty(key)) continue;
-    elements.push(buildStadiumElement(key, Consts.STADIUMS[key]));
+  for (var key in Stadiums) {
+    if (!Stadiums.hasOwnProperty(key)) continue;
+    elements.push(buildStadiumElement(key, Stadiums[key]));
   }
   FacebookHelper.sendGenericTemplate(bot, message, elements);
 }
@@ -292,7 +294,7 @@ view.showMatchesByStadiumMenu = function(bot, message) {
 function buildGameTeamElement(team, game) {
   var teamObj = {};
   teamObj.title = team.name + (game.status !== "Prematch" ? " (" + team.goals.length + ")" : "");
-  teamObj.image_url = Consts.FLAGS[team.name];
+  teamObj.image_url = Flags[team.name];
   teamObj.subtitle = "";
   if (team.goals instanceof Array) {
     for (var iGoal = 0; iGoal < team.goals.length; iGoal++) {
@@ -339,8 +341,8 @@ function buildGameVsElement(game) {
     vsObj.subtitle = "Game started ";
   }
   vsObj.subtitle += game.time + " at " + game.location + "\n";
-  vsObj.subtitle += Consts.STADIUMS[game.location].location + " (" + Consts.STADIUMS[game.location].seats + " seats)";
-  vsObj.image_url = Consts.STADIUMS[game.location].image;
+  vsObj.subtitle += Stadiums[game.location].location + " (" + Stadiums[game.location].seats + " seats)";
+  vsObj.image_url = Stadiums[game.location].image;
   vsObj.buttons = [];
   vsObj.buttons.push({
       'type': 'postback',
@@ -387,7 +389,7 @@ function sortTeamsByPoints(teams) {
 function buildTeamElement(group, iTeam, team) {
 	var curElement = {};
 	curElement.title = group.name + (iTeam + 1) + " " + team.name;
-	curElement.image_url = Consts.FLAGS[team.name];
+	curElement.image_url = Flags[team.name];
 	var goals_diff_sign = "";
 	if (team.goals_scored - team.goals_taken > 0) goals_diff_sign = "+";
 	if (team.goals_scored - team.goals_taken < 0) goals_diff_sign = "-";
