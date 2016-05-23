@@ -146,6 +146,11 @@ view.showMatchesByDateMenu = function(bot, message) {
   element.buttons = [];
   element.buttons.push({
     'type': 'postback',
+    'title': 'Next Game',
+    'payload': 'showNextGame'
+  });
+  element.buttons.push({
+    'type': 'postback',
     'title': 'Today',
     'payload': 'showMatchesForToday'
   });
@@ -438,6 +443,12 @@ function showMatches(bot, message, matches) {
 	} else {
 		bot.reply(message, "Sorry no relevant matches were found...");
 	}
+}
+
+view.showNextGame = function(bot, message) {
+	Api.getNextGame(function(games) {
+		showMatches(bot, message, buildGamesElements(games));
+	});
 }
 
 view.showMatchesForToday = function(bot, message) {

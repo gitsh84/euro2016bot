@@ -5,6 +5,14 @@ var MongoHelper = require('./mongoHelper');
 var HttpHelper = require('./httpHelper');
 var utils = {};
 
+utils.changeDateFormat = function(str) {
+  // "10/06/2016 22:00" -> "06/10/2016 22:00"
+  var date = str.split(" ")[0];
+  var hour = str.split(" ")[1];
+  var date_new_format = date.split("/")[1] + "/" + date.split("/")[0] + "/" + date.split("/")[2];
+  return date_new_format + " " + hour;
+}
+
 utils.getUserInfo = function(userId, callback) {
   MongoHelper.getUserInfoFromMongo(userId, function(userInfo) {
     if (typeof userInfo !== "undefined") {
