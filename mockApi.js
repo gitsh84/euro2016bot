@@ -86,7 +86,8 @@ mockApi.getNextGame = function(callback) {
 	if(typeof callback !== "function") return;
 	var curTime = new Date();
 	var iGame = 0;
-	var sortedGames = sortGamesByStartTime(Games);
+	var sortedGames = Games;
+	console.log("sortedGames.length: " + sortedGames.length);
 	for (var iGame = 0; iGame < sortedGames.length; iGame++) {
 		var curGame = sortedGames[iGame];
 		var curGameTime = new Date(Utils.changeDateFormat(curGame.time));

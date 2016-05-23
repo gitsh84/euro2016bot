@@ -21,7 +21,7 @@ var getFromMongo = function(docToFind, collection, callback) {
 		db.collection(collection).find(docToFind).limit(1).toArray(function(err, docs) {
 			db.close();
 			if (docs instanceof Array && docs.length == 1) {
-				console.log("getFromMongo - Found the document: " + docs[0]);
+				console.log("getFromMongo - Found the document: " + JSON.stringify(docs[0]));
 				callback(docs[0]);
 			} else {
 				console.log("getFromMongo - Could not find the document");
