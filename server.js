@@ -35,7 +35,7 @@ var bot = controller.spawn({});
 // Set up the welcome message.
 if (process.env.FACEBOOK_PAGE_ACCESS_TOKEN) {
   //FacebookHelper.setWelcomeMessageText(Sentences.page_welcome_msg);
-  FacebookHelper.setWelcomeMessageStructuredMessage(view.buildMainMenu());
+  FacebookHelper.setWelcomeMessageStructuredMessage(View.buildMainMenu());
 }
 
 // Start web server.
