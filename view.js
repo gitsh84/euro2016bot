@@ -343,7 +343,12 @@ function buildGameVsElement(game) {
       'type': 'postback',
       'title': 'Show All Stadiums',
       'payload': 'showStadiums'
-    });
+	});
+  vsObj.buttons.push({
+    'type': 'postback',
+    'title': 'Show Stadium Matches',
+    'payload': 'showGamesInStadium-' + stadiumName
+  });
   if (game.status !== "Over") {
     // vsObj.buttons.push({
     //   'type': 'postback',
@@ -376,7 +381,7 @@ function sortTeamsByPoints(teams) {
   });
 }
 
-function buildTeamElement(group, team) {
+function buildTeamElement(group, iTeam, team) {
 	var curElement = {};
 	curElement.title = group.name + (iTeam + 1) + " " + team.name;
 	curElement.image_url = Consts.FLAGS[team.name];
@@ -396,7 +401,7 @@ function buildGroupElements(group) {
 	var elements = [];
 	var teams = sortTeamsByPoints(group.teams);
 	for (var iTeam = 0; iTeam < teams.length; iTeam++) {
-		elements.push(buildTeamElement(group, teams[iTeam]));
+		elements.push(buildTeamElement(group, iTeam, teams[iTeam]));
 	}
 	return elements;
 }
