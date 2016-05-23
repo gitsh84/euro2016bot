@@ -91,18 +91,19 @@ mockApi.getNextGame = function(callback) {
 		var curGame = sortedGames[iGame];
 		var curGameTime = new Date(Utils.changeDateFormat(curGame.time));
 		if (curGameTime > curTime) {
-			console.log("First game found as next match: " + curGame.home_team + " vs " + curGame.away_team);
+			console.log("First game found as next match: " + curGame.home_team.name + " vs " + curGame.away_team.name);
 			var nextGame = curGame;
 			var games = [];
 			games.push(curGame);
 			// Check if next games are on the same time.
 			iGame++;
 			while(iGame < sortedGames.length && (nextGame.time === sortedGames[iGame].time)) {
-				console.log("Found another game as next match: " + sortedGames[iGame].home_team + " vs " + sortedGames[iGame].away_team);
+				console.log("Found another game as next match: " + sortedGames[iGame].home_team.name + " vs " + sortedGames[iGame].away_team.name);
 				games.push(sortedGames[iGame]);
 				iGame++;
 			}
 			callback(games);
+			return;
 		}
 	}
 	callback([]);
